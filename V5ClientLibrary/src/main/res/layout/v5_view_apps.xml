@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <!-- 分隔线 -->
+    <View
+        android:id="@+id/view"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#ccc" />
+<!-- 
+    <GridView
+        android:id="@+id/gv_apps"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:horizontalSpacing="6dip"
+        android:verticalSpacing="20dip"
+        android:listSelector="@null"
+        android:numColumns="4"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"/>
+-->
+	<com.v5kf.client.ui.keyboard.AppFuncPageView
+        android:id="@+id/view_apv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_above="@+id/view_spit"
+        android:orientation="vertical"/>
+	
+	<com.v5kf.client.ui.keyboard.EmoticonsIndicatorView
+        android:id="@+id/view_eiv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/view_spit"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/v5_indicator_margin">
+    </com.v5kf.client.ui.keyboard.EmoticonsIndicatorView>
+
+    <include
+        android:id="@+id/view_spit"
+        layout="@layout/v5_ic_spitview_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/v5_horizontalspit_view_height"
+        android:layout_above="@+id/sinfo_tv"/>
+    
+    <TextView
+        android:id="@+id/sinfo_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:padding="2dp"
+        android:textColor="#9fa0a0"
+        android:textSize="12sp"
+        android:text="@string/v5_support_info" />
+
+</RelativeLayout>

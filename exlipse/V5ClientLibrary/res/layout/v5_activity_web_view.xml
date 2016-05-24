@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="false" >
+    
+	<include 
+        android:id="@+id/id_action_bar"
+        layout="@layout/v5_include_action_bar"/>
+
+	<FrameLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+        android:layout_below="@id/id_action_bar" >
+	
+	    <WebView
+	        android:id="@+id/id_web_view"
+	        android:visibility="gone"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" />
+	    
+	    <LinearLayout
+	        android:id="@+id/layout_container_empty"
+	        android:visibility="visible"
+	        android:background="@color/v5_content_empty_tips_bg_color"
+	        android:gravity="center"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:orientation="vertical" >
+	        
+	        <ProgressBar
+		        android:id="@+id/id_loading_progress"
+		        android:visibility="visible"
+		        android:layout_width="45dp"
+		        android:layout_height="45dp"
+		        android:layout_gravity="center_horizontal"
+		        android:layout_marginBottom="8dp"
+		        android:indeterminateDuration="700"
+		        style="@style/v5_custom_progress_bar_large" />
+	        
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textSize="@dimen/v5_content_empty_tips_text_size"
+	            android:textColor="@color/v5_content_empty_tips_text_color"
+	            android:text="@string/v5_loading" />
+	        
+	    </LinearLayout>
+    
+    </FrameLayout>
+    
+</RelativeLayout>

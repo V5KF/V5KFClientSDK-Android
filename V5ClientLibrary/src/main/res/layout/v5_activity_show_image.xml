@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/v5_transparent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical" >
+    
+    <include 
+        android:id="@+id/id_action_bar"
+        android:visibility="gone"
+        layout="@layout/v5_include_action_bar"/>
+
+    <com.v5kf.client.ui.widget.PhotoView
+        android:id="@+id/id_image"
+        android:background="@color/v5_transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/id_action_bar"
+        android:scaleType="fitCenter" />
+    
+    <ProgressBar
+        android:id="@+id/id_loading_progressbar"
+        android:visibility="gone"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
+        android:indeterminateDuration="1000"
+        style="@style/v5_custom_progress_bar_large" />
+    
+</RelativeLayout>

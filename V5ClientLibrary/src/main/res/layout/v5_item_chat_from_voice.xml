@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+    xmlns:v5kf="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_left_msg_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/v5_chat_list_horizontal_padding"
+    android:paddingRight="@dimen/v5_chat_list_horizontal_padding"
+    android:paddingTop="@dimen/v5_chat_list_vertical_padding"
+    android:paddingBottom="@dimen/v5_chat_list_vertical_padding"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:id="@+id/id_from_msg_date"
+        android:visibility="gone"
+        style="@style/v5_list_item_top_date" />
+    
+    <LinearLayout
+        android:baselineAligned="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/v5_chat_list_item_content_hr_matgin"
+	    android:layout_marginRight="@dimen/v5_chat_list_item_content_hr_matgin" >
+	    
+        <com.v5kf.client.ui.widget.RoundImageView
+            android:id="@+id/id_from_msg_avatar"
+            android:layout_width="@dimen/v5_chat_list_avatar_wh"
+            android:layout_height="@dimen/v5_chat_list_avatar_wh"
+            android:layout_marginRight="@dimen/v5_chat_list_bubble_avatar_margin"
+			android:layout_marginEnd="@dimen/v5_chat_list_bubble_avatar_margin"
+            v5kf:borderRadius="@dimen/v5_chat_list_avatar_radius"
+            v5kf:type="round"
+            android:src="@drawable/v5_avatar_robot" />
+        
+        <RelativeLayout
+	        android:id="@+id/id_left_voice_layout"
+	        android:baselineAligned="false"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:minHeight="@dimen/v5_chat_list_voice_layout_minH"
+			android:paddingTop="6dp"
+		    android:paddingBottom="6dp"
+		    android:paddingLeft="12dp"
+		    android:paddingStart="12dp"
+		    android:paddingRight="8dp"
+		    android:paddingEnd="8dp"
+			android:background="@drawable/v5_list_from_textview_bg" >
+		        
+	        <TextView 
+	            android:id="@+id/id_from_voice_tv"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:minWidth="@dimen/v5_chat_list_voice_second_minW"
+		        android:gravity="center"
+	            android:layout_centerVertical="true"
+	            android:textSize="@dimen/v5_chat_list_voice_text_size"
+	            android:textColor="@color/v5_white"
+	            android:text="0.0s" />
+	        
+	        <ImageView
+		        android:id="@+id/id_from_voice_iv"
+		    	android:layout_width="@dimen/v5_chat_list_voice_wh"
+		        android:layout_height="@dimen/v5_chat_list_voice_wh"
+		        android:layout_centerVertical="true"
+		        android:layout_toRightOf="@id/id_from_voice_tv"
+		        android:layout_toEndOf="@id/id_from_voice_tv"
+		        android:layout_marginLeft="8dp"
+		        android:layout_marginStart="8dp"
+		        android:minWidth="140dp"
+		        android:minHeight="140dp"
+		        android:adjustViewBounds="true"
+		        android:scaleType="centerInside"
+		        android:background="@drawable/v5_chat_animation_left_white3" />
+		        
+	    </RelativeLayout>
+        
+    </LinearLayout>
+    
+</LinearLayout>

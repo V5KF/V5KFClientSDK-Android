@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+    xmlns:v5kf="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_left_msg_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/v5_chat_list_horizontal_padding"
+    android:paddingRight="@dimen/v5_chat_list_horizontal_padding"
+    android:paddingTop="@dimen/v5_chat_list_vertical_padding"
+    android:paddingBottom="@dimen/v5_chat_list_vertical_padding"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:id="@+id/id_from_msg_date"
+        android:visibility="gone"
+        style="@style/v5_list_item_top_date" />
+    
+    <LinearLayout
+        android:baselineAligned="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/v5_chat_list_item_content_hr_matgin"
+	    android:layout_marginRight="@dimen/v5_chat_list_item_content_hr_matgin" >
+	    
+        <com.v5kf.client.ui.widget.RoundImageView
+            android:id="@+id/id_from_msg_avatar"
+            android:layout_width="@dimen/v5_chat_list_avatar_wh"
+            android:layout_height="@dimen/v5_chat_list_avatar_wh"
+            android:layout_marginRight="@dimen/v5_chat_list_bubble_avatar_margin"
+			android:layout_marginEnd="@dimen/v5_chat_list_bubble_avatar_margin"
+            v5kf:borderRadius="@dimen/v5_chat_list_avatar_radius"
+            v5kf:type="round"
+            android:src="@drawable/v5_avatar_robot" />
+
+	    <com.v5kf.client.ui.emojicon.EmojiconTextView
+            android:id="@+id/id_from_msg_text"
+            emojicon:emojiconAlignment="baseline"
+            emojicon:emojiconSize="@dimen/v5_chat_text_emoji_iconsize"
+            android:lineSpacingExtra="@dimen/v5_chat_text_line_spacing"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/v5_chat_list_item_minH"
+            android:textColor="@color/v5_white"
+            android:background="@drawable/v5_list_from_textview_bg"
+            android:textSize="14sp" />
+	    
+    </LinearLayout>
+    
+</LinearLayout>

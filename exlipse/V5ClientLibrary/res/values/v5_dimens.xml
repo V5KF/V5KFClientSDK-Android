@@ -1,0 +1,63 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="v5_activity_horizontal_margin">16dp</dimen>
+    <dimen name="v5_activity_vertical_margin">16dp</dimen>
+    
+    <!-- Chat聊天页面 -->
+    <dimen name="v5_chat_list_vertical_padding">7dip</dimen>
+    <dimen name="v5_chat_list_horizontal_padding">8dip</dimen>
+    <dimen name="v5_chat_list_item_content_hr_matgin">50dip</dimen>
+    <dimen name="v5_chat_send_btn_text_size">14sp</dimen>
+    <dimen name="v5_chat_text_line_spacing">3dip</dimen>
+    <dimen name="v5_chat_text_emoji_iconsize">20sp</dimen>
+    
+    <dimen name="v5_info_item_margin_h">16dip</dimen>
+    <dimen name="v5_info_item_padding_inner">8dip</dimen>
+    
+    <dimen name="v5_option_btn_radius">10dp</dimen>
+    <dimen name="v5_dialog_border_width">0.0dp</dimen>
+
+    <dimen name="v5_base_line_width_s">1px</dimen>
+    
+    <dimen name="v5_info_item_padding_inner_v">4dip</dimen>
+    
+	<dimen name="v5_news_bg_radius">5dp</dimen>
+	
+	<dimen name="v5_base_action_bar_height">49.0dip</dimen><!-- 标题栏高度 -->
+    <dimen name="v5_base_action_bar_title_size">18.0sp</dimen><!-- 标题栏字体大小 -->
+    
+    <!-- warning dialog -->
+    <dimen name="v5_dialog_width">283dp</dimen><!-- 弹出对话框宽度 -->
+    <dimen name="v5_dialog_corner_radius">10dp</dimen>
+    <dimen name="v5_warning_border_width">0.0dp</dimen>
+    <dimen name="v5_warning_side_btn_radius">10dp</dimen>
+    <dimen name="v5_warning_mid_btn_radius">10dp</dimen>
+    <dimen name="v5_dialog_title_text_size">15sp</dimen>
+    <dimen name="v5_dialog_content_text_size">12sp</dimen>
+    
+    <!-- empty tips margin -->
+    <dimen name="v5_content_empty_tips_text_size">15.0sp</dimen>
+    
+    <!-- emojicon keyboard -->    
+    <dimen name="v5_indicator_margin">10dp</dimen>
+    <dimen name="v5_bar_height">35dp</dimen>
+    <dimen name="v5_verticalspit_view_width">0.6dp</dimen>
+    <dimen name="v5_horizontalspit_view_height">0.6dp</dimen>
+    
+    <!-- dimen name="v5_chat_list_text_size">15sp</dimen -->
+    <dimen name="v5_chat_list_voice_text_size">14sp</dimen>
+    <dimen name="v5_chat_list_item_minH">40dp</dimen>
+    <dimen name="v5_chat_list_voice_layout_minH">40dp</dimen>
+    <dimen name="v5_chat_list_voice_second_minW">36dp</dimen>
+    <dimen name="v5_chat_list_voice_wh">20dp</dimen> <!-- 语音图标宽高 -->
+    <dimen name="v5_chat_list_avatar_wh">40dp</dimen><!-- avatar头相宽高 -->
+    <dimen name="v5_chat_list_avatar_radius">6dp</dimen><!-- avatar头像圆角 0~20 -->
+    <dimen name="v5_chat_list_bubble_avatar_margin">4dp</dimen><!-- 头像和消息气泡间距 -->
+    
+    <dimen name="v5_bubble_image_radius">6dp</dimen><!-- 图片气泡圆角 -->
+    <dimen name="v5_bubble_arrow_offset">-3dp</dimen>
+    <dimen name="v5_bubble_arrow_height">6dp</dimen>
+    <dimen name="v5_bubble_arrow_width">6dp</dimen>
+    <dimen name="v5_bubble_arrow_top">10dp</dimen>
+</resources>

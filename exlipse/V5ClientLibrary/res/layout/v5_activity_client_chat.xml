@@ -1,0 +1,126 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:context="com.v5kf.client.ui.ChatActivity" >
+    
+<com.v5kf.client.ui.keyboard.EmoticonsKeyBoardBar
+    android:id="@+id/chat_activity_keybar"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/ic_chat_list_keybar"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+        
+		<include
+			android:id="@+id/id_action_bar"
+	    	layout="@layout/v5_include_action_bar" />
+        		
+        <RelativeLayout
+	        android:id="@+id/id_center_frame"
+	        android:layout_weight="1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="0dp"
+	        android:background="@color/v5_list_chat_blank_bg" >
+	        
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/id_swipe_refresh"
+                android:layout_width="match_parent"
+		        android:layout_height="wrap_content" >
+	
+		        <ListView
+			        android:id="@+id/id_recycler_msgs"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:focusable="true"
+					android:focusableInTouchMode="true"
+			        android:divider="@null"
+			        android:dividerHeight="5dp"
+			        android:listSelector="#00000000"
+			        android:background="@color/v5_list_chat_blank_bg"/>
+	        
+            </android.support.v4.widget.SwipeRefreshLayout>
+            
+            <ProgressBar
+		        android:id="@+id/id_loading_progress_dialog"
+		        android:visibility="gone"
+		        android:layout_width="56dp"
+		        android:layout_height="56dp"
+		        android:layout_centerInParent="true"
+		        android:layout_marginBottom="8dp"
+		        android:indeterminateDuration="1000"
+		        style="@style/v5_custom_progress_bar_large" />
+            
+	    </RelativeLayout>
+    </LinearLayout>
+</com.v5kf.client.ui.keyboard.EmoticonsKeyBoardBar>
+
+<!-- 透明灰语音遮罩层 -->
+<RelativeLayout
+    android:id="@+id/id_mask_view"
+    android:visibility="gone"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#7F000000" >
+    
+    <RelativeLayout
+	    android:id="@+id/id_record_layout"
+	    android:visibility="visible"
+	    android:layout_width="212dp"
+	    android:layout_height="212dp"
+	    android:layout_centerInParent="true"
+	    android:background="@null"
+	    android:padding="40dp" >
+	    <!-- android:background="@drawable/chat_top_voice_bg" -->
+	
+	    <ImageView
+	        android:id="@+id/iv_record"
+	        android:layout_width="132dp"
+	        android:layout_height="132dp"
+	        android:layout_centerHorizontal="true"
+	        android:background="@drawable/v5_chat_record_circle" />
+	
+	    <TextView 
+	        android:id="@+id/tv_voice_second"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="24sp"
+	        android:textColor="#1ec3ff"
+	        android:minHeight="30dp"
+	        android:layout_centerHorizontal="true"
+	        android:layout_centerInParent="true"
+	        android:text="60.0" />
+	    
+	    <TextView 
+	        android:id="@+id/tv_voice_title"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="17sp"
+	        android:textColor="@color/v5_white"
+	        android:minHeight="20dp"
+	        android:layout_above="@id/tv_voice_second"
+	        android:layout_centerHorizontal="true"
+	        android:text="@string/v5_chat_voice_title" />
+	    
+	    <TextView
+	        android:id="@+id/tv_voice_tips"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="14sp"
+	        android:textColor="@color/v5_white"
+	        android:minHeight="20dp"
+	        android:layout_below="@id/tv_voice_second"
+	        android:layout_centerHorizontal="true"
+	        android:text="@string/v5_chat_voice_up_tips" />
+	</RelativeLayout>
+    
+</RelativeLayout>
+
+</FrameLayout>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_left_msg_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/v5_info_item_margin_h"
+    android:paddingRight="@dimen/v5_info_item_margin_h"
+    android:paddingTop="@dimen/v5_chat_list_vertical_padding"
+    android:paddingBottom="@dimen/v5_info_item_margin_h"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:id="@+id/id_news_msg_date"
+        android:visibility="visible"
+        style="@style/v5_list_item_top_date" />
+    
+    <LinearLayout
+        android:id="@+id/id_news_layout"
+        android:baselineAligned="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/v5_list_news_layout_bg"
+        android:padding="8dp"
+        android:orientation="vertical" >
+        
+        <TextView
+            android:id="@+id/id_news_title_text"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:layout_marginBottom="4dp"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+
+	    <RelativeLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	
+	        <ImageView
+	            android:id="@+id/id_news_img"
+	        	android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:scaleType="fitXY"
+				android:adjustViewBounds="true"
+	            android:src="@drawable/v5_img_src_loading" />
+	        
+	        <TextView
+	            android:id="@+id/id_news_title_inner_text"
+	            android:layout_alignBottom="@id/id_news_img"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_centerHorizontal="true"
+	            android:padding="4dp"
+	            android:background="@color/v5_transparent_black"
+	            android:textColor="@color/v5_white"
+	            android:textSize="14sp" />
+	        
+	    </RelativeLayout>
+	    
+	    <TextView
+            android:id="@+id/id_news_desc_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/v5_base_color_text_dark_gray"
+            android:textSize="12sp" />
+	    
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/v5_base_line_width_s"
+	        android:background="@color/v5_base_item_divider" >
+	    </View>
+	    
+	    <RelativeLayout
+	        android:id="@+id/layout_arch_workers"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="@dimen/v5_info_item_padding_inner"
+	        android:paddingLeft="@dimen/v5_info_item_padding_inner_v"
+	        android:paddingRight="@dimen/v5_info_item_padding_inner_v" >
+	
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentLeft="true"
+	            android:layout_alignParentStart="true"
+	            android:layout_centerVertical="true"
+	            android:textSize="13sp"
+	            android:text="@string/v5_item_see_more" />
+	
+	        <ImageView
+	            android:layout_width="wrap_content"
+	            android:layout_height="12dp"
+	            android:layout_alignParentRight="true"
+	            android:layout_alignParentEnd="true"
+	            android:layout_centerVertical="true"
+	            android:drawablePadding="@dimen/v5_info_item_padding_inner"
+	            android:src="@drawable/v5_register_bottom_arrow" />
+	    </RelativeLayout>
+    
+    </LinearLayout>
+    
+</LinearLayout>

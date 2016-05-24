@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/v5_key_bar_bg"
+                android:orientation="vertical">
+
+    <include
+        android:visibility="gone"
+        android:id="@+id/view_spit1"
+        layout="@layout/v5_ic_spitview_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/v5_horizontalspit_view_height"
+        android:layout_alignParentTop="true"/>
+
+    <com.v5kf.client.ui.keyboard.EmoticonsPageView
+        android:id="@+id/view_epv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/view_eiv"
+        android:layout_below="@+id/view_spit1"
+        android:orientation="vertical"/>
+
+    <com.v5kf.client.ui.keyboard.EmoticonsIndicatorView
+        android:id="@+id/view_eiv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/view_spit2"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/v5_indicator_margin">
+    </com.v5kf.client.ui.keyboard.EmoticonsIndicatorView>
+
+    <include
+        android:id="@+id/view_spit2"
+        layout="@layout/v5_ic_spitview_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/v5_horizontalspit_view_height"
+        android:layout_above="@+id/view_etv"/>
+
+    <com.v5kf.client.ui.keyboard.EmoticonsToolBarView
+        android:id="@+id/view_etv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/v5_bar_height"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"/>
+</RelativeLayout>

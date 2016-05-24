@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="false" >
+    
+	<include
+        android:id="@+id/common_actionbar"
+        layout="@layout/v5_include_action_bar" />
+
+    <com.tencent.tencentmap.mapsdk.map.MapView
+        android:id="@+id/mapviewOverlay"
+        android:layout_below="@id/common_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    
+    <LinearLayout
+        android:id="@+id/layout_location_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="26dp"
+        android:padding="6dp"
+        android:background="@drawable/v5_list_news_layout_bg"
+        android:orientation="vertical" >
+        
+        <TextView
+            android:id="@+id/id_location_desc_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="15sp"
+            android:maxLines="2"
+            android:textColor="@color/v5_black"
+            android:text="@string/v5_on_location_empty" />	    
+        
+    </LinearLayout>
+    
+    <ImageButton
+        android:id="@+id/id_my_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/layout_location_desc"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="8dp"
+        android:padding="6dp"
+        android:src="@drawable/v5_btn_get_location_selector"
+        android:background="@drawable/v5_transparent_shape"
+        android:onClick="onMyLocationClick" />
+
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+    
+    <ImageView
+        android:id="@+id/map_bmp_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+         />
+
+</RelativeLayout>

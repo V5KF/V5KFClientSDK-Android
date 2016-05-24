@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:id="@+id/id_candidate_desc"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#9fa0a0"
+        android:textSize="14sp"
+        android:paddingLeft="12dp"
+        android:text="@string/v5_hot_question" />
+    
+    <ListView
+        android:id="@+id/id_candidate_list"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:background="@color/v5_key_bar_bg"/>
+
+</LinearLayout>

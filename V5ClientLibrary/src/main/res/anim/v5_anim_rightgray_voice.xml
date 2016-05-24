@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" >
+  <item android:drawable="@drawable/v5_chat_animation_blank" android:duration="200"/>
+  <item android:drawable="@drawable/v5_chat_animation_right_gray1" android:duration="200"/> 
+  <item android:drawable="@drawable/v5_chat_animation_right_gray2" android:duration="200"/> 
+  <item android:drawable="@drawable/v5_chat_animation_right_gray3" android:duration="200"/> 
+
+</animation-list>
