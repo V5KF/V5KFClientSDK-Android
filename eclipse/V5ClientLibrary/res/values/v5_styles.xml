@@ -1,0 +1,82 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 对话时间 -->
+    <style name="v5_list_item_top_date">
+        <item name="android:textColor">@color/v5_list_item_date_text</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:background">@drawable/v5_chat_date_textview_bg</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+    
+    <!-- 标题栏 -->
+    <style name="v5_ActionBar">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@color/v5_base_action_bar_bg</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_height">@dimen/v5_base_action_bar_height</item>
+    </style>
+    
+    <!-- 标题栏标题 -->
+    <style name="v5_ActionBarTitle">
+        <item name="android:textSize">@dimen/v5_base_action_bar_title_size</item>
+        <item name="android:textColor">@color/v5_base_action_bar_text_color</item>
+        <item name="android:gravity">left|center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:drawablePadding">1.0dip</item>
+    </style>
+    
+    <!-- 对话框 -->
+    <style name="v5_custom_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+    </style>
+    
+    <!-- 机器人推荐 -->
+    <style name="v5_Robot_candidate_btn" >
+        <item name="android:layout_width">0dp</item>
+	    <item name="android:layout_height">30dip</item>
+	    <item name="android:layout_weight">2</item>
+	    <item name="android:padding">0dp</item>
+	    <item name="android:textSize">13sp</item>
+	    <item name="android:textColor">@color/v5_black</item>
+    </style>
+    
+    <style name="v5_custom_progress_bar_large">
+        <item name="android:indeterminateDrawable">@drawable/v5_custom_progress</item>
+	　　<item name="android:minWidth">76dip</item>
+	　　<item name="android:maxWidth">76dip</item>
+	　　<item name="android:minHeight">76dip</item>
+	　　<item name="android:maxHeight">76dip</item>
+    </style>
+    
+    <style name="v5_transparent_activity" parent="android:Theme.Light">
+        <item name="android:windowNoTitle">true</item>
+	    <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/v5_transparent_9</item>
+        <item name="android:windowAnimationStyle">@+android:style/Animation.Translucent</item>
+	</style>
+
+    
+    <!-- loading dialog -->  
+    <style name="v5_loading_dialog" parent="android:style/Theme.Dialog">  
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/v5_white_shape</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+</resources>

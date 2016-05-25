@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="v5_white">#ffffff</color>
+    <color name="v5_black">#000000</color>
+    <color name="v5_green">#00bb00</color>
+    <color name="v5_blue">#0000bb</color>
+    <color name="v5_red">#bb0000</color>
+    <color name="v5_orange">#ffe4c4</color>
+    <color name="v5_yellow">#EEEE00</color>
+	<color name="v5_dark_gray">#7F8891</color>
+    <color name="v5_transparent">#00000000</color>
+    <color name="v5_transparent_black">#a0000000</color><!-- 半透黑 -->
+    <color name="v5_transparent_gray">#a0cdcdcd</color><!-- 半透白 -->
+    <color name="v5_transparent_9">#78000000</color><!-- 半透灰 -->
+    
+    <color name="v5_dialog_option_item_boder">#E0E1E2</color>
+    <color name="v5_base_item_select">#dadada</color><!-- #d9d9d9 -->
+    <color name="v5_base_item_divider">#dadada</color><!-- #d9d9d9 -->    
+    <color name="v5_base_color_text_dark_gray">#787878</color>
+    <color name="v5_list_item_date_bg">#00000000</color><!-- 会话时间背景色 -->
+    <color name="v5_list_item_tips_bg">#ededed</color><!-- tips信息背景色 -->
+    
+    <color name="v5_list_to_textview_color">#383838</color><!-- 客户文本消息颜色 -->
+    <color name="v5_list_item_date_text">#4B4B4B</color><!-- 消息时间文本颜色 -->
+    
+    <color name="v5_base_action_bar_bg">#F9F9F9</color><!-- 标题栏背景颜色 -->
+    <color name="v5_base_action_bar_dark_bg">#D0D0D0</color><!-- 标题栏背景颜色 -->
+    <color name="v5_base_action_bar_border_bg">#B2B2B2</color><!-- 标题栏下边距颜色 -->
+    <color name="v5_base_action_bar_text_color">#209de9</color><!-- 标题栏字体颜色 -->
+    
+    <color name="v5_list_chat_blank_bg">#C6DADA</color><!-- 对话列表背景颜色 -->
+    <color name="v5_btn_send_textcolor">@color/v5_white</color><!-- 发送按钮字体颜色 -->
+    
+    <!-- 消息发送按钮 -->
+    <color name="v5_btn_chat_send_normal">#27a4f2</color>
+    <color name="v5_btn_chat_send_pressed">#209de9</color>
+
+    <!-- 对话框 -->
+    <color name="v5_dialog_content_bg">#F8F8F8</color>
+    <color name="v5_warning_text_color">#000000</color>
+    <color name="v5_dialog_divider_v">#E0E1E2</color>
+    <color name="v5_dialog_divider_h">#E0E1E2</color>
+    <color name="v5_dialog_btn_bg">#FFFFFF</color>
+    <color name="v5_dialog_btn_bg_normal">#000000</color> 
+    <color name="v5_dialog_left_btn_bg_normal">#000000</color>
+    <color name="v5_dialog_left_btn_bg_pressed">#7F8891</color>
+    <color name="v5_dialog_mid_btn_bg_normal">#000000</color>
+    <color name="v5_dialog_mid_btn_bg_pressed">#333333</color> 
+    <color name="v5_dialog_right_btn_bg_pressed">#7F8891</color>
+    <color name="v5_dialog_warning_btn_bg_pressed">#f0f0f0</color>
+    <color name="v5_dialog_text_color">#000000</color>
+    <color name="v5_dialog_warning_btn_boder">#E0E1E2</color>
+    <color name="v5_dialog_option_item_bg_pressed">#cacaca</color>
+    
+    <!-- 常见问答、机器人推荐 -->
+    <color name="v5_bottom_candidate_bg_normal">#6FBFF0</color>
+    <color name="v5_bottom_candidate_bg_pressed">#8FBC8F</color>
+    <color name="v5_robot_add_bg_normal">#FFFFFF</color>
+    <color name="v5_robot_add_bg_pressed">#D5D5D6</color>
+    <color name="v5_robot_send_bg_normal">#FFFFFF</color>
+    <color name="v5_robot_send_bg_pressed">#D5D5D6</color>
+    
+    <!-- 内容为空提示字体颜色 -->    
+    <color name="v5_content_empty_tips_text_color">#bfbfbf</color>
+    <color name="v5_content_empty_tips_bg_color">#efefef</color>
+    
+    
+    <!-- emojicon keyboard -->
+    <color name="v5_key_bar_bg">#EBECEE</color>
+    <color name="v5_horizontal_divider">#8f8f8f</color>
+	<color name="v5_horizontal_vertical">#8f8f8f</color>
+  
+    <color name="v5_spilt_line">#CFCFCF</color>
+    <color name="v5_btn_select">#888888</color>
+    <color name="v5_common_bg">@color/v5_white</color>
+    
+    <color name="v5_ques_bg_select">#DADADA</color>
+    <color name="v5_ques_bg_normal">#EBECEE</color>
+
+    <color name="v5_toolbar_spilt_line">#CDCDCD</color>
+    <color name="v5_toolbar_btn_select">#D9D9D9</color>
+    <color name="v5_toolbar_btn_nomal">@color/v5_key_bar_bg</color><!-- white -->
+    
+</resources>

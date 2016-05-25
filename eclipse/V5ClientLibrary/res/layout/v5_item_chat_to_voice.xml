@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:v5kf="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_right_map_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/v5_chat_list_horizontal_padding"
+    android:paddingRight="@dimen/v5_chat_list_horizontal_padding"
+    android:paddingTop="@dimen/v5_chat_list_vertical_padding"
+	android:paddingBottom="@dimen/v5_chat_list_vertical_padding"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:id="@+id/id_to_msg_date"
+        android:visibility="gone"
+        style="@style/v5_list_item_top_date" />
+    
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end" >
+        
+        <com.v5kf.client.ui.widget.RoundImageView
+            android:id="@+id/id_to_msg_avatar"
+            android:layout_width="@dimen/v5_chat_list_avatar_wh"
+            android:layout_height="@dimen/v5_chat_list_avatar_wh"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            v5kf:borderRadius="@dimen/v5_chat_list_avatar_radius"
+            v5kf:type="round"
+            android:src="@drawable/v5_avatar_customer" />
+
+		<RelativeLayout
+			android:id="@+id/id_right_voice_layout"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:minHeight="@dimen/v5_chat_list_voice_layout_minH"
+			android:layout_toLeftOf="@+id/id_to_msg_avatar"
+			android:layout_toStartOf="@+id/id_to_msg_avatar"
+			android:layout_marginRight="@dimen/v5_chat_list_bubble_avatar_margin"
+			android:layout_marginEnd="@dimen/v5_chat_list_bubble_avatar_margin"
+		    android:layout_marginLeft="50dp"
+            android:layout_marginStart="50dp"
+		    android:paddingTop="4dp"
+		    android:paddingBottom="4dp"
+		    android:paddingLeft="8dp"
+		    android:paddingStart="8dp"
+		    android:paddingRight="12dp"
+		    android:paddingEnd="12dp"
+		    android:background="@drawable/v5_list_to_textview_bg"
+			android:orientation="vertical" >
+			
+		    <ImageView
+		        android:id="@+id/id_to_voice_iv"
+		    	android:layout_width="@dimen/v5_chat_list_voice_wh"
+		        android:layout_height="@dimen/v5_chat_list_voice_wh"
+		        android:layout_centerVertical="true"
+		        android:layout_marginRight="8dp"
+		        android:layout_marginEnd="8dp"
+		        android:adjustViewBounds="true"
+		        android:scaleType="centerInside"
+		        android:background="@drawable/v5_chat_animation_right_gray3" />
+	        
+	        <TextView 
+	            android:id="@+id/id_to_voice_tv"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:minWidth="@dimen/v5_chat_list_voice_second_minW"
+	            android:gravity="center"
+	            android:layout_toRightOf="@id/id_to_voice_iv"
+		        android:layout_toEndOf="@id/id_to_voice_iv"
+	            android:layout_centerVertical="true"
+	            android:textSize="@dimen/v5_chat_list_voice_text_size"
+	            android:textColor="@color/v5_dark_gray"
+	            android:text="0.0s" />
+					    
+		</RelativeLayout>
+		
+		<FrameLayout
+            android:id="@+id/id_msg_send_progress"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="-50dp"
+            android:layout_marginEnd="-50dp"
+            android:layout_centerVertical="true"
+            android:padding="4dp"
+            android:layout_toStartOf="@id/id_right_voice_layout"
+			android:layout_toLeftOf="@id/id_right_voice_layout" >
+            
+            <ProgressBar
+			    android:id="@+id/id_msg_out_pb"
+			    android:layout_gravity="center_vertical|right"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    style="?android:attr/progressBarStyleSmallInverse"
+			    android:visibility="gone" />
+            
+            <ImageView
+                android:id="@+id/id_msg_fail_iv"
+                android:layout_gravity="center_vertical|end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/v5_btn_redo_refresh_selector"
+                android:visibility="gone" />
+            
+        </FrameLayout>
+		
+	</RelativeLayout>
+        
+</LinearLayout>

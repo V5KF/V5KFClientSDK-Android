@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/v5_ActionBar"
+    android:baselineAligned="false"
+    android:focusable="true" >
+
+    <LinearLayout
+        android:id="@+id/header_layout_leftview_container"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:gravity="center_vertical|start"
+        android:orientation="horizontal" >
+        
+        <ImageButton
+	        android:id="@+id/header_ib_imagebutton"
+	        android:layout_gravity="center"
+	        android:layout_width="30dp"
+	        android:layout_height="30dp"
+	        android:src="@drawable/v5_action_bar_back"
+	        android:background="@color/v5_transparent"
+	        android:clickable="false"
+	        android:focusable="false"
+	        android:scaleType="centerInside" />
+        
+    </LinearLayout>    
+    
+    <LinearLayout
+        android:id="@+id/header_layout_rightview_container"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="center_vertical|end"
+        android:orientation="horizontal" >
+                
+        <Button
+            android:id="@+id/header_right_btn"
+            android:visibility="visible"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@color/v5_transparent"
+            android:layout_gravity="center_vertical"
+            android:scaleType="fitXY"
+            android:textColor="@color/v5_base_action_bar_text_color"
+            android:src="@null" />
+        
+        <Button
+            android:id="@+id/btn_send"
+            android:visibility="gone"
+            android:layout_width="46dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/v5_btn_chat_send_bg"
+            android:text="@string/v5_btn_text_send"
+            android:textColor="@color/v5_btn_send_textcolor"
+            android:textSize="@dimen/v5_chat_send_btn_text_size" />
+        
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/header_layout_middleview_container"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/header_htv_subtitle"
+            android:visibility="visible"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_gravity="center"
+            style="@style/v5_ActionBarTitle" />
+        
+    </FrameLayout>
+	
+    <!-- 下边界线 -->
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/v5_base_action_bar_border_bg" />
+</RelativeLayout>

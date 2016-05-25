@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="v5_chat_func">
+        <item>常见问题</item>
+        <item>相关问题</item>
+		<item>图片</item>
+        <item>拍照</item>
+        <item>人工客服</item>
+        <item>位置</item><!-- 不使用位置发送则删除此行 -->
+    </string-array>
+
+    <!-- 可以删除item，减少功能，但不可修改数组item的值 -->
+    <string-array name="v5_chat_func_icon">
+        <item>v5_icon_ques</item>
+        <item>v5_icon_relative_ques</item>
+        <item>v5_icon_photo</item>
+        <item>v5_icon_camera</item>
+        <item>v5_icon_worker</item>
+        <item>v5_icon_location</item><!-- 不使用位置发送则删除此行 -->
+    </string-array>
+</resources>

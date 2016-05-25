@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_left_msg_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/v5_info_item_margin_h"
+    android:paddingRight="@dimen/v5_info_item_margin_h"
+    android:paddingTop="@dimen/v5_chat_list_vertical_padding"
+    android:paddingBottom="@dimen/v5_info_item_margin_h"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:id="@+id/id_news_msg_date"
+        android:visibility="visible"
+        style="@style/v5_list_item_top_date" />
+    
+    <com.v5kf.client.ui.widget.ListLinearLayout
+        android:id="@+id/id_news_layout"
+        android:baselineAligned="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:background="@drawable/v5_list_news_layout_bg"
+        android:orientation="vertical" >
+    
+    </com.v5kf.client.ui.widget.ListLinearLayout>
+    
+</LinearLayout>
