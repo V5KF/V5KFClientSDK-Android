@@ -11,7 +11,9 @@
 
         <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
             android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary" app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:background="?attr/colorPrimary" app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextColor="@color/v5_base_action_bar_text_color"
+            app:itemIconTint="@color/v5_base_action_bar_text_color" />
 
     </android.support.design.widget.AppBarLayout>
 
