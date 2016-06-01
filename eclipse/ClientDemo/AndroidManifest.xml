@@ -83,7 +83,6 @@
             android:label="@string/v5_chat_title"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" >
             
             <!-- intent-filter配置接收消息点击后跳转的Activity -->

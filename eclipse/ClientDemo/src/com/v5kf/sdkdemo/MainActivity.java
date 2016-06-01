@@ -1,5 +1,7 @@
 package com.v5kf.sdkdemo;
 
+import java.util.ArrayList;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,12 +20,16 @@ import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 import com.v5kf.client.lib.Logger;
 import com.v5kf.client.lib.V5ClientAgent;
-import com.v5kf.client.lib.V5ClientConfig;
+import com.v5kf.client.lib.V5ClientAgent.ClientLinkType;
 import com.v5kf.client.lib.V5ClientAgent.ClientOpenMode;
 import com.v5kf.client.lib.V5ClientAgent.ClientServingStatus;
+import com.v5kf.client.lib.V5ClientConfig;
+import com.v5kf.client.lib.entity.V5ArticleBean;
+import com.v5kf.client.lib.entity.V5ArticlesMessage;
 import com.v5kf.client.lib.entity.V5Message;
 import com.v5kf.client.ui.ClientChatActivity;
 import com.v5kf.client.ui.callback.OnChatActivityListener;
+import com.v5kf.client.ui.callback.OnURLClickListener;
 import com.v5kf.client.ui.callback.UserWillSendMessageListener;
 
 public class MainActivity extends AppCompatActivity implements OnChatActivityListener {
@@ -114,11 +120,12 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
 		        config.setShowLog(true); // 显示日志，默认为true
 		        config.setLogLevel(V5ClientConfig.LOG_LV_DEBUG); // 显示日志级别，默认为全部显示
 		        
+		        // 取设备token作为uid
 		        String uid = XGPushConfig.getToken(getApplicationContext());
 		        config.setNickname("android_sdk_test"); // 设置用户昵称
 		        config.setGender(1); // 设置用户性别: 0-未知  1-男  2-女
 		        // 设置用户头像URL
-				config.setAvatar("http://xiaowan-10021924.file.myqcloud.com/xwan/head/2016042023254135883.png"); 
+				config.setAvatar("http://debugimg-10013434.image.myqcloud.com/fe1382d100019cfb572b1934af3d2c04/thumbnail"); 
 		        config.setUid(uid); // 【必须】设置用户ID，以识别不同登录用户
 		        // 设置device_token：集成第三方推送(腾讯信鸽、百度云推)时设置此参数以在离开会话界面时接收推送消息
 		        config.setDeviceToken(XGPushConfig.getToken(getApplicationContext())); // 【建议】设置deviceToken
@@ -167,6 +174,29 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
 						return message; // 注：必须将消息对象以返回值返回
 					}
 				});
+			    
+			    /**
+			     * 击链接监听
+			     * onURLClick返回值：是否消费了此点击事件，返回true则SDK内不再处理此事件，否则默认跳转到指定网页
+			     */
+			    V5ClientAgent.getInstance().setURLClickListener(new OnURLClickListener() {
+
+					@Override
+					public boolean onURLClick(Context context,
+							ClientLinkType type, String url) {
+						// TODO Auto-generated method stub
+						switch (type) {
+						case clientLinkTypeArticle: // 点击图文
+							
+							break;
+						case clientLinkTypeURL: // 点击URL链接
+							
+							break;
+						}
+						Logger.i(TAG, "onURLClick:" + url);
+						return true; // 是否消费了此点击事件
+					}
+				});
 			}
 		});
 	}
@@ -206,6 +236,23 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
 	public void onChatActivityConnect(ClientChatActivity activity) {
 		// TODO Auto-generated method stub
 		Logger.d(TAG, "<onChatActivityConnect>");
+		/*
+		 * 连接建立后才可以调用消息接口发送消息，以下是发送消息示例
+		 */
+		// 找指定客服
+		//V5ClientAgent.getInstance().transferHumanService(1, 114052);
+					
+		// 发送图文消息
+//		V5ArticlesMessage articleMsg = new V5ArticlesMessage();
+//		V5ArticleBean article = new V5ArticleBean(
+//				"V5KF", 
+//				"http://rs.v5kf.com/upload/10000/14568171024.png", 
+//				"http://www.v5kf.com/public/weixin/page.html?site_id=10000&id=218833&uid=3657455033351629359", 
+//				"V5KF是围绕核心技术“V5智能机器人”研发的高品质在线客服系统。可以运用到各种领域，目前的主要产品有：微信智能云平台、网页智能客服系统...");
+//		ArrayList<V5ArticleBean> articlesList = new ArrayList<V5ArticleBean>();
+//		articlesList.add(article);
+//		articleMsg.setArticles(articlesList);
+//		V5ClientAgent.getInstance().sendMessage(articleMsg, null);
 	}
 
 	@Override
