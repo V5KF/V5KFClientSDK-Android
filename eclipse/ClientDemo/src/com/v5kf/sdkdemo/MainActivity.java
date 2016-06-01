@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
 		        config.setGender(1); // 设置用户性别: 0-未知  1-男  2-女
 		        // 设置用户头像URL
 				config.setAvatar("http://debugimg-10013434.image.myqcloud.com/fe1382d100019cfb572b1934af3d2c04/thumbnail"); 
-		        config.setUid(uid); // 【必须】设置用户ID，以识别不同登录用户
+		        config.setUid(uid); // 【必须】设置用户ID，以识别不同登录用户，不设置则默认由SDK生成
 		        // 设置device_token：集成第三方推送(腾讯信鸽、百度云推)时设置此参数以在离开会话界面时接收推送消息
 		        config.setDeviceToken(XGPushConfig.getToken(getApplicationContext())); // 【建议】设置deviceToken
 				
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
 				});
 			    
 			    /**
-			     * 击链接监听
+			     * 点击链接监听
 			     * onURLClick返回值：是否消费了此点击事件，返回true则SDK内不再处理此事件，否则默认跳转到指定网页
 			     */
 			    V5ClientAgent.getInstance().setURLClickListener(new OnURLClickListener() {
