@@ -1,5 +1,6 @@
-package com.v5kf.sdkdemo;
+package com.v5kf.sdk;
 
+//import com.squareup.leakcanary.LeakCanary;
 import com.v5kf.client.lib.Logger;
 import com.v5kf.client.lib.V5ClientAgent;
 import com.v5kf.client.lib.callback.V5InitCallback;
@@ -12,6 +13,8 @@ public class MyApplication extends Application {
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
+
+//		LeakCanary.install(this);
 		
 		// 初始化V5 SDK
 		V5ClientAgent.init(this, new V5InitCallback() {
