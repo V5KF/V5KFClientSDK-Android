@@ -1,7 +1,5 @@
 package com.v5kf.sdkdemo;
 
-import java.util.ArrayList;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,8 +22,6 @@ import com.v5kf.client.lib.V5ClientAgent.ClientLinkType;
 import com.v5kf.client.lib.V5ClientAgent.ClientOpenMode;
 import com.v5kf.client.lib.V5ClientAgent.ClientServingStatus;
 import com.v5kf.client.lib.V5ClientConfig;
-import com.v5kf.client.lib.entity.V5ArticleBean;
-import com.v5kf.client.lib.entity.V5ArticlesMessage;
 import com.v5kf.client.lib.entity.V5Message;
 import com.v5kf.client.ui.ClientChatActivity;
 import com.v5kf.client.ui.callback.OnChatActivityListener;
@@ -139,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
 			    bundle.putBoolean("showAvatar", true);			// 是否显示对话双方的头像
 			    // 开场白模式，默认为固定开场白，可根据客服启动场景设置开场问题
 			    bundle.putInt("clientOpenMode", ClientOpenMode.clientOpenModeDefault.ordinal());
-			    bundle.putString("clientOpenParam", "您好，请问有什么需要帮助的吗？");
+			    //bundle.putString("clientOpenParam", "您好，请问有什么需要帮助的吗？");
 			    
 			    //Context context = getApplicationContext();
 			    //Intent chatIntent = new Intent(context, ClientChatActivity.class);

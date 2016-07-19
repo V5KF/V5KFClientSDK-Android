@@ -37,3 +37,9 @@
 # V5ClienSDK Necessary
 -keepattributes InnerClasses -keep class **.R$* { <fields>; }
 
+-dontwarn org.apache.http.**
+-keep class org.apache.http.** { *;}
+-dontwarn android.net.http.**
+-keep class android.net.http.** { *;}
+-dontwarn com.tencent.android.tpush.**
+-keep class com.tencent.android.tpush.** { *;}
