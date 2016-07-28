@@ -2,7 +2,6 @@ package com.v5kf.sdk;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -53,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
         // V5客服系统客户端配置
         V5ClientConfig config = V5ClientConfig.getInstance(MainActivity.this);
         V5ClientConfig.USE_HTTPS = true; // 使用加密连接，默认true
+        V5ClientConfig.SOCKET_TIMEOUT = 20000; // 请求超时时间
+        config.setHeartBeatEnable(true); // 是否允许发送心跳包保活
+        config.setHeartBeatTime(30000); // 心跳包间隔时间ms
         config.setShowLog(true); // 显示日志，默认为true
         config.setLogLevel(V5ClientConfig.LOG_LV_DEBUG); // 显示日志级别，默认为全部显示
 
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
         config.setGender(1); // 设置用户性别: 0-未知  1-男  2-女
         // 设置用户头像URL
         config.setAvatar("http://debugimg-10013434.image.myqcloud.com/fe1382d100019cfb572b1934af3d2c04/thumbnail");
+        config.setVip(0); // 设置用户VIP等级（0-5）
         //config.setUid(uid); // 【必须】设置用户ID，以识别不同登录用户，不设置则默认由SDK生成
         // 设置device_token：集成第三方推送(腾讯信鸽、百度云推)时设置此参数以在离开会话界面时接收推送消息
         //config.setDeviceToken(XGPushConfig.getToken(getApplicationContext())); // 【建议】设置deviceToken
@@ -73,9 +76,15 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
         bundle.putInt("numOfMessagesOnOpen", 10);		// 开场显示历史消息数量，默认为0
         bundle.putBoolean("enableVoice", true);			// 是否允许发送语音
         bundle.putBoolean("showAvatar", true);			// 是否显示对话双方的头像
-        // 开场白模式，默认为固定开场白，可根据客服启动场景设置开场问题
+        /*
+         * 设置开场白模式，默认为clientOpenModeDefault，可根据客服启动场景设置开场问题
+         * clientOpenModeDefault	// 默认开场白方式（无历史消息显示则显示开场白，优先以设置的param字符串为开场白，param为null则使用后台配置的开场白）
+         * clientOpenModeQuestion	// 自定义问题开场白，param字符串为问题内容（不为空），设置开场问题获得对应开场白（此模式不可与优先人工客服同用，否则将失效）
+         * clientOpenModeNone		// 无开场白方式，仅显示历史消息
+         * clientOpenModeAutoHuman  // 开场自动转人工客服
+         */
         bundle.putInt("clientOpenMode", ClientOpenMode.clientOpenModeDefault.ordinal());
-        bundle.putString("clientOpenParam", "您好，请问有什么需要帮助的吗？");
+        //bundle.putString("clientOpenParam", "您好，请问有什么需要帮助的吗？");
 
         //Context context = getApplicationContext();
         //Intent chatIntent = new Intent(context, ClientChatActivity.class);
@@ -85,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
         // 进入会话界面(可使用上面的方式或者调用下面方法)，携带bundle(不加bundle参数则全部使用默认配置)
         V5ClientAgent.getInstance().startV5ChatActivityWithBundle(getApplicationContext(), bundle);
 
-				/* 添加聊天界面监听器(非必须，有相应需求则添加) */
+        /* 添加聊天界面监听器(非必须，有相应需求则添加) */
         // 界面生命周期监听[非必须]
         V5ClientAgent.getInstance().setChatActivityListener(MainActivity.this);
         // 消息发送监听[非必须]，可在此处向坐席透传来自APP客户的相关信息
@@ -129,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
 					break;
 				}
 				Logger.i(TAG, "onURLClick:" + url);
-				return true; // 是否消费了此点击事件
+				return false; // 是否消费了此点击事件
 			}
 		});
     }
@@ -188,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
 		/*
 		 * 连接建立后才可以调用消息接口发送消息，以下是发送消息示例
 		 */
-		// 找指定客服
+        // 找指定客服，参数: 客服组id,客服id
 		//V5ClientAgent.getInstance().transferHumanService(1, 114052);
 					
 		// 发送图文消息

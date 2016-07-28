@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 可以删除item，减少功能，但不可修改数组item的值 -->
+    <!-- 不需要的功能可删除对应行(两个array的对应item均删除) -->
     <string-array name="v5_chat_func">
         <item>常见问题</item>
         <item>相关问题</item>
@@ -9,7 +11,6 @@
         <item>位置</item><!-- 不使用位置发送则删除此行 -->
     </string-array>
 
-    <!-- 可以删除item，减少功能，但不可修改数组item的值 -->
     <string-array name="v5_chat_func_icon">
         <item>v5_icon_ques</item>
         <item>v5_icon_relative_ques</item>

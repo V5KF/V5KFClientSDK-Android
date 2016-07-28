@@ -36,21 +36,28 @@
     <color name="v5_btn_chat_send_pressed">#209de9</color>
 
     <!-- 对话框 -->
-    <color name="v5_dialog_content_bg">#F8F8F8</color>
+    <color name="v5_alertdialog_line">#c6c6c6</color>
+    <color name="v5_alertdialog_text">#037BFF</color>
+    <color name="v5_dialog_alert_empty_bg">#def2f2f2</color>
+    <color name="v5_dialog_alert_btn_bg_pressed">#a0f0f0f0</color>
+    
+    <color name="v5_dialog_content_bg">#def2f2f2</color><!-- F8F8F8 -->
+    <color name="v5_dialog_right_btn_bg_pressed">#037BFF</color>
     <color name="v5_warning_text_color">#000000</color>
-    <color name="v5_dialog_divider_v">#E0E1E2</color>
-    <color name="v5_dialog_divider_h">#E0E1E2</color>
-    <color name="v5_dialog_btn_bg">#FFFFFF</color>
-    <color name="v5_dialog_btn_bg_normal">#000000</color> 
-    <color name="v5_dialog_left_btn_bg_normal">#000000</color>
-    <color name="v5_dialog_left_btn_bg_pressed">#7F8891</color>
-    <color name="v5_dialog_mid_btn_bg_normal">#000000</color>
-    <color name="v5_dialog_mid_btn_bg_pressed">#333333</color> 
-    <color name="v5_dialog_right_btn_bg_pressed">#7F8891</color>
-    <color name="v5_dialog_warning_btn_bg_pressed">#f0f0f0</color>
+    
+    <!-- 
+    <color name="v5_dialog_divider_v">#c6c6c6</color>
+    <color name="v5_dialog_divider_h">#c6c6c6</color>
+    <color name="v5_dialog_btn_bg">#00000000</color>
+    <color name="v5_dialog_btn_bg_normal">#037BFF</color> 
+    <color name="v5_dialog_left_btn_bg_normal">#037BFF</color>
+    <color name="v5_dialog_left_btn_bg_pressed">#037BFF</color>
+    <color name="v5_dialog_mid_btn_bg_normal">#037BFF</color>
+    <color name="v5_dialog_mid_btn_bg_pressed">#037BFF</color> 
+    <color name="v5_dialog_warning_btn_bg_pressed">#a0f0f0f0</color>
     <color name="v5_dialog_text_color">#000000</color>
-    <color name="v5_dialog_warning_btn_boder">#E0E1E2</color>
-    <color name="v5_dialog_option_item_bg_pressed">#cacaca</color>
+    <color name="v5_dialog_warning_btn_boder">#c6c6c6</color>
+    <color name="v5_dialog_option_item_bg_pressed">#a0f0f0f0</color> -->
     
     <!-- 常见问答、机器人推荐 -->
     <color name="v5_bottom_candidate_bg_normal">#6FBFF0</color>
@@ -63,7 +70,6 @@
     <!-- 内容为空提示字体颜色 -->    
     <color name="v5_content_empty_tips_text_color">#bfbfbf</color>
     <color name="v5_content_empty_tips_bg_color">#efefef</color>
-    
     
     <!-- emojicon keyboard -->
     <color name="v5_key_bar_bg">#EBECEE</color>

@@ -15,6 +15,7 @@
 
     <com.v5kf.client.ui.keyboard.EmoticonsPageView
         android:id="@+id/view_epv"
+        android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/view_eiv"

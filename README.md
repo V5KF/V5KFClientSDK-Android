@@ -10,6 +10,10 @@ V5KF客服SDK for Android
 
 > 项目文件夹右键 Properties -> Android -> Library -> Add -> 选择V5ClientLibrary
 
+* 编译环境：
+
+> Android SDK需使用API 19以上版本
+
 ## 导入Android Studio
 * 将V5ClientLibrary/目录作为`Module`导入：
 

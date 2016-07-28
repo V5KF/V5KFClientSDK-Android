@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
+    android:background="@color/v5_list_chat_blank_bg"
     tools:context="com.v5kf.client.ui.ChatActivity" >
     
 <com.v5kf.client.ui.keyboard.EmoticonsKeyBoardBar
@@ -17,6 +18,7 @@
         android:id="@+id/ic_chat_list_keybar"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:background="@color/v5_list_chat_blank_bg"
         android:orientation="vertical">
         
 		<include
@@ -33,30 +35,21 @@
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/id_swipe_refresh"
                 android:layout_width="match_parent"
-		        android:layout_height="wrap_content" >
+		        android:layout_height="match_parent" >
 	
 		        <ListView
 			        android:id="@+id/id_recycler_msgs"
 			        android:layout_width="match_parent"
-			        android:layout_height="wrap_content"
+			        android:layout_height="match_parent"
 			        android:focusable="true"
 					android:focusableInTouchMode="true"
 			        android:divider="@null"
 			        android:dividerHeight="5dp"
 			        android:listSelector="#00000000"
+					android:cacheColorHint="#00000000"
 			        android:background="@color/v5_list_chat_blank_bg"/>
 	        
             </android.support.v4.widget.SwipeRefreshLayout>
-            
-            <ProgressBar
-		        android:id="@+id/id_loading_progress_dialog"
-		        android:visibility="gone"
-		        android:layout_width="56dp"
-		        android:layout_height="56dp"
-		        android:layout_centerInParent="true"
-		        android:layout_marginBottom="8dp"
-		        android:indeterminateDuration="1000"
-		        style="@style/v5_custom_progress_bar_large" />
             
 	    </RelativeLayout>
     </LinearLayout>

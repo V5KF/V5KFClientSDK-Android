@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="org.apache.http-simple4.4.2">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/V5ClientLibrary/libs/org.apache.http-simple4.4.2.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

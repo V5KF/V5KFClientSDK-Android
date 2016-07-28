@@ -8,8 +8,8 @@ android {
         applicationId "com.v5kf.sdk"
         minSdkVersion 9
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 16
+        versionName "1.1.6"
     }
     buildTypes {
         release {

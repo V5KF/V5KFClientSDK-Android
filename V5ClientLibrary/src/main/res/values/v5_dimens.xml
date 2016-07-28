@@ -40,7 +40,7 @@
     <dimen name="v5_content_empty_tips_text_size">15.0sp</dimen>
     
     <!-- emojicon keyboard -->    
-    <dimen name="v5_indicator_margin">10dp</dimen>
+    <dimen name="v5_indicator_margin">6dp</dimen>
     <dimen name="v5_bar_height">35dp</dimen>
     <dimen name="v5_verticalspit_view_width">0.6dp</dimen>
     <dimen name="v5_horizontalspit_view_height">0.6dp</dimen>

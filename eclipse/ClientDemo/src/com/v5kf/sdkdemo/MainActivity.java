@@ -3,12 +3,13 @@ package com.v5kf.sdkdemo;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +29,7 @@ import com.v5kf.client.ui.callback.OnChatActivityListener;
 import com.v5kf.client.ui.callback.OnURLClickListener;
 import com.v5kf.client.ui.callback.UserWillSendMessageListener;
 
-public class MainActivity extends AppCompatActivity implements OnChatActivityListener {
+public class MainActivity extends Activity implements OnChatActivityListener {
 
 	private static final String TAG = "MainActivity";
 	private Button mChatBtn;
@@ -37,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getSupportActionBar().hide();
+//		getSupportActionBar().hide();
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_test);
 		initView();
 		
@@ -113,6 +115,9 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
 				// V5客服系统客户端配置
 		        V5ClientConfig config = V5ClientConfig.getInstance(MainActivity.this);
 		        V5ClientConfig.USE_HTTPS = true; // 使用加密连接，默认true
+		        V5ClientConfig.SOCKET_TIMEOUT = 20000; // 请求超时时间
+		        config.setHeartBeatEnable(true); // 是否允许发送心跳包保活
+		        config.setHeartBeatTime(30000); // 心跳包间隔时间ms
 		        config.setShowLog(true); // 显示日志，默认为true
 		        config.setLogLevel(V5ClientConfig.LOG_LV_DEBUG); // 显示日志级别，默认为全部显示
 		        
@@ -123,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
 		        // 设置用户头像URL
 				config.setAvatar("http://debugimg-10013434.image.myqcloud.com/fe1382d100019cfb572b1934af3d2c04/thumbnail"); 
 		        config.setUid(uid); // 【必须】设置用户ID，以识别不同登录用户，不设置则默认由SDK生成
+		        config.setVip(0); // 设置用户VIP等级（0-5）
 		        // 设置device_token：集成第三方推送(腾讯信鸽、百度云推)时设置此参数以在离开会话界面时接收推送消息
 		        config.setDeviceToken(XGPushConfig.getToken(getApplicationContext())); // 【建议】设置deviceToken
 				
@@ -190,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
 							break;
 						}
 						Logger.i(TAG, "onURLClick:" + url);
-						return true; // 是否消费了此点击事件
+						return false; // 是否消费了此点击事件
 					}
 				});
 			}
@@ -235,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
 		/*
 		 * 连接建立后才可以调用消息接口发送消息，以下是发送消息示例
 		 */
-		// 找指定客服
+		// 找指定客服，参数: 客服组id,客服id
 		//V5ClientAgent.getInstance().transferHumanService(1, 114052);
 					
 		// 发送图文消息

@@ -36,6 +36,7 @@
 	
 	<com.v5kf.client.ui.keyboard.EmoticonsIndicatorView
         android:id="@+id/view_eiv"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/view_spit"

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 使用CoreLib开发需要下列字符串资源 -->
+    <string name="v5_def_title">智能客服</string>
+	<string name="v5_def_content_image">【图片】</string>
+	<string name="v5_def_content_location">【位置】</string>
+	<string name="v5_def_content_link">【链接】</string>
+	<string name="v5_def_content_event">【事件】</string>
+	<string name="v5_def_content_voice">【语音】</string>
+	<string name="v5_def_content_vedio">【视频】</string>
+	<string name="v5_def_content_short_vedio">【短视频】</string>
+	<string name="v5_def_content_articles">【图文】</string>
+	<string name="v5_def_content_music">【音乐】</string>
+	<string name="v5_def_content_note">【留言】</string>
+	<string name="v5_def_content_comment">【评价】</string>
+	<string name="v5_def_content_control">【控制消息】</string>
+	<string name="v5_def_content_switch_worker">【转人工客服】</string>
+	<string name="v5_def_content_unsupport">【不支持的消息类型】</string>
+    
+</resources>

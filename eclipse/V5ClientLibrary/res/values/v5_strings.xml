@@ -21,6 +21,7 @@
     <string name="v5_btn_cancel">取消</string>
     <string name="v5_btn_confirm">确定</string>
     <string name="v5_btn_retry">重试</string>
+    <string name="v5_tips">提示</string>
     
     <string name="v5_msg_input_empty">您尚未输入内容</string>
     <string name="v5_on_location_empty">未获取到您的位置信息</string>
