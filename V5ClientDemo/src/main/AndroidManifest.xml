@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.v5kf.sdk" >
+    package="com.v5kf.sdkdemo" >
 
     <!-- 添加必需权限 -->
     <!-- 网络访问权限 -->
@@ -19,7 +19,7 @@
 
     <application
         android:allowBackup="true"
-        android:name="com.v5kf.sdk.MyApplication"
+        android:name="com.v5kf.sdkdemo.MyApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -54,10 +54,6 @@
         <service
             android:name="com.v5kf.client.lib.V5ClientService" >
         </service>
-
-        <activity
-            android:name="com.v5kf.client.ui.LocationMapActivity" >
-        </activity>
 
         <activity
             android:name="com.v5kf.client.ui.WebViewActivity" >

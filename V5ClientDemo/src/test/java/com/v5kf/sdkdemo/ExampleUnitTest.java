@@ -1,4 +1,4 @@
-package com.v5kf.sdk;
+package com.v5kf.sdkdemo;
 
 import org.junit.Test;
 

@@ -63,7 +63,7 @@
 	　　<item name="android:maxHeight">76dip</item>
     </style>
     
-    <style name="v5_transparent_activity" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+    <style name="v5_transparent_activity" parent="@android:style/Theme.NoTitleBar">
         <item name="android:windowNoTitle">true</item>
 	    <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/v5_black</item>
@@ -72,7 +72,7 @@
 
     
     <!-- loading dialog -->  
-    <style name="v5_loading_dialog" parent="android:style/Theme.Dialog">  
+    <style name="v5_loading_dialog" parent="@android:style/Theme.NoTitleBar.Fullscreen">  
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@drawable/v5_white_shape</item>

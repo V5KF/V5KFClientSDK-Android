@@ -63,6 +63,7 @@
     <string name="v5_error_record_not_permit">录音失败，请检查是否开启录音权限!</string>
     <string name="v5_permission_camera_deny">打开相机失败，请检查是否开启相机和存储权限!</string>
     <string name="v5_permission_photo_deny">打开相册失败，请检查是否开启存储访问权限!</string>
+    <string name="v5_unsupport_image_type_fmt">不支持的图片格式[%s]，请上传png、jpg、bmp、gif等支持的格式</string>
     
     <!-- 使用CoreLib开发需要下列字符串资源 -->
     <string name="v5_def_title">客服消息</string><!-- 后台未设置通知标题时使用的默认通知标题 -->
