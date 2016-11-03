@@ -38,5 +38,7 @@ captures/
 
 # Intellij project files
 *.iws
+*.iml
+.idea/
 .idea/workspace.xml
 .idea/tasks.xml
