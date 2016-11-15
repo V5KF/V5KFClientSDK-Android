@@ -16,10 +16,19 @@
     
     <ListView
         android:id="@+id/id_candidate_list"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
         android:background="@color/v5_key_bar_bg"/>
+    
+    <TextView
+        android:id="@+id/id_candidate_empty"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="#9fa0a0"
+        android:gravity="center"
+        android:text="@string/v5_question_empty" />
 
 </LinearLayout>

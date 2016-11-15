@@ -46,6 +46,7 @@
     <string name="v5_btn_text_speak">按住 说话</string>
     <string name="v5_hot_question">常见问题：</string>
     <string name="v5_relative_question">相关问题：</string>
+    <string name="v5_question_empty">暂无内容</string>
     
     <!-- 机器人回复弹出框 -->
     <string name="v5_support_info">由V5KF提供技术支持</string>
