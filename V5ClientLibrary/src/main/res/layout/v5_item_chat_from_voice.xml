@@ -29,8 +29,8 @@
             android:layout_height="@dimen/v5_chat_list_avatar_wh"
             android:layout_marginRight="@dimen/v5_chat_list_bubble_avatar_margin"
 			android:layout_marginEnd="@dimen/v5_chat_list_bubble_avatar_margin"
-            v5kf:borderRadius="@dimen/v5_chat_list_avatar_radius"
-            v5kf:type="round"
+            v5kf:v5_borderRadius="@dimen/v5_chat_list_avatar_radius"
+            v5kf:v5_type="round"
             android:src="@drawable/v5_avatar_robot" />
         
         <RelativeLayout

@@ -26,8 +26,8 @@
             android:layout_height="@dimen/v5_chat_list_avatar_wh"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            v5kf:borderRadius="@dimen/v5_chat_list_avatar_radius"
-            v5kf:type="round"
+            v5kf:v5_borderRadius="@dimen/v5_chat_list_avatar_radius"
+            v5kf:v5_type="round"
             android:src="@drawable/v5_avatar_customer" />
 
 		<RelativeLayout

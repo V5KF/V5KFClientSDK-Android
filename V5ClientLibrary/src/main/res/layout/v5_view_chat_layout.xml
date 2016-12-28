@@ -54,7 +54,7 @@
         
         <com.v5kf.client.ui.emojicon.EmojiconEditText
             android:id="@+id/et_chat"
-            emojicon:emojiconSize="20sp"
+            emojicon:v5_emojiconSize="20sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
