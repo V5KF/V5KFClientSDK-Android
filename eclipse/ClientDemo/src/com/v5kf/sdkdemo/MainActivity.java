@@ -50,7 +50,7 @@ public class MainActivity extends Activity implements OnChatActivityListener {
 		// 具体可参考详细的开发指南
 		// 传递的参数为ApplicationContext
 		Context context = getApplicationContext();
-		XGPushManager.registerPush(context, "sdkDemo", new XGIOperateCallback() {
+		XGPushManager.registerPush(context, new XGIOperateCallback() {
 			
 			@Override
 			public void onSuccess(Object arg0, int arg1) {
@@ -62,7 +62,9 @@ public class MainActivity extends Activity implements OnChatActivityListener {
 				Logger.e("MainActivity", "信鸽注册失败");
 			}
 		});
-		 
+		String app = V5ClientConfig.getInstance(this).getSiteId();
+		app = (app == null)  ? "sdkDemo" : app;
+		XGPushManager.setTag(context, app);
 //		// 2.36（不包括）之前的版本需要调用以下2行代码
 //		Intent service = new Intent(context, XGPushService.class);
 //		context.startService(service);
