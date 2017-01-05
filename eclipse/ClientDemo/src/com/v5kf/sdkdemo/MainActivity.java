@@ -125,7 +125,7 @@ public class MainActivity extends Activity implements OnChatActivityListener {
 		        
 		        // 取设备token作为uid
 		        String uid = XGPushConfig.getToken(getApplicationContext());
-		        config.setNickname("android_sdk_test"); // 设置用户昵称
+		        config.setNickname("android_sdk_" + (uid.length() >= 8 ? uid.substring(0, 8) : "test" )); // 设置用户昵称
 		        config.setGender(1); // 设置用户性别: 0-未知  1-男  2-女
 		        // 设置用户头像URL
 				config.setAvatar("http://debugimg-10013434.image.myqcloud.com/fe1382d100019cfb572b1934af3d2c04/thumbnail"); 
