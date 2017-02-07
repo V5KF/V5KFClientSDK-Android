@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ClientDemo</string>
+    <string name="app_name">V5客服SDK</string>
     <string name="action_settings">Settings</string>
 
     <string name="v5_chat">联系客服</string>
