@@ -66,7 +66,6 @@
 
         <!-- V5智能客服SDK站点配置 -->
         <meta-data android:value="10000" android:name="V5_SITE" />
-        <meta-data android:value="v5kf" android:name="V5_ACCOUNT" />
 		<meta-data android:value="27100800d9e0" android:name="V5_APPID" />
 
     </application>

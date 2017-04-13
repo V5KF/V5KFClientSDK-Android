@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.v5kf.client.lib.Logger;
 import com.v5kf.client.ui.utils.UIUtil;
 
 public class AutoHeightLayout extends ResizeLayout implements ResizeLayout.OnResizeListener {
@@ -107,7 +106,6 @@ public class AutoHeightLayout extends ResizeLayout implements ResizeLayout.OnRes
      * @param height px
      */
     public void setAutoViewHeight(final int height) {
-    	Logger.w("AutoHeightLayout", "orientation setAutoViewHeight(dp):" + Utils.px2dip(getContext(), height));
         int heightDp = Utils.px2dip(mContext, height);
         if (heightDp > 0 && heightDp != mAutoViewHeight) {
             mAutoViewHeight = heightDp;

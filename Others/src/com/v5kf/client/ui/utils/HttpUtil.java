@@ -27,8 +27,6 @@ import javax.net.ssl.X509TrustManager;
 import com.v5kf.client.lib.Logger;
 import com.v5kf.client.lib.V5ClientConfig;
 
-import android.content.Context;
-
 /**
  * Http 请求工具类
  * 
@@ -37,7 +35,6 @@ import android.content.Context;
  */
 public class HttpUtil {
 	
-	public static final String HOT_QUES_URL = "http://www.v5kf.com/public/api_dkf/get_hot_ques?sid="; // 常见问答url
 	protected static final String TAG = "HttpUtil";
 
 	/**
@@ -195,15 +192,14 @@ public class HttpUtil {
 		return changeInputStream(in);
 	}
 	
-	/**
-	 * 常见问题url获取
-	 * @param context
-	 * @return
-	 */
-	public static String getHotReqsHttpUrl(Context context) {
-		V5ClientConfig config = V5ClientConfig.getInstance(context);
-		return HOT_QUES_URL + config.getSiteId();
-	}
+//	/**
+//	 * 常见问题url获取
+//	 * @param context
+//	 * @return
+//	 */
+//	public static String getHotReqsHttpUrl(Context context) {
+//		return V5Util.getHotQuesUrl(context);
+//	}
 	
 	/**
 	 * Trust every server - dont check for any certificate

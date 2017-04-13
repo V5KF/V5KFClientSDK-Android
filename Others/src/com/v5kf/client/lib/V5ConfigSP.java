@@ -24,6 +24,7 @@ public class V5ConfigSP {
 	private static final String PREFS_EXPIRES = "v5_expires";
 	private static final String PREFS_VISITOR_ID = "v5_visitor_id";
 	private static final String PREFS_UID = "v5_app_uid";
+	private static final String PREFS_OPENID = "v5_app_open_id";
 	private static final String PREFS_SDK_AUTH_FLAG = "v5_sdk_auth";// v5_sdk_initialization
 //	private static final String PREFS_ACCOUNT_AUTH = "v5_authorization";
 //	private static final String PREFS_WXYT_URL = "v5_wxyt_url";
@@ -196,6 +197,22 @@ public class V5ConfigSP {
 	public void removeUid() {
 		mEdit = mSharedPreferences.edit();
 		mEdit.remove(PREFS_UID);
+		mEdit.commit();
+	}
+	
+	public void saveOpenId(String id) {
+		mEdit = mSharedPreferences.edit();
+		mEdit.putString(PREFS_OPENID,id);
+		mEdit.commit();
+	}
+	
+	public String readOpenId() {
+		return mSharedPreferences.getString(PREFS_OPENID, null);
+	}
+	
+	public void removeOpenId() {
+		mEdit = mSharedPreferences.edit();
+		mEdit.remove(PREFS_OPENID);
 		mEdit.commit();
 	}
 

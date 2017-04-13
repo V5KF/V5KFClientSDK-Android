@@ -135,6 +135,11 @@ public class V5Util {
 		return String.format(V5ClientConfig.getSiteinfoFormatURL(), config.getSiteId()) ;
 	}
 	
+	public static String getHotQuesUrl(Context context) {
+		V5ClientConfig config = V5ClientConfig.getInstance(context);;
+		return String.format(V5ClientConfig.getHotQuesFormatURL(), config.getSiteId()) ;
+	}
+	
 //	/**
 //	 * 检查网络是否连接
 //	 * @param context
@@ -196,7 +201,7 @@ public class V5Util {
 		if (null == image) {
 			return null;
 		}
-		Logger.d("Util", "compressImage before>>:" + image.getRowBytes() * image.getHeight());
+//		Logger.d("Util", "compressImage before>>:" + image.getRowBytes() * image.getHeight());
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		int options = 95;
 		image.compress(Bitmap.CompressFormat.JPEG, options, bos);  
@@ -208,7 +213,7 @@ public class V5Util {
 			options -= 5;
 			image.compress(Bitmap.CompressFormat.JPEG, options, bos);  
 		}
-		Logger.d("Util", "compressImage>>:" + bos.size());
+//		Logger.d("Util", "compressImage>>:" + bos.size());
 		image.recycle();
 		return bos.toByteArray();
 	}
@@ -264,7 +269,7 @@ public class V5Util {
 	      return null;
 	    }
 	    size_file /= 1000L;
-	    Logger.d("Util", new StringBuilder().append("FileSize= ").append(size_file).toString());
+//	    Logger.d("Util", new StringBuilder().append("FileSize= ").append(size_file).toString());
 	    int ample_size = 1;
 
 	    if ((size_file <= 800L) && (size_file >= 400L))
@@ -462,7 +467,7 @@ public class V5Util {
      * @return 
      */  
     public static Bitmap ratio(String imgPath, float pixelW, float pixelH) {
-    	Logger.d("V5Util", "ratio--> w:" + pixelW + " h:" + pixelH);
+//    	Logger.d("V5Util", "ratio--> w:" + pixelW + " h:" + pixelH);
         BitmapFactory.Options newOpts = new BitmapFactory.Options();    
         // 开始读入图片，此时把options.inJustDecodeBounds 设回true，即只读边不读内容  
         newOpts.inJustDecodeBounds = true;  
@@ -690,7 +695,7 @@ public class V5Util {
     	options.inJustDecodeBounds = true;
     	BitmapFactory.decodeFile(file, options);
     	String type = options.outMimeType;
-    	Logger.i("V5Util", "MimeType:" + type);
+//    	Logger.i("V5Util", "MimeType:" + type);
     	if (!TextUtils.isEmpty(type)) {
     		if (type.length() > 6) {
     			type = type.substring(6, type.length());

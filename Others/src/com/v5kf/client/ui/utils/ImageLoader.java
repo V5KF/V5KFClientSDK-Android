@@ -164,7 +164,7 @@ public class ImageLoader {
 		
 		Bitmap bitmap = memoryCache.get(url);
 		if (bitmap != null) {
-			Logger.v("ImageLoader", "From MemoryCache:" + url);
+//			Logger.v("ImageLoader", "From MemoryCache:" + url);
 			if (isSrc)
 				imageView.setImageBitmap(bitmap);
 			else
@@ -222,7 +222,7 @@ public class ImageLoader {
 			// 从sd卡
 			Bitmap b = onDecodeFile(f);
 			if (b != null) {
-				Logger.v("ImageLoader", "From FileCache:" + url);
+//				Logger.v("ImageLoader", "From FileCache:" + url);
 				return b;
 			} else { // 判断是否本地路径
 				Bitmap localBmp = V5Util.ratio(
@@ -230,7 +230,7 @@ public class ImageLoader {
 						UIUtil.MAX_PIC_W * 2 / 3, 
 						UIUtil.MAX_PIC_H * 2 / 3); // 压缩宽高
 				if (localBmp != null) {
-					Logger.v("ImageLoader", "From localFile:" + url);
+//					Logger.v("ImageLoader", "From localFile:" + url);
 					return localBmp;
 				}
 			}
@@ -245,7 +245,7 @@ public class ImageLoader {
 			bitmap = onDecodeFile(f);
 			return bitmap;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			//ex.printStackTrace();
 			return null;
 		}
 	}
@@ -254,7 +254,7 @@ public class ImageLoader {
 		try {
 			return BitmapFactory.decodeStream(new FileInputStream(f));
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return null;
 	}
@@ -300,11 +300,11 @@ public class ImageLoader {
 		@Override
 		public void run() {
 //			if (imageViewReused(photoToLoad))
-//				return;		
+//				return;
 			
 			Bitmap bmp = getBitmap(photosToLoad.url);
 			if (bmp == null) {
-				Logger.e("ImageLoader", "getBitmap --> null");
+//				Logger.e("ImageLoader", "getBitmap --> null");
 			}
 			memoryCache.put(photosToLoad.url, bmp);
 			
@@ -378,12 +378,12 @@ public class ImageLoader {
 //		}
 
 		public void run() {
-			Logger.i("ImageLoader", "BitmapDisplayer -> run");
+//			Logger.i("ImageLoader", "BitmapDisplayer -> run");
 //			if (imageViewReused(this.imageView, this.url)) {
 //				return;
 //			}
 			if (bitmap != null) {
-				Logger.d("ImageLoader", "BitmapDisplayer-> imageView:" + photoToLoad.imageView + " url:" + photoToLoad.url);
+//				Logger.d("ImageLoader", "BitmapDisplayer-> imageView:" + photoToLoad.imageView + " url:" + photoToLoad.url);
 				if (isSrc)
 					photoToLoad.imageView.setImageBitmap(bitmap);
 				else
@@ -431,7 +431,7 @@ public class ImageLoader {
 		File f = fileCache.getFile(id);
 		Bitmap b = onDecodeFile(f);
 		if (b != null) {
-			Logger.d("ImageLoader", "[saveImage] Already in FileCache:" + id);
+//			Logger.d("ImageLoader", "[saveImage] Already in FileCache:" + id);
 			return;
 		}
 		try {
@@ -440,7 +440,6 @@ public class ImageLoader {
 		    out.flush();
 		    out.close();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		}
 
 	}
@@ -458,7 +457,7 @@ public class ImageLoader {
 			// 从sd卡
 			Bitmap b = onDecodeFile(f);
 			if (b != null) {
-				Logger.v("ImageLoader", "From FileCache:" + url);
+//				Logger.v("ImageLoader", "From FileCache:" + url);
 				return b;
 			} else { // 判断是否本地路径
 				Bitmap localBmp = V5Util.ratio(
@@ -466,7 +465,7 @@ public class ImageLoader {
 						UIUtil.MAX_PIC_W * 2 / 3, 
 						UIUtil.MAX_PIC_H * 2 / 3); // 压缩宽高
 				if (localBmp != null) {
-					Logger.v("ImageLoader", "From localFile:" + url);
+//					Logger.v("ImageLoader", "From localFile:" + url);
 					return localBmp;
 				}
 			}
@@ -482,7 +481,7 @@ public class ImageLoader {
 			bitmap = onDecodeFile(f);
 			return bitmap;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			//ex.printStackTrace();
 			return null;
 		}
 	}
@@ -501,11 +500,11 @@ public class ImageLoader {
 		float wh = UIUtil.dp2px(IMAGE_BASE_WH, context);
 		float max = UIUtil.dp2px(IMAGE_MAX_WH, context);
 		float min = UIUtil.dp2px(IMAGE_MIN_WH, context);
-		Logger.d("ImageLoader", "[getScale] ratio min:" + wh + " max:" + wh);
+//		Logger.d("ImageLoader", "[getScale] ratio min:" + wh + " max:" + wh);
 		// 缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可    
 		float scale = 1.0f;//scale=1表示不缩放    
 		scale = (float) Math.sqrt((wh*wh)/(w*h));
-		Logger.d("ImageLoader", "ratio [getScale] :" + scale);
+//		Logger.d("ImageLoader", "ratio [getScale] :" + scale);
 		if (scale <= 0) scale = 1.0f;
 				
 		rW = (int)(w * scale);

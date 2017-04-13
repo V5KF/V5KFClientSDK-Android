@@ -1,6 +1,10 @@
 package com.v5kf.client.lib;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
+
+import org.json.JSONObject;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -32,7 +36,7 @@ public class V5ClientConfig {
 	// 是否需要UI显示(updateMessage)，无UI则不需要getMessages和getStatus，不自动查询离线消息
 	public static final boolean UI_SUPPORT = true;
 	
-	private static int LOG_LEVEL = LOG_LV_VERBOS; // 日志显示级别
+	private static int LOG_LEVEL = LOG_LV_INFO; // 日志显示级别
 	private static boolean LOG_SHOW = true;	// 是否显示日志
 	public static final boolean USE_THUMBNAIL = true; // 使用缩略图
 	public static boolean AUTO_RETRY_ONERROR = true; // 连接断开是否自动重试(否则弹出对话框点击重试)
@@ -76,17 +80,25 @@ public class V5ClientConfig {
 	
 	/* 用户信息 */
 	// site、account
+	/**
+	 * @deprecated 使用openId替代
+	 */
 	private String uid; // 多用户账号APP必须
+	private String openId; // 多用户账号APP必须
 	private String nickname;
 	private String avatar;
 	private int vip; // 0-5
 	private int gender;
+	
+	/* 用户magic信息 */
+	private JSONObject userInfo; // 自定义magic参数，键值对数组形式[{"key":"1","val":"a"},{"key":"2","val":"b"}]
 	
 	/* 坐席信息 */
 	private long workerId;
 	private String workerName;
 	private String workerPhoto;
 	private int workerType; // 人工or机器人or机器人托管
+	private String workerIntro;
 	
 	/* 机器人信息 */
 	private String robotName;
@@ -116,7 +128,7 @@ public class V5ClientConfig {
 	private static V5ClientConfig mClientConfig = null;
 	
 	private V5ClientConfig(Context context) {
-		Logger.w("V5ClientConfig", "V5ClientConfig instance");
+//		Logger.v("V5ClientConfig", "V5ClientConfig instance");
 		this.mContext = context;		
 	}
 	
@@ -165,42 +177,6 @@ public class V5ClientConfig {
 	public void setDefaultServiceByWorker(boolean isAutoWorker) {
 		V5ClientConfig.AUTO_WORKER_SERVICE = isAutoWorker;
 	}
-	
-//	/**
-//	 * 获取用户唯一识别码(利用设备ID生成，不超过32个字符)应用唯一
-//	 * @param context
-//	 * @return
-//	 */
-//	public String getUuid() {
-//		if (null == uuid) {		
-//			DeviceUuidFactory duf = new DeviceUuidFactory(mContext);
-//			uuid = duf.getUuidString();
-//			if (null == uuid) {
-//				uuid = V5Util.getRandomString(24);
-//			}
-//			Logger.d("SiteConfig->getUuid", "uuid:" + uuid);
-//		}
-//		if (uuid.length() > 32) {
-//			try {
-//				uuid = hash(uuid);
-//				Logger.d("SiteConfig->getUuid(md5)", "uuid:" + uuid);
-//			} catch (NoSuchAlgorithmException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		return uuid;
-//	}
-//	
-//	/**
-//	 * 设置小于32字节的字符串作为o_id
-//	 * @param oid
-//	 */
-//	public void setUuid(String oid) {
-//		if (oid.length() > 32) {
-//			Logger.w("V5ClientConfig", "The string in setUuid can't greater than 32 bytes.");
-//		}
-//		uuid = oid;
-//	}
 	
 	/**
 	 * 获取站点号
@@ -434,7 +410,7 @@ public class V5ClientConfig {
 //				}
 //			}
 		}
-		Logger.i("V5ClientConfig", "getDeviceToken=" + deviceToken);
+		Logger.v("V5ClientConfig", "getDeviceToken=" + deviceToken);
 		return deviceToken;
 	}
 
@@ -443,8 +419,8 @@ public class V5ClientConfig {
 	 * @param deviceToken
 	 */
 	public void setDeviceToken(String deviceToken) {
-		Logger.i("V5ClientConfig", "setDeviceToken:" + deviceToken);
-		if (null == deviceToken || deviceToken.isEmpty()) {
+		Logger.v("V5ClientConfig", "setDeviceToken:" + deviceToken);
+		if (TextUtils.isEmpty(deviceToken)) {
 			Logger.e("V5ClientConfig", "DeviceToken is null or empty!");
 		} else {
 			this.deviceToken = deviceToken;
@@ -462,7 +438,7 @@ public class V5ClientConfig {
 	}
 
 	public void setNotificationTitle(String title) {
-		if (null == title || title.isEmpty()) {
+		if (TextUtils.isEmpty(title)) {
 			return;
 		} else {
 			this.notificationTitle = title;
@@ -471,22 +447,20 @@ public class V5ClientConfig {
 		}
 	}
 
+	/**
+	 * @deprecated 使用openId替代
+	 * @return
+	 */
 	public String getUid() {
 		if (null == uid) {
 			V5ConfigSP configSP = new V5ConfigSP(mContext);
 			uid = configSP.readUid();
-			
-//			if (uid == null) {
-//				DeviceUuidFactory uuidFactory = new DeviceUuidFactory(mContext);
-//				String uuidStr = uuidFactory.getUuidString();
-//				Logger.d("V5ClientConfig", "getUid null so setUid:" + uuidStr);
-//				setUid(uuidStr);
-//			}
 		}
 		return uid;
 	}
 
 	/**
+	 * @deprecated 使用openId替代
 	 * 必须。APP用户ID（支持用户账号切换的APP必须为不同用户账号设置该值）
 	 * @param uid
 	 */
@@ -506,7 +480,33 @@ public class V5ClientConfig {
 			authorization = null;
 		}
 		configSP.saveUid(uid);
-		Logger.d("V5ClientConfig", "setUid:" + uid);
+	}
+	
+	public String getOpenId() {
+		if (null == openId) {
+			V5ConfigSP configSP = new V5ConfigSP(mContext);
+			openId = configSP.readOpenId();
+		}
+		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		if (null == openId) {
+			Logger.e("V5ClientConfig", "Uid is null!");
+			return;
+		}
+		this.openId = openId;
+		V5ConfigSP configSP = new V5ConfigSP(mContext);
+		String localOid = configSP.readOpenId();
+		if (localOid != null && !localOid.equals(openId)) {
+			// 重新设置openId与之前不同时需要清除之前的visitor缓存
+			configSP.removeAuthorization(getV5VisitorId());
+			configSP.removeVisitorId();
+			v5VisitorId = null;
+			authorization = null;
+		}
+		configSP.saveOpenId(openId);
+		Logger.v("V5ClientConfig", "setOpenId:" + openId);
 	}
 
 	/**
@@ -523,22 +523,31 @@ public class V5ClientConfig {
 		if (null != v5VisitorId) {
 			return v5VisitorId;
 		}
-		
-		if (uid == null || uid.isEmpty()) {
+		String account = getAppID();
+		if (TextUtils.isEmpty(account)) {
+			account = getSiteAccount();
+		}
+		if (!TextUtils.isEmpty(openId)) {
 			try {
-				DeviceUuidFactory uuidFactory = new DeviceUuidFactory(mContext);
-				uid = uuidFactory.getUuidString() + getSiteAccount() + getSiteId();
-				if (uid == null) {
-					uid = V5Util.getRandomString(48) + getSiteAccount() + getSiteId();
-				}
-				v5VisitorId = V5Util.hash(uid);
-				Logger.i("V5ClientConfig", "VisitorId:" + v5VisitorId + " uid:" + uid);
+				v5VisitorId = URLEncoder.encode(openId, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		} else if (!TextUtils.isEmpty(uid)) {
+			try {
+				v5VisitorId = V5Util.hash(uid + account + getSiteId());
 			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
 		} else {
 			try {
-				v5VisitorId = V5Util.hash(uid + getSiteAccount() + getSiteId());
+				DeviceUuidFactory uuidFactory = new DeviceUuidFactory(mContext);
+				String duid = uuidFactory.getUuidString() + account + getSiteId();
+				if (TextUtils.isEmpty(duid)) {
+					duid = V5Util.getRandomString(48) + account + getSiteId();
+				}
+				v5VisitorId = V5Util.hash(duid);
+//				Logger.v("V5ClientConfig", "VisitorId:" + v5VisitorId + " uid:" + duid);
 			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
@@ -564,7 +573,7 @@ public class V5ClientConfig {
 	}
 	
 	/**
-	 * 更新用户信息前调用（setUid前）
+	 * 更新用户信息前调用（setOpenId前）
 	 */
 	public void shouldUpdateUserInfo() {
 		// 更新用户信息时调用，清除之前的visitor缓存
@@ -624,7 +633,7 @@ public class V5ClientConfig {
         mBuilder.setDefaults(Notification.DEFAULT_ALL);
         
         Notification notification = mBuilder.build();
-        Logger.d("V5ClientConfig", "notifyMessage send <<<");
+//        Logger.v("V5ClientConfig", "notifyMessage send <<<");
         return notification;
 	}
 	
@@ -633,7 +642,7 @@ public class V5ClientConfig {
 	}
 	
 	protected static String getSDKInitURL() {
-		return (USE_HTTPS ? "https" : "http") + "://www.v5kf.com/public/appsdk/init";
+		return (USE_HTTPS ? "https" : "http") + "://chat.v5kf.com/public/appsdk/init";
 	}
 	
 	protected static String getWSFormstURL() {
@@ -682,7 +691,12 @@ public class V5ClientConfig {
 	}
 	
 	protected static String getSiteinfoFormatURL() {
-		return (USE_HTTPS ? "https" : "http") + "://www.v5kf.com/public/api_dkf/get_chat_siteinfo?sid=%s";
+		return (USE_HTTPS ? "https" : "http") + "://chat.v5kf.com/public/api_dkf/get_chat_siteinfo?sid=%s";
+	}
+
+	protected static String getHotQuesFormatURL() {
+		//http://chat.v5kf.com/public/api_dkf/get_hot_ques?sid=
+		return (USE_HTTPS ? "https" : "http") + "://chat.v5kf.com/public/api_dkf/get_hot_ques?sid=%s";
 	}
 	
 	/**
@@ -752,7 +766,7 @@ public class V5ClientConfig {
 	}
 
 	public void setRobotName(String name) {
-		if (null == name || name.isEmpty()) {
+		if (TextUtils.isEmpty(name)) {
 			return;
 		} else {
 			this.robotName = name;
@@ -772,7 +786,7 @@ public class V5ClientConfig {
 	}
 
 	public void setRobotPhoto(String photo) {
-		if (null == photo || photo.isEmpty()) {
+		if (TextUtils.isEmpty(photo)) {
 			return;
 		} else {
 			this.robotPhoto = photo;
@@ -792,12 +806,32 @@ public class V5ClientConfig {
 	}
 
 	public void setRobotIntro(String intro) {
-		if (null == intro || intro.isEmpty()) {
+		if (TextUtils.isEmpty(intro)) {
 			return;
 		} else {
 			this.robotIntro = intro;
 			V5ConfigSP configSP = new V5ConfigSP(mContext);
 			configSP.saveString("v5_robot_intro", intro);
+		}
+	}
+	
+	public String getWorkerIntro() {
+		if (!TextUtils.isEmpty(this.workerIntro)) {
+			return this.workerIntro;
+		} else {
+			V5ConfigSP config = new V5ConfigSP(mContext);
+			this.workerIntro = config.readString("v5_worker_intro");
+		}
+		return workerIntro;
+	}
+
+	public void setWorkerIntro(String _intro) {
+		if (TextUtils.isEmpty(_intro)) {
+			return;
+		} else {
+			this.workerIntro = _intro;
+			V5ConfigSP configSP = new V5ConfigSP(mContext);
+			configSP.saveString("v5_worker_intro", _intro);
 		}
 	}
 
@@ -815,6 +849,14 @@ public class V5ClientConfig {
 
 	public void setHeartBeatTime(int heartBeatTime) {
 		this.heartBeatTime = heartBeatTime;
+	}
+
+	public JSONObject getUserInfo() {
+		return userInfo;
+	}
+
+	public void setUserInfo(JSONObject userInfo) {
+		this.userInfo = userInfo;
 	}
 
 //	public void setWorkerPhoto(String photo, String nickname) {

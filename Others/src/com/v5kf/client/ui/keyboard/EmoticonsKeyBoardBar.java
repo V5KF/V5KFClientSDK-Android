@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.v5kf.client.R;
+import com.v5kf.client.lib.Logger;
 import com.v5kf.client.ui.emojicon.EmojiconEditText;
 import com.v5kf.client.ui.utils.UIUtil;
 
@@ -85,7 +86,7 @@ public class EmoticonsKeyBoardBar extends AutoHeightLayout implements IEmoticons
 
     private boolean mIsMultimediaVisibility = true;
 
-	private boolean isClicked = false;
+	private boolean manualOpen = false;
 	
 	public EmoticonsKeyBoardBar(Context context) {
 		super(context);
@@ -383,8 +384,10 @@ public class EmoticonsKeyBoardBar extends AutoHeightLayout implements IEmoticons
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+    	Logger.w(VIEW_LOG_TAG, "event:" + event.getKeyCode());//////
         switch (event.getKeyCode()) {
             case KeyEvent.KEYCODE_BACK:
+            	Logger.w(VIEW_LOG_TAG, "KEYCODE_BACK ly_foot_func:" + (ly_foot_func != null ? ly_foot_func.isShown() : "null"));//////
                 if (ly_foot_func != null && ly_foot_func.isShown()) {
                     hideAutoView();
                     btn_face.setImageResource(R.drawable.v5_icon_face_normal);
@@ -401,6 +404,13 @@ public class EmoticonsKeyBoardBar extends AutoHeightLayout implements IEmoticons
     }
 
     @Override
+    public void showAutoView() {
+    	if (!isKeyBoardFootShow()) {
+    		super.showAutoView();
+		}
+    }
+    
+    @Override
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.btn_face) {
@@ -414,15 +424,15 @@ public class EmoticonsKeyBoardBar extends AutoHeightLayout implements IEmoticons
                 case KEYBOARD_STATE_NONE:
                 case KEYBOARD_STATE_BOTH:
                     show(FUNC_CHILLDVIEW_EMOTICON);
-                    setClicked(true);
-                    Utils.closeSoftKeyboard(mContext);
+//                    setManualOpen(true);
+//                    Utils.closeSoftKeyboard(mContext);
+//                	  showAutoView();
                     btn_face.setImageResource(R.drawable.v5_icon_face_pop);
-                    showAutoView();
                     break;
                 case KEYBOARD_STATE_FUNC:
                     if(mChildViewPosition == FUNC_CHILLDVIEW_EMOTICON){
                         btn_face.setImageResource(R.drawable.v5_icon_face_normal);
-                        setClicked(true);
+                        setManualOpen(true);
                         Utils.openSoftKeyboard(et_chat);
                     }
                     else {
@@ -446,9 +456,9 @@ public class EmoticonsKeyBoardBar extends AutoHeightLayout implements IEmoticons
                     rl_input.setVisibility(VISIBLE);
                     btn_voice.setVisibility(GONE);
                     btn_voice_or_text.setImageResource(R.drawable.v5_btn_voice_or_text_bg);
-                    showAutoView();
-                    setClicked(true);
-                    Utils.closeSoftKeyboard(mContext);
+//                    setManualOpen(true);
+//                	Utils.closeSoftKeyboard(mContext);
+//                    showAutoView();
                     break;
                 case KEYBOARD_STATE_FUNC:
                     btn_face.setImageResource(R.drawable.v5_icon_face_normal);
@@ -497,6 +507,11 @@ public class EmoticonsKeyBoardBar extends AutoHeightLayout implements IEmoticons
     }
     
     public void show(int position){
+    	// 封装show关联操作进行联动
+    	showAutoView();
+    	setManualOpen(true);
+    	Utils.closeSoftKeyboard(mContext);
+    	
         int childCount = ly_foot_func.getChildCount();
 //        boolean oldShow = isKeyBoardFootShow();
         if(position < childCount){
@@ -558,12 +573,12 @@ public class EmoticonsKeyBoardBar extends AutoHeightLayout implements IEmoticons
 
     }
 
-    public boolean isClicked() {
-		return isClicked;
+    public boolean isManualOpen() {
+		return manualOpen;
 	}
 
-	public void setClicked(boolean isClicked) {
-		this.isClicked = isClicked;
+	public void setManualOpen(boolean isManualOpened) {
+		this.manualOpen = isManualOpened;
 	}
 
 	public interface KeyBoardBarViewListener {

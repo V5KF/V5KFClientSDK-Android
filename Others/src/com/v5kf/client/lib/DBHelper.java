@@ -1,5 +1,6 @@
 package com.v5kf.client.lib;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.json.JSONException;
@@ -29,13 +30,23 @@ public class DBHelper extends SQLiteOpenHelper {
 	
 	public DBHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
-		mTableName =  "v5_message_" + V5ClientConfig.getInstance(context).getV5VisitorId();
+		try {
+			mTableName =  ("v5_message_" + V5Util.hash(V5ClientConfig.getInstance(context).getV5VisitorId()));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			mTableName =  ("v5_message_" + V5ClientConfig.getInstance(context).getV5VisitorId());
+		}
 	}
 
 	public DBHelper(Context context, String name, CursorFactory factory,
 			int version) {
 		super(context, name, factory, version);
-		mTableName =  "v5_message_" + V5ClientConfig.getInstance(context).getV5VisitorId();
+		try {
+			mTableName =  ("v5_message_" + V5Util.hash(V5ClientConfig.getInstance(context).getV5VisitorId()));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			mTableName =  ("v5_message_" + V5ClientConfig.getInstance(context).getV5VisitorId());
+		}
 	}
 
 	@Override

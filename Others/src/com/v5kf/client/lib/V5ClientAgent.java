@@ -1,9 +1,13 @@
 package com.v5kf.client.lib;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +18,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.v5kf.client.lib.V5KFException.V5ExceptionStatus;
 import com.v5kf.client.lib.callback.MessageSendCallback;
@@ -39,8 +45,19 @@ public class V5ClientAgent {
 	public static final String TAG = "ClientAgent";
 	public static final long OPEN_QUES_MAX_ID = 9999999999L;
 	
-	public final static String VERSION = "1.1.9"; // 1.1.8_r0918 -> v1.1.8_r1115 -> 1.1.9优化hotques请求限制为一次
-	public final static String VERSION_DESC = "v1.1.9_r1115"; // v1.1.8_r0918 -> v1.1.8_r1115 -> 1.1.9
+	/**
+	 *  1.1.8_r0918 -> v1.1.8_r1115 -> 1.1.9优化hotques请求限制为一次
+	 *  1.1.11 优化网络请求服务器地址,解决attr命名重复问题
+	 *  1.2.0_r170412 增加openId替代uid，magic新消息接口，坐席开场白，结构优化
+	 */
+	public final static String VERSION = "1.2.0"; 
+	/**
+	 * v1.1.9_r1115
+	 * v1.1.10_r170207
+	 * v1.1.11_r170208
+	 * v1.1.12_r170213
+	 */
+	public final static String VERSION_DESC = "v1.1.12_r170213"; // v1.1.8_r0918 -> v1.1.8_r1115 -> 1.1.9
 	private static boolean isSDKInit = false;
 	private int isForeground = 0;
 	
@@ -56,6 +73,8 @@ public class V5ClientAgent {
 //	public String mOpenQuestion;
 	protected long mMsgIdCount = 0;	// 开场问题Id[已失效]
 	private boolean _authBlock = false;
+	private boolean _getSiteInfo = false;
+	private JSONArray _magic; 
 	
 	/* Activity监听器(UI库) */
 	private OnURLClickListener mURLClickListener;
@@ -132,7 +151,7 @@ public class V5ClientAgent {
 	}
 	
 	private V5ClientAgent() {
-		Logger.w(TAG, "V5ClientAgent instance");
+//		Logger.d(TAG, "V5ClientAgent instance");
 //		if (Looper.myLooper() != null  && V5ClientConfig.CALLBACK_ON_UI_THREAD) {
 //			mHandler = new Handler(Looper.myLooper());
 //			Logger.i(TAG, "The callbak method of MessageListener will run in the current UI thread");
@@ -165,7 +184,6 @@ public class V5ClientAgent {
 		
 		V5ClientConfig config = V5ClientConfig.getInstance(context);
 		String siteId = config.getSiteId();
-		String siteAccount = config.getSiteAccount();
 		String appID = config.getAppID();
 		V5ConfigSP configSP = new V5ConfigSP(context);
 		if (configSP.readSDKAuthFlag()) {
@@ -173,6 +191,7 @@ public class V5ClientAgent {
 					!configSP.readSiteId().equals(siteId)) {
 				configSP.removeSDKAuthFlag();
 				configSP.removeUid();
+				configSP.removeOpenId();
 				String vid = configSP.readVisitorId();
 				if (vid != null) {
 					configSP.removeAuthorization(vid);
@@ -181,7 +200,6 @@ public class V5ClientAgent {
 				isSDKInit = false;
 			} else {
 				config.setSiteId(siteId);
-				config.setSiteAccount(siteAccount);
 				config.setAppID(appID);
 				isSDKInit = true;
 				if (callback != null) {
@@ -192,10 +210,9 @@ public class V5ClientAgent {
 		}
 		if (!isSDKInit) {
 			configSP.saveSiteId(siteId);
-			configSP.saveSiteAccount(siteAccount);
 			config.setAppID(appID);
 			try {
-				doSDKAuth(context, siteId, siteAccount, appID, callback);
+				doSDKAuth(context, siteId, appID, callback);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -214,8 +231,8 @@ public class V5ClientAgent {
 	 * @param siteAccount
 	 * @param callback
 	 */
-	public static void init(Context context, String siteId, String siteAccount, String appID, V5InitCallback callback) {
-		if (null == siteId || null == siteAccount || appID == null || context == null) {
+	public static void init(Context context, String siteId, String appID, V5InitCallback callback) {
+		if (null == siteId || appID == null || context == null) {
 			if (callback != null) {
 				callback.onFailure("SDK auth failed: param null");
 			}
@@ -230,6 +247,7 @@ public class V5ClientAgent {
 					!configSP.readSiteId().equals(siteId)) {
 				configSP.removeSDKAuthFlag();
 				configSP.removeUid();
+				configSP.removeOpenId();
 				String vid = configSP.readVisitorId();
 				if (vid != null) {
 					configSP.removeAuthorization(vid);
@@ -238,7 +256,6 @@ public class V5ClientAgent {
 				isSDKInit = false;
 			} else {
 				config.setSiteId(siteId);
-				config.setSiteAccount(siteAccount);
 				config.setAppID(appID);
 				isSDKInit = true;
 				if (callback != null) {
@@ -249,10 +266,9 @@ public class V5ClientAgent {
 		}
 		if (!isSDKInit) {
 			config.setSiteId(siteId);
-			config.setSiteAccount(siteAccount);
 			config.setAppID(appID);
 			try {
-				doSDKAuth(context, siteId, siteAccount, appID, callback);
+				doSDKAuth(context, siteId, appID, callback);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -271,8 +287,8 @@ public class V5ClientAgent {
 	 * @param appID
 	 * @param callback
 	 */
-	private static void doSDKAuth(final Context context, String siteId, String siteAccount,
-			String appID, final V5InitCallback callback) throws JSONException {
+	private static void doSDKAuth(final Context context, String siteId, String appID,
+			final V5InitCallback callback) throws JSONException {
 		// 表情模块初始化
 		EmoticonsUtils.initEmoticonsDB(context);
 		if (V5ClientConfig.SKIP_INIT) {
@@ -282,11 +298,13 @@ public class V5ClientAgent {
 			}
 		}
 		
-		if (null == siteId || null == siteAccount) {
+		if (null == siteId || null == appID) {
+			if (!V5ClientConfig.SKIP_INIT) {
+				isSDKInit = false;
+			}
 			if (callback != null) {
 				callback.onFailure("SDK auth failed: param invalid");
 			}
-			isSDKInit = false;
 			return;
 		}
 		
@@ -299,7 +317,6 @@ public class V5ClientAgent {
 		}
 		json.put("site_id", siteId);
 		json.put("app_id", appID);
-		json.put("account", siteAccount); // 获得用户唯一ID
 		json.put("platform", "android");
 		Logger.d(TAG, "<Init request>: " + json.toString());
 		HttpUtil.post(
@@ -330,13 +347,16 @@ public class V5ClientAgent {
 						if (VERSION.compareTo(version) < 0) {
 							Logger.w(TAG, "V5 SDK info:" + versionInfo);
 						}
-						if (callback != null) {
+						if (callback != null && !V5ClientConfig.SKIP_INIT) {
 							callback.onSuccess("SDK auth success");
 						}
 					} else if (js.has("o_errmsg")) {
 						String errmsg = js.getString("o_errmsg");
 						Logger.e(TAG, "V5 SDK init failed(code:" + o_error + "):" + errmsg);
-						if (callback != null) {
+						if (!V5ClientConfig.SKIP_INIT) {
+							isSDKInit = false;
+						}
+						if (callback != null && !V5ClientConfig.SKIP_INIT) {
 							callback.onFailure("SDK auth failed: " + errmsg);
 						}
 					}
@@ -348,7 +368,10 @@ public class V5ClientAgent {
 			@Override
 			public void onFailure(int statusCode, String responseString) {
 				Logger.e(TAG, "V5 SDK init failed(code:" + statusCode + "):" + responseString);
-				if (callback != null) {
+				if (!V5ClientConfig.SKIP_INIT) {
+					isSDKInit = false;
+				}
+				if (callback != null && !V5ClientConfig.SKIP_INIT) {
 					callback.onFailure("SDK auth failed: " + responseString);
 				}
 			}
@@ -401,18 +424,42 @@ public class V5ClientAgent {
 		cacheLocalMsg = V5ClientConfig.UI_SUPPORT ? true : mConfigSP.readLocalDbFlag();
 		if (mDBHelper == null && cacheLocalMsg) {
 			mDBHelper = new DBHelper(context);
-			mDBHelper.setTableName("v5_message_" + config.getV5VisitorId());
+			try {
+				mDBHelper.setTableName("v5_message_" + V5Util.hash(config.getV5VisitorId()));
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+				mDBHelper.setTableName("v5_message_" + config.getV5VisitorId());
+			}
 		}
-		
+
+		if (getConfig().getUserInfo() != null && getConfig().getUserInfo().length() > 0) {
+			JSONArray customArray = new JSONArray();
+            Iterator<String> it = getConfig().getUserInfo().keys();
+            try {
+	            while (it.hasNext()) {  
+	                String key = (String) it.next();  
+	                String value = getConfig().getUserInfo().getString(key);
+	                JSONObject item = new JSONObject();
+	                item.putOpt("key", key);
+	                item.putOpt("val", value);
+	                customArray.put(item);
+	            }
+				_magic = customArray;
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
 		if (mConfigSP.readAuthorization(config.getV5VisitorId()) == null) {
-			Logger.d(TAG, "[start] initialization - should do auth");		
+//			Logger.v(TAG, "[start] initialization - should do auth");
+			updateSiteInfo(); // 更新auth同时更新站点信息
 			try {
 				doAccountAuth();
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		} else {
-			Logger.d(TAG, "[start] already auth - start client");
+//			Logger.v(TAG, "[start] already auth - start client");
 			onClientStart();
 		}
 		mSessionStart = 1;
@@ -483,15 +530,20 @@ public class V5ClientAgent {
 		JSONObject json = new JSONObject();
 		V5ClientConfig config = V5ClientConfig.getInstance(mContext);
 		json.put("site", config.getSiteId());
-		json.put("appid", config.getAppID());
-		json.put("account", config.getSiteAccount());
+		if (!TextUtils.isEmpty(config.getSiteAccount())) {
+			json.put("account", config.getSiteAccount());
+		}
+		if (!TextUtils.isEmpty(config.getAppID())) {
+			json.put("app_id", config.getAppID());
+			json.put("account", config.getAppID());
+		}
 		json.put("visitor", config.getV5VisitorId()); // 获得用户唯一ID
 		json.put("device", "android");
 		String device_token = config.getDeviceToken();
 		if (device_token != null) {
 			json.put("dev_id", device_token);
 		} else {
-			Logger.w(TAG, "device_token not set!");
+			Logger.v(TAG, "device_token not set!");
 		}
 		json.put("expires", 604800); // 一次Auth为7天有效期
 		if (null != config.getNickname()) {
@@ -506,10 +558,15 @@ public class V5ClientAgent {
 		if (0 != config.getVip()) {
 			json.put("vip", config.getVip());
 		}
-		if (mDBHelper != null) { // 更新表名：v5_message_[visitor_id]
-			mDBHelper.setTableName("v5_message_" + config.getV5VisitorId());
+		if (mDBHelper != null) { // 更新表名：v5_message_hash(visitor_id)
+			try {
+				mDBHelper.setTableName("v5_message_" + V5Util.hash(config.getV5VisitorId()));
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+				mDBHelper.setTableName("v5_message_" + config.getV5VisitorId());
+			}
 		}
-		Logger.d(TAG, "Auth:" + json.toString());
+		Logger.d(TAG, "Auth request:" + json.toString());
 		HttpUtil.post(V5ClientConfig.getAccountAuthURL(), json.toString(), new HttpResponseHandler(mContext) {
 			
 			@Override
@@ -623,28 +680,23 @@ public class V5ClientAgent {
 			V5TextMessage openQuestion = V5MessageManager.getInstance().obtainTextMessage(param);
 			mMsgIdCount++;
 			openQuestion.setMsg_id(V5Util.getCurrentLongTime()/1000);
-			V5ClientAgent.getInstance().sendOpeningQuestion(openQuestion);
+			sendOpeningQuestion(openQuestion);
 		} else if (mode == ClientOpenMode.clientOpenModeDefault) {
 			// 没有获得会话消息则获取开场白
 			if (param != null && !param.isEmpty()) {
-				V5TextMessage msg = V5MessageManager.getInstance().obtainTextMessage(param);
-				msg.setDirection(V5MessageDefine.MSG_DIR_FROM_ROBOT);
-				msg.setSession_start(mSessionStart);
-				msg.setMsg_id(V5Util.getCurrentLongTime()/1000);
-//				if (null != mDBHelper && cacheLocalMsg) { // 保存开场白
-//					mDBHelper.insert(msg);
-//				}
-				if (null != mHandler) { // 将开场白回调到message消息接口
-					mHandler.post(new OnMessageRunnable(msg));
-				} else if (getMessageListener() != null) {
-					getMessageListener().onMessage(msg);
-				}
+				sendPrologue(param);
 			} else {
-				V5ClientAgent.getInstance().getSiteInfo(true);
+				if (_getSiteInfo || !TextUtils.isEmpty(getConfig().getRobotName())) {
+					// 已获取站点信息直接发送开场白
+					sendPrologue(null);
+				} else {
+					// 获取站点信息后再sendPrologue
+					getSiteInfo(true);
+				}
 			}
 		} else if (mode == ClientOpenMode.clientOpenModeAutoHuman) {
 			// 自动转人工客服
-			V5ClientAgent.getInstance().switchToArtificialService(null);
+			switchToArtificialService(null);
 		}
 	}
 	
@@ -670,36 +722,68 @@ public class V5ClientAgent {
 				try {
 					JSONObject json = new JSONObject(V5Util.decodeUnicode(responseString));
 					if (json.getString("state").equals("ok")) {
+						_getSiteInfo = true;
 						JSONObject robot = json.getJSONObject("robot");
-						String prologue = robot.optString("intro");
-						getConfig().setRobotIntro(prologue);
+						JSONObject info = json.getJSONObject("info");
+						String robotIntro = robot.optString("intro");
+						String workerIntro = info.optString("intro");
+						getConfig().setWorkerIntro(workerIntro);
+						getConfig().setRobotIntro(robotIntro);
 						getConfig().setRobotName(robot.optString("name"));
 						getConfig().setRobotPhoto(robot.optString("logo"));
-						if (null != prologue && callback) {
-							V5TextMessage msg = V5MessageManager.getInstance().obtainTextMessage(prologue);
-							msg.setDirection(V5MessageDefine.MSG_DIR_FROM_ROBOT);
-							msg.setSession_start(mSessionStart);
-							msg.setMsg_id(V5Util.getCurrentLongTime()/1000);
-//							if (null != mDBHelper && cacheLocalMsg) { // 保存开场白
-//								mDBHelper.insert(msg);
-//							}
-							if (null != mHandler) { // 将开场白回调到message消息接口
-								mHandler.post(new OnMessageRunnable(msg));
-							} else if (getMessageListener() != null) {
-								getMessageListener().onMessage(msg);
-							}
+						if (callback) {
+							sendPrologue(null);
+							return;
 						}
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
+				}
+				if (callback) {
+					sendPrologue(null);
+					return;
 				}
 			}
 			
 			@Override
 			public void onFailure(int statusCode, String responseString) {
 				Logger.e(TAG, "statusCode:" + statusCode + " responseString:" + responseString);
+				if (callback) {
+					sendPrologue(null);
+					return;
+				}
 			}
 		});
+	}
+	
+	private void sendPrologue(String prologue) {
+		String intro = null;
+		if (!TextUtils.isEmpty(prologue)) {
+			intro = prologue;
+		} else {
+			if (getConfig().getWorkerType() == 2 && 
+					!TextUtils.isEmpty(getConfig().getWorkerIntro())) {
+				intro = getConfig().getWorkerIntro();
+				intro = intro.replaceAll("\\[@nickname\\]", getConfig().getWorkerName());
+			} else if (!TextUtils.isEmpty(getConfig().getRobotIntro())) {
+				intro = getConfig().getRobotIntro();
+			}
+		}
+		if (TextUtils.isEmpty(intro)) {
+			return;
+		}
+		V5TextMessage msg = V5MessageManager.getInstance().obtainTextMessage(intro);
+		msg.setDirection(V5MessageDefine.MSG_DIR_FROM_ROBOT);
+		msg.setSession_start(mSessionStart);
+		msg.setMsg_id(V5Util.getCurrentLongTime()/1000);
+//		if (null != mDBHelper && cacheLocalMsg) { // 保存开场白
+//			mDBHelper.insert(msg);
+//		}
+		if (null != mHandler) { // 将开场白回调到message消息接口
+			mHandler.post(new OnMessageRunnable(msg));
+		} else if (getMessageListener() != null) {
+			getMessageListener().onMessage(msg);
+		}
 	}
 	
 	/**
@@ -716,7 +800,7 @@ public class V5ClientAgent {
 	}
 	
 	protected void onAppGoForeGround() {
-		Logger.w(TAG, "[onAppGoForeGround]");
+		Logger.v(TAG, "[onAppGoForeGround]");
 //		V5ClientConfig.NOTIFICATION_SHOW = false;
 		if (mContext == null) {
 			//errorHandle(new V5KFException(V5ExceptionStatus.ExceptionUnknownError, "Client not start, please start by V5ClientAgent.getInstance().start"));
@@ -738,7 +822,7 @@ public class V5ClientAgent {
 	}
 	
 	protected void onAppGoBackground() {
-		Logger.w(TAG, "[onAppGoBackground]");
+		Logger.v(TAG, "[onAppGoBackground]");
 //		V5ClientConfig.NOTIFICATION_SHOW = true;
 		if (mConfigSP != null && mConfigSP.readAppPush() == 0) {
 			return;
@@ -757,7 +841,7 @@ public class V5ClientAgent {
 	 */
 	public void onStart() {
 		isForeground++;
-		Logger.d(TAG, "<onStart> isForeground:" + isForeground);
+//		Logger.d(TAG, "<onStart> isForeground:" + isForeground);
 		if (isForeground > 1) {
 			return;
 		} else if (isForeground < 1) {
@@ -772,7 +856,7 @@ public class V5ClientAgent {
 	 */
 	public void onStop() {
 		isForeground--;
-		Logger.d(TAG, "<onStop> isForeground:" + isForeground);
+//		Logger.d(TAG, "<onStop> isForeground:" + isForeground);
 		if (isForeground > 0) {
 			return;
 		} else if (isForeground < 0) {
@@ -804,6 +888,60 @@ public class V5ClientAgent {
 
 		mMessageListener = null;
 		mContext = null;
+	}
+	
+	/**
+	 * 添加用户信息（可在对话过程中添加，但目前坐席端需要刷新才生效，所以不推荐）
+	 * @param info
+	 */
+	public void addUserInfo(JSONObject info) {
+		if (info == null || info.length() == 0) {
+			return;
+		}
+		JSONArray customArray = new JSONArray();
+        Iterator<String> it = info.keys();
+        try {
+            while (it.hasNext()) {  
+                String key = (String) it.next();  
+                String value = info.getString(key);
+                JSONObject item = new JSONObject();
+                item.putOpt("key", key);
+                item.putOpt("val", value);
+                customArray.put(item);
+            }
+            if (isConnected()) {
+            	JSONObject json = new JSONObject();
+    			try {
+    				json.put("magic_arr", customArray);
+    				sendMagicInfo(json);
+    			} catch (JSONException e) {
+    				e.printStackTrace();
+    			}
+            } else {
+            	_magic = customArray;
+            }
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 发送magic信息
+	 */
+	protected void sendMagicInfo(JSONObject info) {
+		try {
+			JSONObject json = new JSONObject();
+			json.put("o_type", "message");
+			json.put("message_type", 26);
+			json.put("code", 2);
+			json.put("mjson", info);
+			V5JSONMessage jsonMsg = new V5JSONMessage(json);
+			sendMessage(jsonMsg.toJson());
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -1376,5 +1514,219 @@ public class V5ClientAgent {
 
 	protected void setGetMessagesCallback(OnGetMessagesCallback mGetMessagesCallback) {
 		this.mGetMessagesCallback = mGetMessagesCallback;
+	}
+	
+	/**
+	 * 连接建立
+	 */
+	protected void onConnect() {
+		sendOnLineMessage(); // 发上线消息
+		if (V5ClientConfig.AUTO_WORKER_SERVICE) { // 自动转人工客服
+			switchToArtificialService(null);
+		}
+		
+		if (_magic != null) {
+			JSONObject info = new JSONObject();
+			try {
+				info.put("magic_arr", _magic);
+				sendMagicInfo(info);
+				_magic = null;
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		if (V5ClientConfig.UI_SUPPORT) {
+			updateMessages();
+		} else {
+			// onConnect回调
+			if (null != getHandler()) { 
+				getHandler().post(new Runnable() {
+					
+					@Override
+					public void run() {
+						if (getMessageListener() != null) {
+							getMessageListener().onConnect();
+						}
+					}
+				});
+			} else if (getMessageListener() != null) {
+				getMessageListener().onConnect();
+			}
+		}
+	}
+	
+	/**
+	 * 接收消息
+	 */
+	protected void onMessage(String message) {
+		try {
+			JSONObject json = new JSONObject(message);
+			if (json.optString("o_type").equals("message")) {
+				V5Message messageBean = V5MessageManager.getInstance().receiveMessage(json);
+				messageBean.setSession_start(mSessionStart);
+				if (messageBean.getMsg_id() > 0 && messageBean.getMsg_id() < V5ClientAgent.OPEN_QUES_MAX_ID) {
+					// 开场问题的答案，在Activity里缓存
+				} else if (null != mDBHelper && cacheLocalMsg) {
+					mDBHelper.insert(messageBean);
+				}
+				if (null != getHandler()) { // 回调到Message消息接口
+					getHandler().post(new OnMessageRunnable(messageBean));
+				} else if (getMessageListener() != null) {
+					getMessageListener().onMessage(messageBean);
+				}
+			} else if (json.optString("o_type").equals("session")) {
+				if (json.optString("o_method").equals("get_status")) { // 对话状态信息：机器人或者客服信息
+					int status = json.optInt("status");
+					if (status == 2) {
+						String nickname = json.optString("nickname");
+						String photo = json.optString("photo");
+						long wid = json.optLong("w_id");
+						getConfig().setWorkerPhoto(photo);
+						getConfig().setWorkerName(nickname);
+						getConfig().setWorkerId(wid);
+						getConfig().setWorkerType(status);
+						// 保存wid->photo到本地
+						V5ConfigSP configSP = new V5ConfigSP(getContext());
+						configSP.savePhoto(wid, photo);
+					}
+					final ClientServingStatus ss = ClientServingStatus.getStatus(status);
+					if (null != getHandler()) { // 回调到Message消息接口
+						getHandler().post(new Runnable() {
+							
+							@Override
+							public void run() {
+								if (getMessageListener() != null) {
+									getMessageListener().onServingStatusChange(ss);
+								}
+							}
+						});
+					} else if (getMessageListener() != null) {
+						getMessageListener().onServingStatusChange(ss);
+					}
+				} else if (json.optString("o_method").equals("get_messages")) {
+					if (V5ClientConfig.UI_SUPPORT) { // 需要界面显示查询并缓存离线消息
+						List<V5Message> msgs = new ArrayList<V5Message>();
+						JSONArray messages = json.optJSONArray("messages");
+						if (null != messages && messages.length() > 0) {
+							for (int i = 0; i < messages.length(); i++) {
+								JSONObject item = messages.getJSONObject(i);
+								V5Message msg = V5MessageManager.getInstance().receiveMessage(item);
+								if (msg.getMsg_id() > 0 && msg.getMsg_id() < V5ClientAgent.OPEN_QUES_MAX_ID) {
+									// 排除开场问题
+								} else {
+									msgs.add(0, msg);
+								}
+								V5Message candidate = null;
+								if (msg.getCandidate() != null && msg.getCandidate().size() > 0) {
+									candidate = msg.getCandidate().get(0);
+									if (candidate.getDirection() == V5MessageDefine.MSG_DIR_FROM_ROBOT) {
+										msgs.add(0, candidate);
+									}
+									msg.setCandidate(null);
+								}
+							}
+						}
+						
+						if (mMsgIdCount == 0) {
+							mMsgIdCount = msgs.size() + 1; //+V5Util.getCurrentLongTime()%100
+						}
+	
+						if (getGetMessagesCallback() != null) {
+							if (null != getHandler()) { // 回调到GetMessagesCallback接口
+								getHandler().post(new GetOfflineMessageRunnable(msgs, json.optInt("offset"), json.optInt("size"), json.optBoolean("finish")));
+							} else if (getGetMessagesCallback() != null) {
+								getGetMessagesCallback().complete(msgs, json.optInt("offset"), json.optInt("size"), json.optBoolean("finish"));
+							}
+						} else {
+							// 插入数据库
+							if (msgs.size() > 0 && cacheLocalMsg) {
+								// msgs倒序
+								Collections.reverse(msgs);
+								if (null != mDBHelper) {
+									/**
+									 * 注意插入数据库的顺序，决定了读取消息记录的顺序
+									 */
+									for (V5Message msg : msgs) {
+										mDBHelper.insert(msg);
+									}
+								}
+							}
+							
+							// onConnect回调
+							if (null != getHandler()) { 
+								getHandler().post(new Runnable() {
+									
+									@Override
+									public void run() {
+										if (getMessageListener() != null) {
+											getMessageListener().onConnect();
+										}
+									}
+								});
+							} else if (getMessageListener() != null) {
+								getMessageListener().onConnect();
+							}
+						}
+					} else if (getGetMessagesCallback() != null) {
+						List<V5Message> msgs = new ArrayList<V5Message>();
+						JSONArray messages = json.optJSONArray("messages");
+						if (null != messages && messages.length() > 0) {
+							for (int i = 0; i < messages.length(); i++) {
+								JSONObject item = messages.getJSONObject(i);
+								V5Message msg = V5MessageManager.getInstance().receiveMessage(item);
+								if (msg.getMsg_id() > 0 && msg.getMsg_id() < V5ClientAgent.OPEN_QUES_MAX_ID) {
+									// 排除开场问题
+								} else {
+									msgs.add(0, msg);
+								}
+								V5Message candidate = null;
+								if (msg.getCandidate() != null && msg.getCandidate().size() > 0) {
+									candidate = msg.getCandidate().get(0);
+									if (candidate.getDirection() == V5MessageDefine.MSG_DIR_FROM_ROBOT) {
+										msgs.add(0, candidate);
+									}
+									msg.setCandidate(null);
+								}
+							}
+						}
+						if (null != getHandler()) { // 回调到GetMessagesCallback接口
+							getHandler().post(new GetOfflineMessageRunnable(msgs, json.optInt("offset"), json.optInt("size"), json.optBoolean("finish")));
+						} else if (getGetMessagesCallback() != null) {
+							getGetMessagesCallback().complete(msgs, json.optInt("offset"), json.optInt("size"), json.optBoolean("finish"));
+						}
+					} else {
+						if (null != getHandler()) { // 回调到字符串消息接口
+							getHandler().post(new OnMessageRunnable(message));
+						} else if (getMessageListener() != null) {
+							getMessageListener().onMessage(message);
+						}
+					}
+				} else {
+					if (null != getHandler()) { // 回调到字符串消息接口
+						getHandler().post(new OnMessageRunnable(message));
+					} else if (getMessageListener() != null) {
+						getMessageListener().onMessage(message);
+					}
+				}
+			} else if (json.has("o_error")) {
+				int code = json.getInt("o_error");
+				if (code != 0) {
+					String desc = json.optString("o_errmsg");
+					errorHandle(new V5KFException(
+							V5ExceptionStatus.ExceptionServerResponse, "[" + code + "]" + desc));//认证错误
+				}
+			} else {
+				if (null != getHandler()) { // 回调到字符串消息接口
+					getHandler().post(new OnMessageRunnable(message));
+				} else if (getMessageListener() != null) {
+					getMessageListener().onMessage(message);
+				}
+			}
+		} catch (JSONException e) {
+			//e.printStackTrace();
+			Log.e(TAG, "", e);
+			errorHandle(new V5KFException(V5ExceptionStatus.ExceptionUnknownError, "Unknown error, try reconnect"));
+//			connectWebsocket(true);
+		}
 	}
 }

@@ -3,9 +3,6 @@ package com.v5kf.client.ui.keyboard;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.v5kf.client.lib.Logger;
-import com.v5kf.client.ui.utils.UIUtil;
-
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -18,10 +15,12 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 
+import com.v5kf.client.ui.utils.UIUtil;
+
 public class EmoticonsPageView extends ViewPager implements IEmoticonsKeyboard, IView {
 
     private Context mContext;
-    private int mHeight = 0;
+//    private int mHeight = 0;
     private int mMaxEmoticonSetPageCount = 0;
     public int mOldPagePosition = -1;
 
@@ -47,7 +46,7 @@ public class EmoticonsPageView extends ViewPager implements IEmoticonsKeyboard, 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mHeight = h;
+//        mHeight = h;
         EmoticonsPageView.this.post(new Runnable() {
             @Override
             public void run() {
@@ -127,7 +126,7 @@ public class EmoticonsPageView extends ViewPager implements IEmoticonsKeyboard, 
         }
 
         int screenWidth = UIUtil.getScreenWidth(mContext); //Utils.getDisplayWidthPixels(mContext);
-        int maxPagerHeight = mHeight;
+//        int maxPagerHeight = mHeight;
 
         mEmoticonPageViews.clear();
         mEmoticonsViewPagerAdapter.notifyDataSetChanged();

@@ -246,7 +246,6 @@ public class ClientChatActivity extends Activity implements V5MessageListener,
 
 	private void reloadAllViews(int orientation) {
 		// TODO
-		Logger.w(TAG, "[reloadAllViews] orientation:" + orientation);
 		setContentView(R.layout.v5_activity_client_chat);
 	    // 重新布局，注意，这里删除了init()，否则又初始化了，状态就丢失
 	    findView();
@@ -491,14 +490,15 @@ public class ClientChatActivity extends Activity implements V5MessageListener,
                     @Override
                     public void run() {
                     	if (height > 0) { // 软键盘弹出
-                    		mKeyBar.setClicked(false);
+                    		mKeyBar.setManualOpen(false);
                     		scrollToBottom(false);
                     	} else if (height == 0) { // 软键盘收起
-                    		if (mKeyBar.isKeyBoardFootShow() && !mKeyBar.isClicked()) {
+                    		//isManualOpen()判断是否手动点击展开KeyBar，非手动关闭时不自动关闭
+                    		if (mKeyBar.isKeyBoardFootShow() && !mKeyBar.isManualOpen()) {
                 				mKeyBar.hideAutoView();
                 			}
-                    		mKeyBar.setClicked(false);
-                    		//scrollToBottom(false);
+                    		mKeyBar.setManualOpen(false);
+                    		scrollToBottom(false);
                     	} else if (height == -1) { // 输入扩展框大小变化
                     		// 弹出
                     		scrollToBottom(false);
@@ -700,7 +700,7 @@ public class ClientChatActivity extends Activity implements V5MessageListener,
 			
 			@Override
 			public void run() {
-				final String responseString = HttpUtil.getHttpResp(HttpUtil.getHotReqsHttpUrl(getApplicationContext()));
+				final String responseString = HttpUtil.getHttpResp(V5Util.getHotQuesUrl(getApplicationContext()));
 				if (responseString != null) {
 					mHandler.post(new Runnable() { // 在UI线程执行
 						
@@ -734,9 +734,9 @@ public class ClientChatActivity extends Activity implements V5MessageListener,
 	}
 	
 	private void showQuestionList() {
-		mKeyBar.setClicked(true);
-		Utils.closeSoftKeyboard(ClientChatActivity.this);
-		mKeyBar.showAutoView();
+//		mKeyBar.setManualOpen(true);
+//		Utils.closeSoftKeyboard(ClientChatActivity.this);
+//		mKeyBar.showAutoView();
 		mKeyBar.show(EmoticonsKeyBoardBar.FUNC_CHILLDVIEW_LIST);
 	}
 
@@ -816,7 +816,7 @@ public class ClientChatActivity extends Activity implements V5MessageListener,
 	}
 	
 	private void scrollToBottom(boolean smooth) {
-		Logger.d(TAG, "scrollToBottom:" + smooth);
+//		Logger.d(TAG, "scrollToBottom:" + smooth);
 		int position = mDatas.size() -  1;
 		if (position >= 0) {
 			if (smooth) {
@@ -828,11 +828,11 @@ public class ClientChatActivity extends Activity implements V5MessageListener,
 	}
 	
 	private void notifyChatDataSetChange() {
-		Logger.i(TAG, "[notifyChatDataSetChange]");
+//		Logger.i(TAG, "[notifyChatDataSetChange]");
 		mChatListAdapter.notifyDataSetChanged();
 	}
 	private void notifyQuestionDataSetChange(List<String> faqs) {
-		Logger.i(TAG, "[notifyQuestionDataSetChange] faqs:" + faqs);
+//		Logger.i(TAG, "[notifyQuestionDataSetChange] faqs:" + faqs);
 		if (faqs == null) {
 			return;
 		}
@@ -853,7 +853,7 @@ public class ClientChatActivity extends Activity implements V5MessageListener,
 	
 	/* 仅供adapter调用，每次调用延迟200ms更新 */
 	public void sendEmptyMessage(int what) {
-		Logger.d(TAG, "[sendEmptyMessage]");
+//		Logger.d(TAG, "[sendEmptyMessage]");
 		if (!scrollUp) {
 			mHandler.removeMessages(what);
 			mHandler.sendEmptyMessageDelayed(what, 200);

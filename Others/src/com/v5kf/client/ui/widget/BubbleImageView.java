@@ -59,13 +59,13 @@ public class BubbleImageView extends ImageView {
 
 	private void initView(AttributeSet attrs) {
 		if (attrs != null) {
-			TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.BubbleImageView);
-			mAngle = (int) a.getDimension(R.styleable.BubbleImageView_bubble_angle, mAngle);
-			mArrowHeight = (int) a.getDimension(R.styleable.BubbleImageView_bubble_arrowHeight, mArrowHeight);
-			mArrowOffset = (int) a.getDimension(R.styleable.BubbleImageView_bubble_arrowOffset, mArrowOffset);
-			mArrowTop = (int) a.getDimension(R.styleable.BubbleImageView_bubble_arrowTop, mArrowTop);
-			mArrowWidth = (int) a.getDimension(R.styleable.BubbleImageView_bubble_arrowWidth, mAngle);
-			mArrowLocation = a.getInt(R.styleable.BubbleImageView_bubble_arrowLocation, mArrowLocation);
+			TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.V5_BubbleImageView);
+			mAngle = (int) a.getDimension(R.styleable.V5_BubbleImageView_v5_bubble_angle, mAngle);
+			mArrowHeight = (int) a.getDimension(R.styleable.V5_BubbleImageView_v5_bubble_arrowHeight, mArrowHeight);
+			mArrowOffset = (int) a.getDimension(R.styleable.V5_BubbleImageView_v5_bubble_arrowOffset, mArrowOffset);
+			mArrowTop = (int) a.getDimension(R.styleable.V5_BubbleImageView_v5_bubble_arrowTop, mArrowTop);
+			mArrowWidth = (int) a.getDimension(R.styleable.V5_BubbleImageView_v5_bubble_arrowWidth, mAngle);
+			mArrowLocation = a.getInt(R.styleable.V5_BubbleImageView_v5_bubble_arrowLocation, mArrowLocation);
 			a.recycle();
 		}
 	}

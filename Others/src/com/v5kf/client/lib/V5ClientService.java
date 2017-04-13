@@ -4,14 +4,9 @@ import java.lang.ref.WeakReference;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -29,13 +24,8 @@ import android.os.Message;
 import android.util.Log;
 
 import com.v5kf.client.lib.NetworkManager.NetworkListener;
-import com.v5kf.client.lib.V5ClientAgent.ClientServingStatus;
-import com.v5kf.client.lib.V5ClientAgent.GetOfflineMessageRunnable;
-import com.v5kf.client.lib.V5ClientAgent.OnMessageRunnable;
 import com.v5kf.client.lib.V5KFException.V5ExceptionStatus;
 import com.v5kf.client.lib.V5WebSocketHelper.WebsocketListener;
-import com.v5kf.client.lib.entity.V5Message;
-import com.v5kf.client.lib.entity.V5MessageDefine;
 
 public class V5ClientService extends Service implements NetworkListener, WebsocketListener {
 
@@ -50,11 +40,6 @@ public class V5ClientService extends Service implements NetworkListener, Websock
 	private ServiceHandler mHandler;
 	private String mUrl;
 	private static V5WebSocketHelper mClient;
-	
-	private DBHelper mDBHelper;
-	private V5ConfigSP mConfigSP;
-	private boolean cacheLocalMsg;
-	private long mSessionStart;
 	
 	private int mRetryCount = 0;
 	
@@ -143,15 +128,8 @@ public class V5ClientService extends Service implements NetworkListener, Websock
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Logger.w(TAG, "[onStartCommand]");
+		Logger.d(TAG, "[onStartCommand]");
 		mRetryCount = 0;
-		if (mConfigSP == null) {
-			mConfigSP = new V5ConfigSP(this);
-		}
-		cacheLocalMsg = V5ClientConfig.UI_SUPPORT ? true : mConfigSP.readLocalDbFlag();
-		if (mDBHelper == null && cacheLocalMsg) {
-			mDBHelper = new DBHelper(this);
-		}
 		/* 开启service前需确保认证授权authorization不为空 */
 		connectWebsocket(true);
 		return super.onStartCommand(intent, flags, startId);
@@ -163,20 +141,20 @@ public class V5ClientService extends Service implements NetworkListener, Websock
 	
 	private synchronized void connectWebsocket(boolean forceNew) {
 		if (V5ClientAgent.getInstance().isExit()) {
-			Logger.w(TAG, "[connectWebsocket] isExit return");
+			Logger.v(TAG, "[connectWebsocket] isExit return");
 			return;
 		}
 		if (mClient != null && mClient.isConnected()) {
-			Logger.w(TAG, "[connectWebsocket] isConnected return");
+			Logger.v(TAG, "[connectWebsocket] isConnected return");
 			return;
 		}
 		if (_connectBlock) {
-			Logger.w(TAG, "[connectWebsocket] _block return");
+			Logger.v(TAG, "[connectWebsocket] _block return");
 			return;
 		}
 		_connectBlock = true;
 		
-		Logger.d(TAG, "[connectWebsocket] auth:" +  V5ClientConfig.getInstance(this).getAuthorization());
+		Logger.v(TAG, "[connectWebsocket] auth:" +  V5ClientConfig.getInstance(this).getAuthorization());
 		V5ClientConfig config = V5ClientConfig.getInstance(this);
 		
 		if (mClient != null) { // 已连接
@@ -237,23 +215,23 @@ public class V5ClientService extends Service implements NetworkListener, Websock
 			//Logger.d(TAG, "visitor_id:" + config.getV5VisitorId());
 			mClient.connect();
 			if (mUrl != null) {
-				Logger.i(TAG, "mUrl:" + mUrl);
+				Logger.d(TAG, "mUrl:" + mUrl);
 			}
 //		}
 	}
 	
 	private void keepService() {
-		Logger.d(TAG, "[keepService] connect:" + isConnected() + " network:" + NetworkManager.isConnected(this));
+		Logger.v(TAG, "[keepService] connect:" + isConnected() + " network:" + NetworkManager.isConnected(this));
 		if (NetworkManager.isConnected(this) ) { // 判断是否连接
 			if (isConnected()) {
-				Logger.i(TAG, "[keepService] -> connected");
+				Logger.v(TAG, "[keepService] -> connected");
 				mClient.ping();
 			} else {
-				Logger.i(TAG, "[keepService] -> not connect -> try connect");
+				Logger.v(TAG, "[keepService] -> not connect -> try connect");
 				connectWebsocket();
 			}
 		} else {
-			Logger.i(TAG, "[keepService] -> Network not connect");
+			Logger.d(TAG, "[keepService] -> Network not connect");
 		}
 	}
 
@@ -310,7 +288,7 @@ public class V5ClientService extends Service implements NetworkListener, Websock
 			if (null == intent) {
 				return;
 			}
-			Logger.i(TAG, "<>onReceiver<>:" + intent.getAction());
+			Logger.v(TAG, "<>onReceiver<>:" + intent.getAction());
 			if (intent.getAction().equals(ACTION_ALARM)) {
 				// 定时心跳包
 				if (V5ClientConfig.getInstance(getApplicationContext()).isHeartBeatEnable()) {
@@ -328,7 +306,7 @@ public class V5ClientService extends Service implements NetworkListener, Websock
 					mClient.disconnect();
 				}
 				stopSelf();
-				Logger.w(TAG, "onReceiver:" + intent.getAction());
+				Logger.d(TAG, "onReceiver:" + intent.getAction());
 			}
 		}
 	}
@@ -336,7 +314,7 @@ public class V5ClientService extends Service implements NetworkListener, Websock
 
 	@Override
 	public void onNetworkStatusChange(int netStatus, int oldStatus) {
-		Logger.i(TAG, "[onNetworkStatusChange] -> " + netStatus);
+		Logger.d(TAG, "[onNetworkStatusChange] -> " + netStatus);
 		switch (netStatus) {
 		case NetworkManager.NETWORK_MOBILE:
 		case NetworkManager.NETWORK_WIFI:
@@ -371,204 +349,13 @@ public class V5ClientService extends Service implements NetworkListener, Websock
 		
 		mRetryCount = 0;
 		
-		V5ClientAgent.getInstance().sendOnLineMessage(); // 发上线消息
-		mSessionStart = V5ClientAgent.getInstance().getCurrentSessionStart();
-		if (V5ClientConfig.AUTO_WORKER_SERVICE) { // 自动转人工客服
-			V5ClientAgent.getInstance().switchToArtificialService(null);
-		}
-		
-		if (V5ClientConfig.UI_SUPPORT) {
-			V5ClientAgent.getInstance().updateMessages();
-		} else {
-			// onConnect回调
-			if (null != V5ClientAgent.getInstance().getHandler()) { 
-				V5ClientAgent.getInstance().getHandler().post(new Runnable() {
-					
-					@Override
-					public void run() {
-						if (V5ClientAgent.getInstance().getMessageListener() != null) {
-							V5ClientAgent.getInstance().getMessageListener().onConnect();
-						}
-					}
-				});
-			} else if (V5ClientAgent.getInstance().getMessageListener() != null) {
-				V5ClientAgent.getInstance().getMessageListener().onConnect();
-			}
-		}
+		V5ClientAgent.getInstance().onConnect();
 	}
 
 	@Override
 	public void onMessage(String message) {
-		Logger.i(TAG, ">>>onMessage<<<:" + message);
-		try {
-			JSONObject json = new JSONObject(message);
-			if (json.optString("o_type").equals("message")) {
-				V5Message messageBean = V5MessageManager.getInstance().receiveMessage(json);
-				messageBean.setSession_start(mSessionStart);
-				if (messageBean.getMsg_id() > 0 && messageBean.getMsg_id() < V5ClientAgent.OPEN_QUES_MAX_ID) {
-					// 开场问题的答案，在Activity里缓存
-				} else if (null != mDBHelper && cacheLocalMsg) {
-					mDBHelper.insert(messageBean);
-				}
-				if (null != V5ClientAgent.getInstance().getHandler()) { // 回调到Message消息接口
-					V5ClientAgent.getInstance().getHandler().post(new OnMessageRunnable(messageBean));
-				} else if (V5ClientAgent.getInstance().getMessageListener() != null) {
-					V5ClientAgent.getInstance().getMessageListener().onMessage(messageBean);
-				}
-			} else if (json.optString("o_type").equals("session")) {
-				if (json.optString("o_method").equals("get_status")) { // 对话状态信息：机器人或者客服信息
-					int status = json.optInt("status");
-					if (status == 2) {
-						String nickname = json.optString("nickname");
-						String photo = json.optString("photo");
-						long wid = json.optLong("w_id");
-						V5ClientAgent.getInstance().getConfig().setWorkerPhoto(photo);
-						V5ClientAgent.getInstance().getConfig().setWorkerName(nickname);
-						V5ClientAgent.getInstance().getConfig().setWorkerId(wid);
-						V5ClientAgent.getInstance().getConfig().setWorkerType(status);
-						// 保存wid->photo到本地
-						V5ConfigSP configSP = new V5ConfigSP(getApplicationContext());
-						configSP.savePhoto(wid, photo);
-					}
-					final ClientServingStatus ss = ClientServingStatus.getStatus(status);
-					if (null != V5ClientAgent.getInstance().getHandler()) { // 回调到Message消息接口
-						V5ClientAgent.getInstance().getHandler().post(new Runnable() {
-							
-							@Override
-							public void run() {
-								if (V5ClientAgent.getInstance().getMessageListener() != null) {
-									V5ClientAgent.getInstance().getMessageListener().onServingStatusChange(ss);
-								}
-							}
-						});
-					} else if (V5ClientAgent.getInstance().getMessageListener() != null) {
-						V5ClientAgent.getInstance().getMessageListener().onServingStatusChange(ss);
-					}
-				} else if (json.optString("o_method").equals("get_messages")) {
-					if (V5ClientConfig.UI_SUPPORT) { // 需要界面显示查询并缓存离线消息
-						List<V5Message> msgs = new ArrayList<V5Message>();
-						JSONArray messages = json.optJSONArray("messages");
-						if (null != messages && messages.length() > 0) {
-							for (int i = 0; i < messages.length(); i++) {
-								JSONObject item = messages.getJSONObject(i);
-								V5Message msg = V5MessageManager.getInstance().receiveMessage(item);
-								if (msg.getMsg_id() > 0 && msg.getMsg_id() < V5ClientAgent.OPEN_QUES_MAX_ID) {
-									// 排除开场问题
-								} else {
-									msgs.add(0, msg);
-								}
-								V5Message candidate = null;
-								if (msg.getCandidate() != null && msg.getCandidate().size() > 0) {
-									candidate = msg.getCandidate().get(0);
-									if (candidate.getDirection() == V5MessageDefine.MSG_DIR_FROM_ROBOT) {
-										msgs.add(0, candidate);
-									}
-									msg.setCandidate(null);
-								}
-							}
-						}
-						
-						if (V5ClientAgent.getInstance().mMsgIdCount == 0) {
-							V5ClientAgent.getInstance().mMsgIdCount = msgs.size() + 1; //+V5Util.getCurrentLongTime()%100
-						}
-	
-						if (V5ClientAgent.getInstance().getGetMessagesCallback() != null) {
-							if (null != V5ClientAgent.getInstance().getHandler()) { // 回调到GetMessagesCallback接口
-								V5ClientAgent.getInstance().getHandler().post(new GetOfflineMessageRunnable(msgs, json.optInt("offset"), json.optInt("size"), json.optBoolean("finish")));
-							} else if (V5ClientAgent.getInstance().getGetMessagesCallback() != null) {
-								V5ClientAgent.getInstance().getGetMessagesCallback().complete(msgs, json.optInt("offset"), json.optInt("size"), json.optBoolean("finish"));
-							}
-						} else {
-							// 插入数据库
-							if (msgs.size() > 0 && cacheLocalMsg) {
-								// msgs倒序
-								Collections.reverse(msgs);
-								if (null != mDBHelper) {
-									/**
-									 * 注意插入数据库的顺序，决定了读取消息记录的顺序
-									 */
-									for (V5Message msg : msgs) {
-										mDBHelper.insert(msg);
-									}
-								}
-							}
-							
-							// onConnect回调
-							if (null != V5ClientAgent.getInstance().getHandler()) { 
-								V5ClientAgent.getInstance().getHandler().post(new Runnable() {
-									
-									@Override
-									public void run() {
-										if (V5ClientAgent.getInstance().getMessageListener() != null) {
-											V5ClientAgent.getInstance().getMessageListener().onConnect();
-										}
-									}
-								});
-							} else if (V5ClientAgent.getInstance().getMessageListener() != null) {
-								V5ClientAgent.getInstance().getMessageListener().onConnect();
-							}
-						}
-					} else if (V5ClientAgent.getInstance().getGetMessagesCallback() != null) {
-						List<V5Message> msgs = new ArrayList<V5Message>();
-						JSONArray messages = json.optJSONArray("messages");
-						if (null != messages && messages.length() > 0) {
-							for (int i = 0; i < messages.length(); i++) {
-								JSONObject item = messages.getJSONObject(i);
-								V5Message msg = V5MessageManager.getInstance().receiveMessage(item);
-								if (msg.getMsg_id() > 0 && msg.getMsg_id() < V5ClientAgent.OPEN_QUES_MAX_ID) {
-									// 排除开场问题
-								} else {
-									msgs.add(0, msg);
-								}
-								V5Message candidate = null;
-								if (msg.getCandidate() != null && msg.getCandidate().size() > 0) {
-									candidate = msg.getCandidate().get(0);
-									if (candidate.getDirection() == V5MessageDefine.MSG_DIR_FROM_ROBOT) {
-										msgs.add(0, candidate);
-									}
-									msg.setCandidate(null);
-								}
-							}
-						}
-						if (null != V5ClientAgent.getInstance().getHandler()) { // 回调到GetMessagesCallback接口
-							V5ClientAgent.getInstance().getHandler().post(new GetOfflineMessageRunnable(msgs, json.optInt("offset"), json.optInt("size"), json.optBoolean("finish")));
-						} else if (V5ClientAgent.getInstance().getGetMessagesCallback() != null) {
-							V5ClientAgent.getInstance().getGetMessagesCallback().complete(msgs, json.optInt("offset"), json.optInt("size"), json.optBoolean("finish"));
-						}
-					} else {
-						if (null != V5ClientAgent.getInstance().getHandler()) { // 回调到字符串消息接口
-							V5ClientAgent.getInstance().getHandler().post(new OnMessageRunnable(message));
-						} else if (V5ClientAgent.getInstance().getMessageListener() != null) {
-							V5ClientAgent.getInstance().getMessageListener().onMessage(message);
-						}
-					}
-				} else {
-					if (null != V5ClientAgent.getInstance().getHandler()) { // 回调到字符串消息接口
-						V5ClientAgent.getInstance().getHandler().post(new OnMessageRunnable(message));
-					} else if (V5ClientAgent.getInstance().getMessageListener() != null) {
-						V5ClientAgent.getInstance().getMessageListener().onMessage(message);
-					}
-				}
-			} else if (json.has("o_error")) {
-				int code = json.getInt("o_error");
-				if (code != 0) {
-					String desc = json.optString("o_errmsg");
-					V5ClientAgent.getInstance().errorHandle(new V5KFException(
-							V5ExceptionStatus.ExceptionServerResponse, "[" + code + "]" + desc));//认证错误
-				}
-			} else {
-				if (null != V5ClientAgent.getInstance().getHandler()) { // 回调到字符串消息接口
-					V5ClientAgent.getInstance().getHandler().post(new OnMessageRunnable(message));
-				} else if (V5ClientAgent.getInstance().getMessageListener() != null) {
-					V5ClientAgent.getInstance().getMessageListener().onMessage(message);
-				}
-			}
-		} catch (JSONException e) {
-			//e.printStackTrace();
-			Log.e(TAG, "", e);
-			V5ClientAgent.getInstance().errorHandle(new V5KFException(V5ExceptionStatus.ExceptionUnknownError, "Unknown error, try reconnect"));
-			connectWebsocket(true);
-		}
+		Logger.d(TAG, ">>>onMessage<<<:" + message);
+		V5ClientAgent.getInstance().onMessage(message);
 	}
 
 	@Override
@@ -638,7 +425,7 @@ public class V5ClientService extends Service implements NetworkListener, Websock
 				V5ClientAgent.getInstance().errorHandle(new V5KFException(V5ExceptionStatus.ExceptionNoNetwork, "no network"));
 			} else {
 				if (mClient.getStatusCode() == 406 || mClient.getStatusCode() == 404) {
-					Logger.d(TAG, "onError mReAuthCount:" + mRetryCount);
+					Logger.d(TAG, "onError 40x retry:" + mRetryCount);
 					if (mRetryCount < 3) {
 						try {
 							V5ClientAgent.getInstance().doAccountAuth();

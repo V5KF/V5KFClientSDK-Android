@@ -27,7 +27,7 @@ import com.v5kf.client.ui.callback.UserWillSendMessageListener;
 public class MainActivity extends AppCompatActivity implements OnChatActivityListener {
 
     private static final String TAG = "MainActivity";
-    private boolean flag_userBrowseSomething = true; // 浏览某商品标志
+//    private boolean flag_userBrowseSomething = true; // 浏览某商品标志
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +65,29 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
         // 设置用户头像URL
         config.setAvatar("http://debugimg-10013434.image.myqcloud.com/fe1382d100019cfb572b1934af3d2c04/thumbnail");
         config.setVip(0); // 设置用户VIP等级（0-5）
-        //config.setUid(uid); // 【必须】设置用户ID，以识别不同登录用户，不设置则默认由SDK生成
+        /**
+         *【建议】设置用户OpenId，以识别不同登录用户，不设置则默认由SDK生成，替代v1.2.0之前的uid,
+         *  openId将透传到座席端(建议使用含字母数字和下划线的字符串，尽量不用特殊字符，若含特殊字符则经过URL encode)
+         */
+        config.setOpenId("android_sdk_test");
+        //config.setUid(uid); //【弃用】请使用setOpenId替代
         // 设置device_token：集成第三方推送(腾讯信鸽、百度云推)时设置此参数以在离开会话界面时接收推送消息
         //config.setDeviceToken(XGPushConfig.getToken(getApplicationContext())); // 【建议】设置deviceToken
+
+        // 客户信息键值对（JSONObject）
+        JSONObject customContent = new JSONObject();
+        try {
+            customContent.put("用户名", "V5KF");
+            customContent.put("用户级别", "VIP");
+            customContent.put("用户积分", "3000");
+            customContent.put("浏览商品", "衬衣");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        // 设置客户信息（自定义JSONObjectjian键值对，开启会话前设置）
+        config.setUserInfo(customContent);
     }
+
 
     private void startChatActivity() {
         /* 开启会话界面 */
@@ -104,20 +123,21 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
 
             @Override
             public V5Message onUserWillSendMessage(V5Message message) {
-                // TODO 可在此处添加消息参数(JSONObject键值对均为字符串)，采集信息透传到坐席端
-                if (flag_userBrowseSomething) {
-                    JSONObject customContent = new JSONObject();
-                    try {
-                        customContent.put("用户级别", "VIP");
-                        customContent.put("用户积分", "300");
-                        customContent.put("来自应用", "ClientDemo");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    message.setCustom_content(customContent);
-
-                    flag_userBrowseSomething = false;
-                }
+                // TODO 可在此处添加消息参数(JSONObject键值对均为字符串)，采集信息透传到坐席端（v1.2.0版本开始不建议使用此方式，除非有实时更新需求的自定义信息）
+                // 【注意】v1.2.0以上版本建议使用V5ClientConfig的setUserInfo方法传递客户信息，可不必依附于消息
+                //if (flag_userBrowseSomething) {
+                //    JSONObject customContent = new JSONObject();
+                //    try {
+                //        customContent.put("用户级别", "VIP");
+                //        customContent.put("用户积分", "300");
+                //        customContent.put("来自应用", "ClientDemo");
+                //    } catch (JSONException e) {
+                //        e.printStackTrace();
+                //    }
+                //    message.setCustom_content(customContent);
+                //
+                //    flag_userBrowseSomething = false;
+                //}
                 return message; // 注：必须将消息对象以返回值返回
             }
         });

@@ -156,7 +156,6 @@ public class WebSocketImpl implements WebSocket {
 		if( DEBUG )
 			System.out.println( "process(" + socketBuffer.remaining() + "): {" + ( socketBuffer.remaining() > 1000 ? "too big to display" : new String( socketBuffer.array(), socketBuffer.position(), socketBuffer.remaining() ) ) + "}" );
 
-		System.out.println( "process readystate:" + readystate);
 		if( readystate != READYSTATE.NOT_YET_CONNECTED ) {
 			decodeFrames( socketBuffer );;
 		} else {

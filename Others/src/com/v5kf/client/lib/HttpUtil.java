@@ -41,10 +41,9 @@ public class HttpUtil {
 			if (V5ClientConfig.USE_HTTPS) {
 				if (path.startsWith("http://")) {
 					// http头替换成https头
-					StringBuffer str=new StringBuffer(path);
+					StringBuffer str = new StringBuffer(path);
 					str.replace(0, 7, "https://"); 
 					path = str.toString();
-					Logger.w("HttpUtil", path);
 				} else if (path.startsWith("https://")) {
 					// 无需改动
 				} else {
@@ -53,7 +52,7 @@ public class HttpUtil {
 				}
 			}
 
-			Logger.d("HttpUtil", "[httpSync] path:" + path);
+			Logger.v("HttpUtil", "[httpSync] path:" + path);
 			url = new URL(path);
 			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 			urlConnection.setConnectTimeout(V5ClientConfig.SOCKET_TIMEOUT);
@@ -80,7 +79,7 @@ public class HttpUtil {
             if (HttpMethod.POST == method && myData != null) { // POST输出数据
 	            urlConnection.setRequestProperty("Content-Length",  
 	                    String.valueOf(myData.length));
-	            Logger.d("HttpUtil", "Content-Length:" + String.valueOf(myData.length));
+	            Logger.v("HttpUtil", "Content-Length:" + String.valueOf(myData.length));
 				// 获得输出流,向服务器输出数据
 				OutputStream outputStream = urlConnection.getOutputStream();
 				outputStream.write(myData);
@@ -192,169 +191,169 @@ public class HttpUtil {
 		}).start();
 	}
 	
-	/**
-	 * @deprecated
-	 * @param message
-	 * @param file
-	 * @param url
-	 * @param authorization
-	 * @param httpResponseHandler
-	 */
-	public static void postMediaDeprecated(final V5Message message, final File file, final String url,
-			final String authorization, 
-			final HttpResponseHandler httpResponseHandler) {
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				Logger.i(TAG, "[postMedia] url:" + url + " file:" + file.getName());
-				
-				String BOUNDARY = "----" + UUID.randomUUID().toString(); // 边界标识 随机生成
-				final String PREFIX = "--", LINE_END = "\r\n";
-				final String CONTENT_TYPE = "multipart/form-data";
-				
-				Map<String, String> headers = new HashMap<String, String>();
-				headers.put("Authorization", authorization);
-				headers.put("Connection", "keep-alive");
-				headers.put("Origin", "http://chat.v5kf.com");
-//				headers.put("Content-Type", "multipart/form-data");
-//				headers.put("Host", "web.file.myqcloud.com");
-				headers.put("Content-Type", CONTENT_TYPE + "; boundary="
-						+ BOUNDARY);
-				
-				String firstBoundary = PREFIX + BOUNDARY + LINE_END;
-//				String commonBoundary = LINE_END + firstBoundary;
-				String lastBoundary = LINE_END + PREFIX + BOUNDARY + PREFIX + LINE_END;
-				
-				byte[] firstPart = null;
-				byte[] dataPart = null;
-				byte[] lastPart = null;
-				
-				byte[] myData = firstBoundary.getBytes(); // first boundary
-				
-				StringBuffer fileContent = new StringBuffer();
-				String contentType = "image/jpeg";
-				if (message.getMessage_type() == V5MessageDefine.MSG_TYPE_IMAGE) {
-					contentType = "image/jpeg";
-					if (!TextUtils.isEmpty(((V5ImageMessage)message).getFormat())) {
-						contentType = "image/" + ((V5ImageMessage)message).getFormat();
-					}
-				} else if (message.getMessage_type() == V5MessageDefine.MSG_TYPE_VOICE) {
-					contentType = "audio/amr";
-					if (!TextUtils.isEmpty(((V5VoiceMessage)message).getFormat())) {
-						contentType = "audio/" + ((V5VoiceMessage)message).getFormat();
-					}
-				} else {
-					// TODO
-				}
-				fileContent.append("Content-Disposition: form-data; name=\"FileContent\"; filename=\"" 
-						+ file.getName() + "\"" + LINE_END);
-				fileContent.append("Content-Type: " + contentType + LINE_END);
-				fileContent.append(LINE_END); 
-				myData = byteAppend(myData, fileContent.toString().getBytes()); // Content-Disposition
-				// 读取文件转为字节流
-				Logger.d(TAG, "FileSize>>>>>>>:" + V5Util.getFileSize(file) + " of:" + file.getAbsolutePath());
-				byte[] b = null;
-				if (message.getMessage_type() == V5MessageDefine.MSG_TYPE_IMAGE) {
-					if (V5Util.getFileSize(file) / 1000 < MIN_PIC_SIZE_UNCOMPRESS) {
-						try {
-							FileInputStream stream = new FileInputStream(file);
-							ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
-							b = new byte[1024];
-							int n;
-							while ((n = stream.read(b)) != -1)
-								out.write(b, 0, n);
-							stream.close();
-							out.close();
-							b = out.toByteArray();
-							if (b != null) {
-								Logger.d(TAG, "SourceFileSize>>>:" + b.length);
-							} else {
-								Logger.d(TAG, "SourceFileSize>>>:null");
-							}
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					} else {
-						b = V5Util.compressImageToByteArray(V5Util.getCompressBitmap(file.getAbsolutePath()), MAX_PIC_SIZE);
-						if (b != null) {
-							Logger.d(TAG, "CompressSize>>>:" + b.length);
-						} else {
-							Logger.d(TAG, "CompressSize>>>:null");
-						}
-					}
-				} else {
-					try {
-						FileInputStream stream = new FileInputStream(file);
-						ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
-						b = new byte[1024];
-						int n;
-						while ((n = stream.read(b)) != -1)
-							out.write(b, 0, n);
-						stream.close();
-						out.close();
-						b = out.toByteArray();
-						if (b != null) {
-							Logger.d(TAG, "SourceFileSize>>>:" + b.length);
-						} else {
-							Logger.d(TAG, "SourceFileSize>>>:null");
-						}
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-				if (b != null) {
-					Logger.i(TAG, "Media content length>>>：" + b.length);
-				} else {
-					Logger.e(TAG, "Media data is null !!!");
-					return;
-				}
-				if (b.length > 1024) { // 1024*1024*2
-					firstPart = myData;
-					dataPart = b;
-					lastPart = lastBoundary.getBytes();
-					
-					httpSync(url, HttpMethod.POST, firstPart, dataPart, lastPart, headers, httpResponseHandler);
-				} else {
-					myData = byteAppend(myData, b); // image content
-					myData = byteAppend(myData, lastBoundary.getBytes()); // last boundary
-					
-					httpSync(url, HttpMethod.POST, myData, headers, httpResponseHandler);
-				}
-				
-				// 添加sha
-				//String sha = null;
-//				try { // 取消SHA添加
-//					md5 = V5Util.sha(b);
-//				} catch (NoSuchAlgorithmException e) {
-//					e.printStackTrace();
-//				}
-				//if ((sha == null || sha.isEmpty())) {
-				//	myData = byteAppend(myData, lastBoundary.getBytes()); // last boundary
-				//} 
-//				else {
-//					if (sha != null && !sha.isEmpty()) {
-//						myData = byteAppend(myData, commonBoundary.getBytes());// 间隔 boundary
-//						// 添加MD5
-//						StringBuffer md5Content = new StringBuffer();
-//						md5Content.append("Content-Disposition: form-data; name=\"sha\"" + LINE_END + LINE_END);
-//						md5Content.append(sha);
-//						myData = byteAppend(myData, md5Content.toString().getBytes());
+//	/**
+//	 * @deprecated
+//	 * @param message
+//	 * @param file
+//	 * @param url
+//	 * @param authorization
+//	 * @param httpResponseHandler
+//	 */
+//	public static void postMediaDeprecated(final V5Message message, final File file, final String url,
+//			final String authorization, 
+//			final HttpResponseHandler httpResponseHandler) {
+//		new Thread(new Runnable() {
+//			
+//			@Override
+//			public void run() {
+//				Logger.d(TAG, "[postMedia] url:" + url + " file:" + file.getName());
+//				
+//				String BOUNDARY = "----" + UUID.randomUUID().toString(); // 边界标识 随机生成
+//				final String PREFIX = "--", LINE_END = "\r\n";
+//				final String CONTENT_TYPE = "multipart/form-data";
+//				
+//				Map<String, String> headers = new HashMap<String, String>();
+//				headers.put("Authorization", authorization);
+//				headers.put("Connection", "keep-alive");
+//				headers.put("Origin", "http://chat.v5kf.com");
+////				headers.put("Content-Type", "multipart/form-data");
+////				headers.put("Host", "web.file.myqcloud.com");
+//				headers.put("Content-Type", CONTENT_TYPE + "; boundary="
+//						+ BOUNDARY);
+//				
+//				String firstBoundary = PREFIX + BOUNDARY + LINE_END;
+////				String commonBoundary = LINE_END + firstBoundary;
+//				String lastBoundary = LINE_END + PREFIX + BOUNDARY + PREFIX + LINE_END;
+//				
+//				byte[] firstPart = null;
+//				byte[] dataPart = null;
+//				byte[] lastPart = null;
+//				
+//				byte[] myData = firstBoundary.getBytes(); // first boundary
+//				
+//				StringBuffer fileContent = new StringBuffer();
+//				String contentType = "image/jpeg";
+//				if (message.getMessage_type() == V5MessageDefine.MSG_TYPE_IMAGE) {
+//					contentType = "image/jpeg";
+//					if (!TextUtils.isEmpty(((V5ImageMessage)message).getFormat())) {
+//						contentType = "image/" + ((V5ImageMessage)message).getFormat();
 //					}
-//					myData = byteAppend(myData, lastBoundary.getBytes()); // last boundary
+//				} else if (message.getMessage_type() == V5MessageDefine.MSG_TYPE_VOICE) {
+//					contentType = "audio/amr";
+//					if (!TextUtils.isEmpty(((V5VoiceMessage)message).getFormat())) {
+//						contentType = "audio/" + ((V5VoiceMessage)message).getFormat();
+//					}
+//				} else {
+//					// TODO
 //				}
-				
-//                DataInputStream in = new DataInputStream(new FileInputStream(file));  
-//                int bytes = 0;  
-//                byte[] myData = new byte[1024];  
-//                while ((bytes = in.read(bufferOut)) != -1) {  
-//                    out.write(bufferOut, 0, bytes);  
-//                }
-				
-				//httpSync(url, HttpMethod.POST, myData, headers, httpResponseHandler);
-			}
-		}).start();
-	}
+//				fileContent.append("Content-Disposition: form-data; name=\"FileContent\"; filename=\"" 
+//						+ file.getName() + "\"" + LINE_END);
+//				fileContent.append("Content-Type: " + contentType + LINE_END);
+//				fileContent.append(LINE_END); 
+//				myData = byteAppend(myData, fileContent.toString().getBytes()); // Content-Disposition
+//				// 读取文件转为字节流
+////				Logger.v(TAG, "FileSize>>>>>>>:" + V5Util.getFileSize(file) + " of:" + file.getAbsolutePath());
+//				byte[] b = null;
+//				if (message.getMessage_type() == V5MessageDefine.MSG_TYPE_IMAGE) {
+//					if (V5Util.getFileSize(file) / 1000 < MIN_PIC_SIZE_UNCOMPRESS) {
+//						try {
+//							FileInputStream stream = new FileInputStream(file);
+//							ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
+//							b = new byte[1024];
+//							int n;
+//							while ((n = stream.read(b)) != -1)
+//								out.write(b, 0, n);
+//							stream.close();
+//							out.close();
+//							b = out.toByteArray();
+//							if (b != null) {
+//								Logger.d(TAG, "SourceFileSize>>>:" + b.length);
+//							} else {
+//								Logger.d(TAG, "SourceFileSize>>>:null");
+//							}
+//						} catch (IOException e) {
+//							e.printStackTrace();
+//						}
+//					} else {
+//						b = V5Util.compressImageToByteArray(V5Util.getCompressBitmap(file.getAbsolutePath()), MAX_PIC_SIZE);
+//						if (b != null) {
+//							Logger.d(TAG, "CompressSize>>>:" + b.length);
+//						} else {
+//							Logger.d(TAG, "CompressSize>>>:null");
+//						}
+//					}
+//				} else {
+//					try {
+//						FileInputStream stream = new FileInputStream(file);
+//						ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
+//						b = new byte[1024];
+//						int n;
+//						while ((n = stream.read(b)) != -1)
+//							out.write(b, 0, n);
+//						stream.close();
+//						out.close();
+//						b = out.toByteArray();
+//						if (b != null) {
+//							Logger.d(TAG, "SourceFileSize>>>:" + b.length);
+//						} else {
+//							Logger.d(TAG, "SourceFileSize>>>:null");
+//						}
+//					} catch (IOException e) {
+//						e.printStackTrace();
+//					}
+//				}
+//				if (b != null) {
+//					Logger.i(TAG, "Media content length>>>：" + b.length);
+//				} else {
+//					Logger.e(TAG, "Media data is null !!!");
+//					return;
+//				}
+//				if (b.length > 1024) { // 1024*1024*2
+//					firstPart = myData;
+//					dataPart = b;
+//					lastPart = lastBoundary.getBytes();
+//					
+//					httpSync(url, HttpMethod.POST, firstPart, dataPart, lastPart, headers, httpResponseHandler);
+//				} else {
+//					myData = byteAppend(myData, b); // image content
+//					myData = byteAppend(myData, lastBoundary.getBytes()); // last boundary
+//					
+//					httpSync(url, HttpMethod.POST, myData, headers, httpResponseHandler);
+//				}
+//				
+//				// 添加sha
+//				//String sha = null;
+////				try { // 取消SHA添加
+////					md5 = V5Util.sha(b);
+////				} catch (NoSuchAlgorithmException e) {
+////					e.printStackTrace();
+////				}
+//				//if ((sha == null || sha.isEmpty())) {
+//				//	myData = byteAppend(myData, lastBoundary.getBytes()); // last boundary
+//				//} 
+////				else {
+////					if (sha != null && !sha.isEmpty()) {
+////						myData = byteAppend(myData, commonBoundary.getBytes());// 间隔 boundary
+////						// 添加MD5
+////						StringBuffer md5Content = new StringBuffer();
+////						md5Content.append("Content-Disposition: form-data; name=\"sha\"" + LINE_END + LINE_END);
+////						md5Content.append(sha);
+////						myData = byteAppend(myData, md5Content.toString().getBytes());
+////					}
+////					myData = byteAppend(myData, lastBoundary.getBytes()); // last boundary
+////				}
+//				
+////                DataInputStream in = new DataInputStream(new FileInputStream(file));  
+////                int bytes = 0;  
+////                byte[] myData = new byte[1024];  
+////                while ((bytes = in.read(bufferOut)) != -1) {  
+////                    out.write(bufferOut, 0, bytes);  
+////                }
+//				
+//				//httpSync(url, HttpMethod.POST, myData, headers, httpResponseHandler);
+//			}
+//		}).start();
+//	}
 
 
 	public static void httpSync(String path, HttpMethod method, byte[] firstPart, byte[] dataPart, byte[] lastPart, Map<String, String> headers, HttpResponseHandler handler) {
@@ -366,7 +365,6 @@ public class HttpUtil {
 					StringBuffer str=new StringBuffer(path);
 					str.replace(0, 7, "https://"); 
 					path = str.toString();
-					Logger.w("HttpUtil", path);
 				} else if (path.startsWith("https://")) {
 					// 无需改动
 				} else {
@@ -375,7 +373,7 @@ public class HttpUtil {
 				}
 			}
 			
-			Logger.d("HttpUtil", "[httpSync] 3 parts path:" + path);
+			Logger.v("HttpUtil", "[httpSync] 3 parts path:" + path);
 			url = new URL(path);
 			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 			urlConnection.setConnectTimeout(V5ClientConfig.SOCKET_TIMEOUT);
@@ -402,7 +400,7 @@ public class HttpUtil {
 			if (HttpMethod.POST == method && firstPart != null && dataPart != null && lastPart != null) { // POST输出数据
 				urlConnection.setRequestProperty("Content-Length",  
 						String.valueOf(firstPart.length + dataPart.length + lastPart.length));
-				Logger.d("HttpUtil", "Content-Length:" + String.valueOf(firstPart.length + dataPart.length + lastPart.length));
+				Logger.v("HttpUtil", "Content-Length:" + String.valueOf(firstPart.length + dataPart.length + lastPart.length));
 				// 获得输出流,向服务器输出数据
 				OutputStream outputStream = urlConnection.getOutputStream();
 //				outputStream.write(myData);
@@ -488,7 +486,7 @@ public class HttpUtil {
 			
 			@Override
 			public void run() {
-				Logger.i(TAG, "[postFile] url:" + urlStr + " file:" + file.getName());
+				Logger.d(TAG, "[postFile] url:" + urlStr + " file:" + file.getName());
 				
 				String BOUNDARY = "----" + UUID.randomUUID().toString(); // 边界标识 随机生成
 				final String PREFIX = "--", LINE_END = "\r\n";
@@ -527,7 +525,6 @@ public class HttpUtil {
 							StringBuffer str=new StringBuffer(urlStr);
 							str.replace(0, 7, "https://"); 
 							Url = str.toString();
-							Logger.w("HttpUtil", urlStr);
 						} else if (urlStr.startsWith("https://")) {
 							// 无需改动
 						} else {
@@ -536,7 +533,7 @@ public class HttpUtil {
 						}
 					}
 					
-					Logger.d("HttpUtil", "[postFile] postUrl:" + Url);
+					Logger.v("HttpUtil", "[postFile] postUrl:" + Url);
 					url = new URL(Url);
 					HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 					urlConnection.setConnectTimeout(V5ClientConfig.SOCKET_TIMEOUT);
@@ -560,7 +557,7 @@ public class HttpUtil {
 					} else {
 						contentLength += fileSize;
 					}
-					Logger.d("HttpUtil", "Content-Length:" + contentLength);
+					Logger.v("HttpUtil", "Content-Length:" + contentLength);
 //					urlConnection.setRequestProperty("Content-Length",  
 //							String.valueOf(contentLength));
 //					Logger.d("HttpUtil", "set Content-Length:" + contentLength);
@@ -570,7 +567,7 @@ public class HttpUtil {
 					ds.writeBytes(fileContent.toString());
 					
 					// 读取文件转为字节流
-					Logger.d(TAG, "FileSize>>>>>>>:" + fileSize + " of:" + file.getAbsolutePath());
+					Logger.v(TAG, "FileSize>>>>>>>:" + fileSize + " of:" + file.getAbsolutePath());
 					/* 写入文件数据 */
 					if (message.getMessage_type() == V5MessageDefine.MSG_TYPE_IMAGE) {
 						if (fileSize / 1000 <= MIN_PIC_SIZE_UNCOMPRESS) {
@@ -591,9 +588,9 @@ public class HttpUtil {
 							}
 						} else { // 压缩图片
 							if (imageBuffer != null) {
-								Logger.d(TAG, "CompressSize>>>:" + imageBuffer.length);
+//								Logger.d(TAG, "CompressSize>>>:" + imageBuffer.length);
 							} else {
-								Logger.e(TAG, "CompressSize>>>: null");
+								Logger.w(TAG, "CompressSize>>>: null");
 								ds.close();
 								return;
 							}

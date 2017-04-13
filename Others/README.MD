@@ -7,3 +7,5 @@
 * 1. 根据是否需要发送位置功能（今后版本将不再提供位置发送功能, 1.1.8开始不再更新含位置发送功能的jar包），V5KF_1.x.x_r16xxxx.jar和V5KF_1.x.x_withMap_r16xxxx.jar进行二选一即可，使用数据接口开发的使用V5KF_1.x.x_core_r16xxxx.jar即可。
 * 2. 需要发送位置功能的才需要导入文件夹内腾讯地图相关的sdk包，并使用V5KF_1.x.x_withMap_r16xxxx.jar。
 * 3. 此外，eclipse目录的Demo中使用了第三方推送(信鸽推送)，以在用户离线之后接收客服消息，目前后台支持百度云推送和信鸽推送两个第三方平台以及自定义推送服务器地址，接口使用详见SDK接口文档，详细接入方案可联系[官网](http://www.v5kf.com)技术支持人员。
+
+注：最新开发文档请参考上层目录下的README.MD文件，或浏览[Github项目页](https://github.com/V5KF/V5KFClientSDK-Android)

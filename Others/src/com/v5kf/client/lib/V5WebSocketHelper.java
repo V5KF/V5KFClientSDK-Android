@@ -116,7 +116,7 @@ public class V5WebSocketHelper {
 				}
 			}
 		};
-		WebSocketImpl.DEBUG = true;
+		WebSocketImpl.DEBUG = false;
 	}
 	
 	public void connect() {

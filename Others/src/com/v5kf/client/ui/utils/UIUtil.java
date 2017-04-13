@@ -169,10 +169,10 @@ public class UIUtil {
 		new Thread(new Runnable() {			
 			@Override
 			public void run() {
-				Logger.d("UIUtil", "[getLocationTitle] " + url);
+//				Logger.d("UIUtil", "[getLocationTitle] " + url);
 				String responseString = HttpUtil.getHttpResp(url);
 				if (null == responseString || responseString.isEmpty()) {
-					Logger.d("UIUtil", "[getLocationTitle] SocketTimeOut");
+//					Logger.d("UIUtil", "[getLocationTitle] SocketTimeOut");
 					return;
 				}
 //				Logger.d("UIUtil", "[getLocationTitle] " + responseString);
@@ -277,7 +277,7 @@ public class UIUtil {
      */
     public static void correctBitmapAngle(String path) {
     	int degree = getBitmapDegree(path);
-    	Logger.d("UIUtil", "[correctBitmapAngle] degree:" + degree);
+//    	Logger.d("UIUtil", "[correctBitmapAngle] degree:" + degree);
     	if (degree == 0) {
     		return;
     	}
@@ -297,7 +297,7 @@ public class UIUtil {
 	        	fos.close();
 	        }
 		} catch (Exception e) {
-        	e.printStackTrace();
+        	//e.printStackTrace();
         }
     }
     
