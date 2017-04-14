@@ -48,7 +48,7 @@
 - **Demo 工程**: 使用智能客服系统 SDK 客户端开发的接口使用示例工程。 
 - **会话界面**: 针对使用本 SDK 的 iOS APP 而言，表示进行对话的一个 UIViewController。 
 - **deviceToken**: 推送平台用于标识设备的唯一 ID，长度为 64 字节以内的字符串。
-- **用户 ID(uid)**: （v1.2.0以上版本SDK已弃用，使用openId替代）标识 APP 所登录的用户的唯一 ID，长度为 64 字节以内的字符串。 
+- **用户 ID(uid)**: （v1.2.0以上版本SDK已不建议使用，使用openId替代）标识 APP 所登录的用户的唯一 ID，长度为 64 字节以内的字符串。 
 - **openId**: 标识 APP 所登录的用户的唯一 ID，长度为 32 字节以内的字符串，合法的openId将从App SDK端透传到座席端。
 - **坐席**: 使用 V5 智能客服系统的客服登录席位，本文即指客服工作者。
 
@@ -238,21 +238,37 @@ public class MyApplication extends Application {
 	public void onCreate() {
 		// TODO Auto-generated method stub 
 		super.onCreate();
-		V5ClientAgent.init(this, new V5InitCallback() {
+		if (isMainProcess()) { // 判断为主进程，在主进程中初始化，多进程同时初始化可能导致不可预料的后果
+			Logger.w("MyApplication", "onCreate isMainProcess V5ClientAgent.init");
+			V5ClientAgent.init(this, new V5InitCallback() {
+				
+				@Override
+				public void onSuccess(String response) {
+					// TODO Auto-generated method stub
+					Logger.i("MyApplication", "V5ClientAgent.init(): " + response);
+				}
+				
+				@Override
+				public void onFailure(String response) {
+					// TODO Auto-generated method stub
+					Logger.e("MyApplication", "V5ClientAgent.init(): " + response);
+				}
+			});
+		}
+	}
 	
-			@Override
-			public void onSuccess(String response) {
-				// TODO Auto-generated method stub 
-				Log.i("MyApplication", "init success: " + response);
+	public boolean isMainProcess() {
+		ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
+		List<RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
+		String mainProcessName = getPackageName();
+		int myPid = android.os.Process.myPid();
+		for (RunningAppProcessInfo info : processInfos) {
+			if (info.pid == myPid && mainProcessName.equals(info.processName)) {
+				return true;
 			}
-
-			@Override
-			public void onFailure(String response) {
-				// TODO Auto-generated method stub 
-				Log.e("MyApplication", "init failed: " + response);
-			} 
-		});
-	} 
+		}
+		return false;
+	}
 }
 ```
 
@@ -287,6 +303,7 @@ config.setAvatar("http://debugimg-10013434.image.myqcloud.com/fe1382d100019cfb57
 /**
  *【建议】设置用户OpenId，以识别不同登录用户，不设置则默认由SDK生成，替代v1.2.0之前的uid,
  *  openId将透传到座席端(建议使用含字母数字和下划线的字符串，尽量不用特殊字符，若含特殊字符系统会进行URL encode处理)
+ *	若您是旧版本SDK用户，只是想升级，为兼容旧版，避免客户信息改变可继续使用config.setUid，可不用openId
  */
 config.setOpenId("android_sdk_test");
 //config.setUid(uid); //【弃用】请使用setOpenId替代
@@ -832,7 +849,7 @@ SDK 存在新版本时，请尽量更新到最新版本 SDK，注意查看文档
 - 2016/03/28 文档版本 Ver0.8_r0328，SDK 版本 v1.0.4_r160328
 	1. 【修复】调用 `startV5ChatActivity(Context context)` 导致的异常。
 	2. 【修改】可配置 `V5ClientConfig.USE_HTTPS` 是否使用加密连接，默认为 true。
-	3. 【增加】(deprecated)对 Android 6.0 SDK 的支持，使用 Android API 23 进行编译需要导入压缩包内 libs 目录下的 `org.apache.http-simple4.4.2.jar`。
+	3. 【增加】对 Android 6.0 SDK 的支持，使用 Android API 23 进行编译需要导入压缩包内 libs 目录下的 `org.apache.http-simple4.4.2.jar`。
 
 - 2016/05/10 文档版本 Ver1.0_r0510，SDK 版本 v1.1.0_r160510
 	1. 【新增】支持语音收发，可自定义配置是否允许发送语音。
@@ -850,8 +867,13 @@ SDK 存在新版本时，请尽量更新到最新版本 SDK，注意查看文档
 	1. 【优化】优化请求服务器地址，修复已知问题。
 
 - 2017/04/13 文档版本 Ver1.8_r170413，SDK 版本 v1.2.0_r170412
-	1. **【修改】V5ClientConfig添加openId参数，修改uid为deprecated（今后不再使用），建议使用openId标识客户，openId将透传到座席端可见。**
+	1. **【修改】V5ClientConfig添加openId参数，修改uid为deprecated（今后不再使用），建议使用openId标识客户，openId将透传到座席端可见，若已使用旧版本SDK，为兼容旧版，避免客户信息改变可继续使用uid。**
 	2. 【增加】账号验证需要V5_APPID参数，不需要填写V5_ACCOUNT参数，AndroidManifest.xml中配置V5_SITE和V5_APPID即可。
 	3. 【优化】后台设置机器人开场白留空("")则不显示开场消息，优化magic信息传递机制，使用 `V5ClientConfig.setUserInfo` 传递自定义客户信息，不再建议使用 `V5Message.setCustom_content` 方式。
 	4. 【增加】README.MD增加新接口和openId的说明，增加通过修改v5_array进行界面自定义的说明。
 	5. 【修复】修复已知问题。
+
+- 2017/04/14 文档版本 Ver1.8_r170414，SDK 版本 v1.2.1_r170414
+	1. 恢复并优化对旧版本SDK(1.2.0以下)的uid兼容性。
+	2. 优化未读消息优先显示，有未读消息不用下拉刷新即可全部显示(默认优先显示未读消息，通过`V5ClientConfig.UNREAD_SHOW_FIRST`可设置)。
+	3. 更新README.MD，修正对`V5ClientAgent.init`执行需要注意的地方，修复多进程导致数据库初始化异常。
