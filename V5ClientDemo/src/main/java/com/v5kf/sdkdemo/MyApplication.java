@@ -20,8 +20,6 @@ public class MyApplication extends Application {
 		// TODO Auto-generated method stub
 		super.onCreate();
 
-//		LeakCanary.install(this);
-
 		if (isMainProcess()) { // 判断为主进程，在主进程中初始化，多进程同时初始化可能导致不可预料的后果
 			Logger.w("MyApplication", "onCreate isMainProcess V5ClientAgent.init");
 			// 初始化V5 SDK
