@@ -151,7 +151,7 @@ public class MainActivity extends Activity implements OnChatActivityListener {
 		        //config.setUid(uid); //【弃用】请使用setOpenId替代
 		        // 设置device_token：集成第三方推送(腾讯信鸽、百度云推)时设置此参数以在离开会话界面时接收推送消息
 		        config.setDeviceToken(XGPushConfig.getToken(getApplicationContext())); // 【建议】设置deviceToken
-				
+		        
 		        /* 开启会话界面 */
 			    // 可用Bundle传递以下参数
 			    Bundle bundle=new Bundle();
