@@ -23,6 +23,7 @@ import com.v5kf.client.ui.ClientChatActivity;
 import com.v5kf.client.ui.callback.OnChatActivityListener;
 import com.v5kf.client.ui.callback.OnURLClickListener;
 import com.v5kf.client.ui.callback.UserWillSendMessageListener;
+import com.v5kf.client.ui.callback.ChatActivityFuncIconClickListener;
 
 public class MainActivity extends AppCompatActivity implements OnChatActivityListener {
 
@@ -164,6 +165,35 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
 				return false; // 是否消费了此点击事件
 			}
 		});
+        
+        /**
+         * 点击对话输入框底部功能按钮
+         */
+        V5ClientAgent.getInstance().setChatActivityFuncIconClickListener(new ChatActivityFuncIconClickListener() {
+            
+            /**
+             * Activity点击底部功能按钮事件，icon参数值及含义如下：
+             * 		v5_icon_ques			//常见问题
+             * 		v5_icon_relative_ques	//相关问题
+             * 		v5_icon_photo			//图片
+             * 		v5_icon_camera			//拍照
+             * 		v5_icon_worker			//人工客服
+             * 返回值代表是否消费了此事件
+             * @param icon 点击的图标名称(对应SDK目录下res/values/v5_arrays中v5_chat_func_icon的值)
+             * @return boolean 是否消费事件(返回true则不响应默认点击效果，由此回调处理)
+             */
+            @Override
+            public boolean onChatActivityFuncIconClick(String icon) {
+                // TODO Auto-generated method stub
+                if (icon.equals("v5_icon_worker")) {
+                    // 转到指定客服,参数：(组id, 客服id),参数为0则不指定客服组或者客服,获取组id请咨询客服
+                    V5ClientAgent.getInstance().transferHumanService(0, 0);
+                    // 返回true来拦截SDK内默认的实现
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override

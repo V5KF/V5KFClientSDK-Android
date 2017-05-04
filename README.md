@@ -446,6 +446,39 @@ V5ClientAgent.getInstance().setURLClickListener(OnURLClickListener listener);
 V5ClientAgent.getInstance().setLocationMapClickListener(OnLocationMapClickListener listener);
 ```
 
+设置输入框底部功能按钮点击监听: 
+
+```java
+/**
+ * 点击对话输入框底部功能按钮
+ */
+V5ClientAgent.getInstance().setChatActivityFuncIconClickListener(new ChatActivityFuncIconClickListener() {
+	
+	/**
+	 * Activity点击底部功能按钮事件，icon参数值及含义如下：
+     * 		v5_icon_ques			//常见问题
+     * 		v5_icon_relative_ques	//相关问题
+     * 		v5_icon_photo			//图片
+     * 		v5_icon_camera			//拍照
+     * 		v5_icon_worker			//人工客服
+	 * 返回值代表是否消费了此事件
+	 * @param icon 点击的图标名称(对应SDK目录下res/values/v5_arrays中v5_chat_func_icon的值)
+	 * @return boolean 是否消费事件(返回true则不响应默认点击效果，由此回调处理)
+	 */
+	@Override
+	public boolean onChatActivityFuncIconClick(String icon) {
+		// 在这里可以实现点击事件的自定义处理，如下示例点击“人工客服”转指定客服
+		if (icon.equals("v5_icon_worker")) {
+			// 转到指定客服,参数：(组id, 客服id),参数为0则不指定客服组或者客服
+			V5ClientAgent.getInstance().transferHumanService(0, 0);
+			// 返回true来拦截SDK内默认的实现
+			return true;
+		}
+		return false;
+	}
+});
+```
+
 ### 5.6 会话界面自定义
 参考 [5.4](#54-启动会话界面) 中，可设置是否允许发送语音和显示头像，此外会话界面中加号打开的功能面版亦支持自定义。
 通过修改V5ClientLibrary库中res/values/v5_arrays.xml可以控制对应功能项按钮是否显示。
@@ -453,24 +486,22 @@ V5ClientAgent.getInstance().setLocationMapClickListener(OnLocationMapClickListen
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 可以删除item，减少功能，但不可修改数组v5_chat_func_icon的item值 -->
-    <!-- 不需要的功能可删除对应行(两个array对应位置的item均删除) -->
-    <string-array name="v5_chat_func">
+    <!-- 可以增加或删除item，自定义功能(对应界面的功能按钮标题和图片) -->
+    <!-- 不需要的功能可删除对应行(两个array的对应item均删除) -->
+    <string-array name="v5_chat_func"><!-- 顺序对应界面功能按钮标题 -->
         <item>常见问题</item>
         <item>相关问题</item>
 		<item>图片</item>
         <item>拍照</item>
         <item>人工客服</item>
-        <!-- <item>位置</item> --><!-- 不使用位置发送则删除此行（1.1之后版本已取消位置发送） -->
     </string-array>
 
-    <string-array name="v5_chat_func_icon">
+    <string-array name="v5_chat_func_icon"><!-- 顺序对应界面功能按钮图标 -->
         <item>v5_icon_ques</item>
         <item>v5_icon_relative_ques</item>
         <item>v5_icon_photo</item>
         <item>v5_icon_camera</item>
         <item>v5_icon_worker</item>
-        <!-- <item>v5_icon_location</item> --><!-- 不使用位置发送则删除此行（1.1之后版本已取消位置发送） -->
     </string-array>
 </resources>
 ```
@@ -882,3 +913,7 @@ SDK 存在新版本时，请尽量更新到最新版本 SDK，注意查看文档
 
 - 2017/05/03 文档版本 Ver1.8_r170503，SDK 版本 v1.2.3_r170503
     1. 修复上一版本更新导致离线消息不显示问题。
+
+- 2017/05/04 文档版本 Ver1.8_r170504，SDK 版本 v1.2.4_r170504
+    1. 增加点击输入框底部功能按钮的监听，以实现点击时的自定义处理。
+    2. 增加长按文本消息弹出复制框。
