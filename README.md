@@ -131,6 +131,8 @@ V5 智能客服系统客户端可集成到 web、APP 等第三方平台提供客
 
 - **1. 配置站点信息**
 
+> 注：建议使用`V5ClientAgent.init(Context context, String siteId, String appID, V5InitCallback callback)`接口初始化，包含传入siteId和appID，则可不必在`AndroidManifest.xml`配置如下站点信息。
+
 ```xml
 <meta-data android:value="您的站点编号" android:name="V5_SITE" />
 <meta-data android:value="您的 AppID" android:name="V5_APPID" />
@@ -239,7 +241,7 @@ public class MyApplication extends Application {
 		super.onCreate();
 		if (isMainProcess()) { // 判断为主进程，在主进程中初始化，多进程同时初始化可能导致不可预料的后果
 			Logger.w("MyApplication", "onCreate isMainProcess V5ClientAgent.init");
-			V5ClientAgent.init(this, new V5InitCallback() {
+			V5ClientAgent.init(this, "<站点编号>", "<APP ID>",  new V5InitCallback() {
 				
 				@Override
 				public void onSuccess(String response) {
@@ -917,3 +919,7 @@ SDK 存在新版本时，请尽量更新到最新版本 SDK，注意查看文档
 - 2017/05/04 文档版本 Ver1.8_r170504，SDK 版本 v1.2.4_r170504
     1. 增加点击输入框底部功能按钮的监听，以实现点击时的自定义处理。
     2. 增加长按文本消息弹出复制框。
+
+- 2017/05/09 文档版本 Ver1.8_r170509，SDK 版本 v1.2.5_r170509
+    1. 修复读取metaData可能出现空指针问题。
+    2. 修改readme，建议使用`V5ClientAgent.init(Context context, String siteId, String appID, V5InitCallback callback)`接口初始化。

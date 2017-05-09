@@ -21,7 +21,7 @@ public class MyApplication extends Application {
 		Logger.w("MyApplication", "onCreate application[PID:" + Process.myPid() + "]");
 		if (isMainProcess()) { // 在一个主进程中初始化即可，多进程执行可能导致不可预料的后果
 			Logger.w("MyApplication", "onCreate isMainProcess V5ClientAgent.init");
-			V5ClientAgent.init(this, new V5InitCallback() {
+			V5ClientAgent.init(this, "10000", "27100800d9e0", new V5InitCallback() {
 				
 				@Override
 				public void onSuccess(String response) {

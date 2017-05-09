@@ -111,8 +111,8 @@
         </activity>
         
         <!-- V5智能客服SDK站点配置 -->
-        <meta-data android:value="10000" android:name="V5_SITE" />
-        <meta-data android:value="27100800d9e0" android:name="V5_APPID" />
+        <!-- <meta-data android:value="10000" android:name="V5_SITE" />
+        <meta-data android:value="27100800d9e0" android:name="V5_APPID" /> -->
         
         <!-- 腾讯地图SDK -->
         <meta-data android:value="WWBBZ-5FQR4-QBWUP-DFRYQ-5Y4HH-2OBV6" android:name="TencentMapSDK" />

@@ -23,7 +23,7 @@ public class MyApplication extends Application {
 		if (isMainProcess()) { // 判断为主进程，在主进程中初始化，多进程同时初始化可能导致不可预料的后果
 			Logger.w("MyApplication", "onCreate isMainProcess V5ClientAgent.init");
 			// 初始化V5 SDK
-			V5ClientAgent.init(this, new V5InitCallback() {
+			V5ClientAgent.init(this, "10000", "27100800d9e0", new V5InitCallback() {
 
 				@Override
 				public void onSuccess(String response) {
