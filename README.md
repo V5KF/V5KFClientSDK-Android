@@ -303,7 +303,7 @@ config.setGender(1);
 config.setAvatar("http://debugimg-10013434.image.myqcloud.com/fe1382d100019cfb572b1934af3d2c04/thumbnail"); 
 /**
  *【建议】设置用户OpenId，以识别不同登录用户，不设置则默认由SDK生成，替代v1.2.0之前的uid,
- *  openId将透传到座席端(建议使用含字母数字和下划线的字符串，尽量不用特殊字符，若含特殊字符系统会进行URL encode处理)
+ *  openId将透传到座席端(长度32字节以内，建议使用含字母数字和下划线的字符串，尽量不用特殊字符，若含特殊字符系统会进行URL encode处理，影响最终长度和座席端获得的结果)
  *	若您是旧版本SDK用户，只是想升级，为兼容旧版，避免客户信息改变可继续使用config.setUid，可不用openId
  */
 config.setOpenId("android_sdk_test");
@@ -653,7 +653,7 @@ config.setNickname("昵称");
 config.setAvatar("http://static.v5kf.com/images/web/fodder/xlogo.png");
 /**
  *【建议】设置用户OpenId，以识别不同登录用户，不设置则默认由SDK生成，替代v1.2.0之前的uid,
- *  openId将透传到座席端(建议使用含字母数字和下划线的字符串，尽量不用特殊字符，若含特殊字符系统会进行URL encode处理)
+ *  openId将透传到座席端(长度32字节以内，建议使用含字母数字和下划线的字符串，尽量不用特殊字符，若含特殊字符系统会进行URL encode处理，影响最终长度和座席端获得的结果)
  */
 config.setOpenId("android_sdk_test");
 //config.setUid(uid); //【弃用】请使用setOpenId替代
@@ -899,7 +899,7 @@ SDK 存在新版本时，请尽量更新到最新版本 SDK，注意查看文档
 	1. 【优化】优化请求服务器地址，修复已知问题。
 
 - 2017/04/13 文档版本 Ver1.8_r170413，SDK 版本 v1.2.0_r170412
-	1. **【修改】V5ClientConfig添加openId参数，修改uid为deprecated（今后不再使用），建议使用openId标识客户，openId将透传到座席端可见，若已使用旧版本SDK，为兼容旧版，避免客户信息改变可继续使用uid。**
+	1. **【修改】V5ClientConfig添加openId参数（长度32字节以内），修改uid为deprecated（今后不再使用），建议使用openId标识客户，openId将透传到座席端可见，若已使用旧版本SDK，为兼容旧版，避免客户信息改变可继续使用uid。**
 	2. 【增加】账号验证需要V5_APPID参数，不需要填写V5_ACCOUNT参数，AndroidManifest.xml中配置V5_SITE和V5_APPID即可。
 	3. 【优化】后台设置机器人开场白留空("")则不显示开场消息，优化magic信息传递机制，使用 `V5ClientConfig.setUserInfo` 传递自定义客户信息，不再建议使用 `V5Message.setCustom_content` 方式。
 	4. 【增加】README.MD增加新接口和openId的说明，增加通过修改v5_array进行界面自定义的说明。
