@@ -493,7 +493,7 @@ V5ClientAgent.getInstance().setChatActivityFuncIconClickListener(new ChatActivit
     <string-array name="v5_chat_func"><!-- 顺序对应界面功能按钮标题 -->
         <item>常见问题</item>
         <item>相关问题</item>
-		<item>图片</item>
+        <item>图片</item>
         <item>拍照</item>
         <item>人工客服</item>
     </string-array>
