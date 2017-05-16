@@ -84,9 +84,9 @@ V5 智能客服系统客户端可集成到 web、APP 等第三方平台提供客
 > 没有 V5KF 账号需要前往[官网](http://www.v5kf.com)注册账号。
 
 2. 获得应用账号、站点编号
-> 应用账号、站点编号作为 SDK 连接服务端的身份凭证，可到后台 App SDK 的应用配置界面获取。
+> 应用账号、站点编号作为 SDK 连接服务端的身份凭证，可登录V5KF管理后台在 "系统接入" -> "移动应用APP" 配置界面获取。
 
-3. 填写对应平台的推送服务器地址
+3. 填写对应平台的推送服务器地址(非必需)
 > 为了使您的 APP 在集成本 SDK 后具有离线消息推送，建议填写您的推送服务器地址，同时也支持第三方推送平台，需要按照本文档规定填写您的 device_token 和绑定的用户 ID。
 
 4. 下载 SDK
@@ -100,7 +100,7 @@ V5 智能客服系统客户端可集成到 web、APP 等第三方平台提供客
 	- Android SDK 最低支持 Android API 9: Android 2.3(Gingerbread)。
 
 ### 4.2 SDK导入
-导入 SDK 可以将 SDK 文件复制到您的项目中也可通过 Library 库导入，建议采用导入 `Library` 方式，便于 SDK 维护和升级。
+导入 SDK 可以将 SDK 文件复制到您的项目中也可作为 library (eclipse) 或 module (Android Studio) 导入，建议采用导入 `Library` 方式，便于 SDK 维护和升级。
 
 #### 4.2.1 导入eclipse
 * 在`eclipse/`目录下将`V5ClientLibrary/`目录作为`library`项目导入eclipse：
@@ -121,8 +121,8 @@ V5 智能客服系统客户端可集成到 web、APP 等第三方平台提供客
 > 在Android Studio选择 File -> New -> Import Module -> 选择本地`V5ClientLibrary`所在目录 -> Finish
 
 #### 4.2.3 以文件导入
-1. 将 SDK 压缩包 `V5ClientLibrary` 中的 res 文件夹复制到你项目的对应 `res` 文件夹下;
-2. 将 SDK 压缩包内的 `V5KF _1.x.x_rxxxx.jar` 复制到你的项目的 `libs` 文件夹下;
+1. 将 SDK 压缩包 `V5ClientLibrary` 中的 res 文件夹复制到您项目的对应 `res` 文件夹下;
+2. 将 SDK 压缩包内的 `V5KF _1.x.x_rxxxx.jar` 复制到您的项目的 `libs` 文件夹下;
 
 > 注:上述文件名称中的“x”表示 0~9 中某一数字，表示版本代号，下同。
 
@@ -159,7 +159,7 @@ V5 智能客服系统客户端可集成到 web、APP 等第三方平台提供客
 
 - **3. 配置使用自定义的 Application**
 在 Application 的 `onCreate` 中需要进行 SDK 的初始化，故需要自定义自己的
-Application 类，并在 AndroidManifest.xml 中进行下面配置:
+Application 类，并在 AndroidManifest.xml 中进行下面配置（若您的项目中已有自定义的Application基类，则可不必关心此项）:
 
 ```xml
 <application
@@ -201,7 +201,7 @@ Application 类，并在 AndroidManifest.xml 中进行下面配置:
 ```
 
 ### 4.4 了解离线消息推送
-客户离线后消息将推送到您指定的推送服务器或者第三方平台，需要在 V5 官网后台做对应配置，选择对应推送平台并配置，否则离线后接收不到消息:
+此项为客户接收离线消息用，非必需。客户离线后可将此时客服发送的消息推送到您指定的推送服务器或者第三方推送平台，需要在 V5 官网后台做对应配置，选择对应推送平台并配置，否则离线后接收不到消息:
 
 ![SDK推送配置](./pictures/android_sdk_7.png)
 
@@ -287,13 +287,14 @@ config.setDeviceToken("device_token 字符串");
 使用 SDK 提供的 UI 集成，需要在启动会话界面之前进行用户信息和参数配置。配置项如下:
 
 ```java
-// V5客服系统客户端配置(以下值均为默认值，仅作示例，不需修改可不必设置) 
 V5ClientConfig config = V5ClientConfig.getInstance(MainActivity.this); 
-V5ClientConfig.USE_HTTPS = true; // 使用加密连接，默认true 
-V5ClientConfig.AUTO_RETRY_ONERROR = true; // 链接错误时是否自动重试链接，默认true，否则弹出提示框选择是否重试
-V5ClientConfig.SOCKET_TIMEOUT = 20000; // 设置连接超时20s 
-config.setShowLog(true); // 显示日志，默认为true 
-config.setLogLevel(V5ClientConfig.LOG_LV_VERBOSE); // 显示日志级别，默认为全部显示
+// V5客服系统客户端配置(以下值均为默认值，仅作示例，不需修改可不必设置) 
+// V5ClientConfig.USE_HTTPS = true; // 使用加密连接，默认true 
+// V5ClientConfig.AUTO_RETRY_ONERROR = true; // 链接错误时是否自动重试链接，默认true，否则弹出提示框选择是否重试
+// V5ClientConfig.SOCKET_TIMEOUT = 20000; // 设置连接超时20s 
+// config.setShowLog(true); // 显示日志，默认为true 
+// config.setLogLevel(V5ClientConfig.LOG_LV_VERBOSE); // 显示日志级别，默认为全部显示
+
 /*** 客户信息设置 ***/
 // 【建议】设置用户昵称 
 config.setNickname("android_sdk_test");
@@ -310,10 +311,10 @@ config.setOpenId("android_sdk_test");
 //config.setUid(uid); //【弃用】请使用setOpenId替代
 // 设置用户VIP等级(0-5)
 config.setVip(0);
-// 设置device_token:集成第三方推送(腾讯信鸽、百度云推)或自定义推送地址时设置此参数以在离开会话界面时接收推送消息
+// 使用消息推送时需设置device_token:集成第三方推送(腾讯信鸽、百度云推)或自定义推送地址时设置此参数以在离开会话界面时接收推送消息
 config.setDeviceToken(XGPushConfig.getToken(getApplicationContext())); 
 
-// 客户信息键值对（JSONObject）
+// 客户信息键值对，下面为示例（JSONObject）
 JSONObject customContent = new JSONObject();
 try {
 	customContent.put("用户名", "V5KF");
@@ -327,7 +328,7 @@ try {
 config.setUserInfo(customContent);
 ```
 
-当 `nickname`、`openId`、`avatar`、`device_token` 等配置项配置完，下次需要修改并向座席更新时需要在开启会话前调用 **`V5ClientConfig.getInstance(context).shouldUpdateUserInfo()`**，这样才会向服务端更新这几个配置项。
+当 `nickname`、`openId`、`avatar`、`device_token` 等配置项配置完，下次需要修改(如App内切换了登录账号，修改了客户昵称或头像时)并向座席更新时需要在开启会话前调用 **`V5ClientConfig.getInstance(context).shouldUpdateUserInfo()`**，这样才会向服务端更新这几个配置项。
 同样若想更新站点信息（站点信息包含机器人信息和转人工开场白等V5后台可设置的信息，系统会隔7天自动更新，一般无需处理），需要在`onChatActivityConnect`中调用 **`V5ClientAgent.getInstance().updateSiteInfo()`**。
 
 ### 5.4 启动会话界面
@@ -337,7 +338,8 @@ config.setUserInfo(customContent);
 // 开启对话界面 
 V5ClientAgent.getInstance().startV5ChatActivity(getApplicationContext());
 ```
-SDK 界面也可以设置传入参数，具体内容如下:
+
+若有自定义界面参数需求，SDK 界面也可以设置传入参数，具体内容如下:
 
 ```java
 /* 开启会话界面(以下值均为默认值，仅作示例，不需修改可不必设置) */
@@ -355,7 +357,8 @@ bundle.putInt("clientOpenMode", ClientOpenMode.clientOpenModeDefault.ordinal());
 // 进入会话界面，携带bundle(不加bundle参数则全部使用默认配置)
 V5ClientAgent.getInstance().startV5ChatActivityWithBundle(getApplicationContext(), bundle);
 ```
-四种**开场消息**模式，分别为:
+
+ClientOpenMode包含四种**开场消息**模式，分别为:
 
 ```java
 public enum ClientOpenMode {
@@ -373,7 +376,7 @@ public enum ClientOpenMode {
 
 ```java
 // 界面生命周期监听[非必须] 
-V5ClientAgent.getInstance().setChatActivityListener(OnChatActivit yListener listener);
+V5ClientAgent.getInstance().setChatActivityListener(OnChatActivityListener listener);
 ```
 
 其中 `OnChatActivityListener` 接口如下:
