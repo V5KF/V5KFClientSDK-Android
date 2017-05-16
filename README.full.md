@@ -157,6 +157,7 @@ dependencies {
 ```
 
 - **2. 配置使用自定义的 Application**
+
 在 Application 的 `onCreate` 中需要进行 SDK 的初始化，故需要自定义自己的
 Application 类，并在 AndroidManifest.xml 中进行下面配置（若您的项目中已有自定义的Application基类，则可不必关心此项）:
 
