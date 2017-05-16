@@ -61,7 +61,7 @@ dependencies {
 > 注:上述文件名称中的“x”表示 0~9 中某一数字，表示版本代号，下同。
 
 ## 3 配置AndroidManifest
-可以参考 Demo 工程的 `AndroidManifest.xml` 文件来配置您的 AndroidManifest，无论是 使用 SDK 的接口开发还是直接使用 Demo 工程的 UI 快速集成都需要对您的项目的 `AndroidManifest.xml` 文件进行下述配置，具体配置项目如下:
+可以参考 Demo 工程的 `AndroidManifest.xml` 文件来配置您的 AndroidManifest，无论是使用 SDK 的接口开发还是直接使用 Demo 工程的 UI 快速集成都需要对您的项目的 `AndroidManifest.xml` 文件进行下述配置，具体配置项目如下:
 
 - **1. 添加必需的权限**
 

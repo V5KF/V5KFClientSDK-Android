@@ -1,5 +1,5 @@
 # V5KFClientSDK-Android
-> 此为V5KF智能客服Android客户端SDK详细接口文档，无深入定制需求的客户可参考[基础文档](./README.full.md)。
+> 此为V5KF智能客服Android客户端SDK详细接口文档，无深入定制需求的客户可参考[基础文档](./README.md)。
 
 - [1 术语](#1-术语)
 - [2 功能说明](#2-功能说明)
