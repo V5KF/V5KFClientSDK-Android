@@ -116,7 +116,18 @@ V5 智能客服系统客户端可集成到 web、APP 等第三方平台提供客
 > Android SDK需使用API 19以上版本
 
 #### 4.2.2 导入Android Studio
-* 将V5ClientLibrary目录作为`Module`导入：
+
+以下方式二选一：
+
+* 1.配置gradle的dependencies添加远程依赖：
+
+```
+dependencies {
+    compile 'com.v5kf.clientsdk:clientsdk:1.2.5'
+}
+```
+
+* 2.将V5ClientLibrary目录作为`Module`导入：
 
 > 在Android Studio选择 File -> New -> Import Module -> 选择本地`V5ClientLibrary`所在目录 -> Finish
 
