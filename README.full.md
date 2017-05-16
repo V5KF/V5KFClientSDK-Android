@@ -140,19 +140,7 @@ dependencies {
 ### 4.3 配置AndroidManifest
 可以参考 Demo 工程的 `AndroidManifest.xml` 文件来配置您的 AndroidManifest，无论是 使用 SDK 的接口开发还是直接使用 Demo 工程的 UI 快速集成都需要对您的项目的 `AndroidManifest.xml` 文件进行下述配置，具体配置项目如下:
 
-- **1. 配置站点信息**
-
-> 注：建议使用`V5ClientAgent.init(Context context, String siteId, String appID, V5InitCallback callback)`接口初始化，包含传入siteId和appID，则可不必在`AndroidManifest.xml`配置如下站点信息。
-
-```xml
-<meta-data android:value="您的站点编号" android:name="V5_SITE" />
-<meta-data android:value="您的 AppID" android:name="V5_APPID" />
-```
-
-其中 `V5_SITE` 和 `V5_APPID` 分别是从 V5 后台可以获取到的站点编号和AppID。
-![SDK后台配置](./pictures/android_sdk_6.png)
-
-- **2. 添加必需的权限**
+- **1. 添加必需的权限**
 
 ```xml
 <!-- 网络访问权限 -->
@@ -168,7 +156,7 @@ dependencies {
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
 ```
 
-- **3. 配置使用自定义的 Application**
+- **2. 配置使用自定义的 Application**
 在 Application 的 `onCreate` 中需要进行 SDK 的初始化，故需要自定义自己的
 Application 类，并在 AndroidManifest.xml 中进行下面配置（若您的项目中已有自定义的Application基类，则可不必关心此项）:
 
@@ -183,7 +171,7 @@ Application 类，并在 AndroidManifest.xml 中进行下面配置（若您的�
 </application>
 ```
 
-- **4. 会话 Activity 配置**
+- **3. 添加必需的服务和 Activity**
 
 ```xml
 <activity
@@ -192,11 +180,6 @@ Application 类，并在 AndroidManifest.xml 中进行下面配置（若您的�
 	android:launchMode="singleTask" 
 	android:windowSoftInputMode="adjustResize" >
 </activity>
-```
-
-- **5. 添加其他必需的服务和 Activity**
-
-```xml
 <service 
 	android:name="com.v5kf.client.lib.V5ClientService" >
 </service>
@@ -283,6 +266,9 @@ public class MyApplication extends Application {
 	}
 }
 ```
+
+其中 `<站点编号>` 和 `<APP ID>` 分别是从 V5 后台可以获取到的站点编号和AppID。
+![SDK后台配置](./pictures/android_sdk_6.png)
 
 ### 5.2 消息推送设置
 推送参数设置:
