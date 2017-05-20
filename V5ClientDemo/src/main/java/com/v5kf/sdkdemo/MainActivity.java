@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
                 startChatActivity();
             }
         });
@@ -96,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
         // 可用Bundle传递以下参数
         Bundle bundle=new Bundle();
         bundle.putInt("numOfMessagesOnRefresh", 10);	// 下拉刷新数量，默认为10
-        bundle.putInt("numOfMessagesOnOpen", 10);		// 开场显示历史消息数量，默认为0
+        bundle.putInt("numOfMessagesOnOpen", 10);		// 开场显示历史消息数量，默认为10
         bundle.putBoolean("enableVoice", true);			// 是否允许发送语音
         bundle.putBoolean("showAvatar", true);			// 是否显示对话双方的头像
         /*

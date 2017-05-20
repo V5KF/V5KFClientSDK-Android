@@ -344,7 +344,7 @@ V5ClientAgent.getInstance().startV5ChatActivity(getApplicationContext());
 // 可用Bundle传递以下参数
 Bundle bundle=new Bundle();
 bundle.putInt("numOfMessagesOnRefresh", 10); // 下拉刷新数量，默认为10
-bundle.putInt("numOfMessagesOnOpen", 10); // 开场显示历史消息数量，默认为0
+bundle.putInt("numOfMessagesOnOpen", 10); // 开场显示历史消息数量，默认为10
 bundle.putBoolean("enableVoice", true); // 是否允许发送语音
 bundle.putBoolean("showAvatar", true); // 是否显示对话双方的头像
 // 开场白模式，默认为固定开场白，可根据客服启动场景设置开场问题 
@@ -924,3 +924,6 @@ SDK 存在新版本时，请尽量更新到最新版本 SDK，注意查看文档
 - 2017/05/09 文档版本 Ver1.8_r170509，SDK 版本 v1.2.5_r170509
     1. 修复读取metaData可能出现空指针问题。
     2. 修改readme，建议使用`V5ClientAgent.init(Context context, String siteId, String appID, V5InitCallback callback)`接口初始化。
+
+- 2017/05/20 文档版本 Ver1.8_r170520，SDK 版本 v1.2.6_r170520
+    1. 修复从后台恢复页面显示消息数量问题，默认显示改为10条。

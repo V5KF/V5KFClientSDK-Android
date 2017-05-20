@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -143,12 +144,14 @@ public class MainActivity extends Activity implements OnChatActivityListener {
 		        // 设置用户头像URL
 				config.setAvatar("http://debugimg-10013434.image.myqcloud.com/fe1382d100019cfb572b1934af3d2c04/thumbnail");
 		        config.setVip(0); // 设置用户VIP等级（0-5）
-		        /**
-		         *【建议】设置用户OpenId，以识别不同登录用户，不设置则默认由SDK生成，替代v1.2.0之前的uid,
-		         *  openId将透传到座席端(建议使用含字母数字和下划线的字符串，尽量不用特殊字符，若含特殊字符系统会进行URL encode处理)
-		         *	若您是旧版本SDK用户，只是想升级，为兼容旧版，避免客户信息改变可继续使用config.setUid，可不用openId
-		         */
-		        config.setOpenId(openId);
+		        if (!TextUtils.isEmpty(openId) && !openId.equals("0")) {
+		        	/**
+			         *【建议】设置用户OpenId，以识别不同登录用户，不设置则默认由SDK生成，替代v1.2.0之前的uid,
+			         *  openId将透传到座席端(建议使用含字母数字和下划线的字符串，尽量不用特殊字符，若含特殊字符系统会进行URL encode处理)
+			         *	若您是旧版本SDK用户，只是想升级，为兼容旧版，避免客户信息改变可继续使用config.setUid，可不用openId
+			         */
+		        	config.setOpenId(openId);
+		        }
 		        //config.setUid(uid); //【弃用】请使用setOpenId替代
 		        // 设置device_token：集成第三方推送(腾讯信鸽、百度云推)时设置此参数以在离开会话界面时接收推送消息
 		        config.setDeviceToken(XGPushConfig.getToken(getApplicationContext())); // 【建议】设置deviceToken
@@ -157,7 +160,7 @@ public class MainActivity extends Activity implements OnChatActivityListener {
 			    // 可用Bundle传递以下参数
 			    Bundle bundle=new Bundle();
 			    bundle.putInt("numOfMessagesOnRefresh", 10);	// 下拉刷新数量，默认为10
-			    bundle.putInt("numOfMessagesOnOpen", 10);		// 开场显示历史消息数量，默认为0
+			    bundle.putInt("numOfMessagesOnOpen", 10);		// 开场显示历史消息数量，默认为10
 			    bundle.putBoolean("enableVoice", true);			// 是否允许发送语音
 			    bundle.putBoolean("showAvatar", true);			// 是否显示对话双方的头像
 			    // 开场白模式，默认为固定开场白，可根据客服启动场景设置开场问题

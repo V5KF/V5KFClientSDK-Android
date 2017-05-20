@@ -180,6 +180,7 @@ public class MessageReceiver extends XGPushBaseReceiver {
 			text = message + "注册成功";
 			// 在这里拿token
 			String token = message.getToken();
+			Logger.i(LogTag, "[onRegisterResult] 信鸽注册成功：" + token);
 		} else {
 			text = message + "注册失败，错误码：" + errorCode;
 		}
