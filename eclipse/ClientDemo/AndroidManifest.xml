@@ -96,10 +96,6 @@
         <service 
             android:name="com.v5kf.client.lib.V5ClientService" >
         </service>
-        
-        <activity
-            android:name="com.v5kf.client.ui.LocationMapActivity" >
-        </activity>
 
         <activity
             android:name="com.v5kf.client.ui.WebViewActivity" >

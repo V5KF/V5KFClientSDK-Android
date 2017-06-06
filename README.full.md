@@ -506,6 +506,7 @@ V5ClientAgent.getInstance().setChatActivityFuncIconClickListener(new ChatActivit
 </resources>
 ```
 可自定义是否显示的功能项如下图：
+
 ![SDK功能项](./pictures/android_sdk_8.png)
 
 ## 6 使用SDK接口开发
@@ -707,7 +708,7 @@ V5ClientAgent.getInstance().getOfflineMessages(int offset, int size, OnGetMessag
 获取会话服务状态:
 
 ```java
-	V5ClientAgent.getInstance().getStatus();
+V5ClientAgent.getInstance().getStatus();
 ```
 
 状态返回在 `V5MessageListener` 的 `onServingStatusChange` 中回调:
@@ -818,7 +819,7 @@ protected JSONObject custom_content; // 自定义magic参数，键值对数组�
 	"direction": 2,
 	"hit": 1,
 	"message_type": 1,
-    "o_type": "message"
+	"o_type": "message"
 }
 ```
 
@@ -836,10 +837,10 @@ public void onMessage(V5Message message) {
 
 ## 7 注意事项
 ### 7.1 代码混淆
-代码混淆时需要在混淆配置文件中加入下面内容:
+代码混淆时需要在混淆配置文件中加入下面内容(v1.2.0 以后版本不需要添加混淆项):
 
 ```
-#必须
+# v1.2.0 以后版本不需要添加混淆项
 -keepattributes InnerClasses -keep class **.R$* { <fields>; }
 #含腾讯地图 SDK 还需加入 
 -dontwarn org.eclipse.jdt.annotation.** 
