@@ -107,9 +107,6 @@ Application 类，并在 AndroidManifest.xml 中进行下面配置（若您的�
 <service 
 	android:name="com.v5kf.client.lib.V5ClientService" >
 </service>
-<activity
-	android:name="com.v5kf.client.ui.LocationMapActivity" > 
-</activity>
 <activity android:name="com.v5kf.client.ui.WebViewActivity" >
 </activity>
 <activity
