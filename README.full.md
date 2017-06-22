@@ -456,11 +456,11 @@ V5ClientAgent.getInstance().setChatActivityFuncIconClickListener(new ChatActivit
 	
 	/**
 	 * Activity点击底部功能按钮事件，icon参数值及含义如下：
-     * 		v5_icon_ques			//常见问题
-     * 		v5_icon_relative_ques	//相关问题
-     * 		v5_icon_photo			//图片
-     * 		v5_icon_camera			//拍照
-     * 		v5_icon_worker			//人工客服
+	 * 		v5_icon_ques			//常见问题
+	 * 		v5_icon_relative_ques	//相关问题
+	 * 		v5_icon_photo			//图片
+	 * 		v5_icon_camera			//拍照
+	 * 		v5_icon_worker			//人工客服
 	 * 返回值代表是否消费了此事件
 	 * @param icon 点击的图标名称(对应SDK目录下res/values/v5_arrays中v5_chat_func_icon的值)
 	 * @return boolean 是否消费事件(返回true则不响应默认点击效果，由此回调处理)
