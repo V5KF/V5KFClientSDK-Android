@@ -438,7 +438,24 @@ V5ClientAgent.getInstance().setUserWillSendMessageListener(new UserWillSendMessa
 设置 URL 链接点击监听:
 
 ```java
-V5ClientAgent.getInstance().setURLClickListener(OnURLClickListener listener);
+V5ClientAgent.getInstance().setURLClickListener(new OnURLClickListener() {
+
+			@Override
+			public boolean onURLClick(Context context, V5ClientAgent.ClientLinkType type, String url) {
+				// TODO Auto-generated method stub
+				switch (type) {
+				case clientLinkTypeArticle: // 点击图文
+					break;
+				case clientLinkTypeURL: // 点击URL链接
+					break;
+				case clientLinkTypeEmail: // 点击电子邮件
+					break;
+				case clientLinkTypePhoneNumber: // 点击电话号码
+					break;
+				}
+				return false; // 是否消费了此点击事件
+			}
+		});
 ```
 
 `ClientLinkType`链接的类型包括：

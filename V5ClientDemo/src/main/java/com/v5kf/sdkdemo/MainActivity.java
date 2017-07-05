@@ -158,6 +158,14 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
 				case clientLinkTypeURL: // 点击URL链接
 					
 					break;
+
+                case clientLinkTypeEmail: // 点击电子邮件
+
+                    break;
+
+                case clientLinkTypePhoneNumber: // 点击电话号码
+
+                    break;
 				}
 				Logger.i(TAG, "onURLClick:" + url);
 				return false; // 是否消费了此点击事件
