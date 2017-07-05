@@ -440,6 +440,18 @@ V5ClientAgent.getInstance().setUserWillSendMessageListener(new UserWillSendMessa
 ```java
 V5ClientAgent.getInstance().setURLClickListener(OnURLClickListener listener);
 ```
+
+`ClientLinkType`链接的类型包括：
+
+```java
+public enum ClientLinkType {
+	clientLinkTypeURL,			//网页链接
+	clientLinkTypeArticle,		//图文链接
+	clientLinkTypeEmail,		//电子邮箱
+	clientLinkTypePhoneNumber	//电话
+}
+```
+
 设置地图位置消息点击监听:
 
 ```java
@@ -928,3 +940,7 @@ SDK 存在新版本时，请尽量更新到最新版本 SDK，注意查看文档
 
 - 2017/06/05 文档版本 Ver1.8_r170605，SDK 版本 v1.2.7_r170605
     1. 增加消息内容相关问题点击直接发送。
+
+- 2017/07/05 文档版本 ver1.9_r170705，SDK 版本 v1.2.9_r170705
+	1. 增加手机号和电子邮件识别，优化http链接识别。
+	2. 完善识别链接可自定义点击后的操作：`setURLClickListener`。
