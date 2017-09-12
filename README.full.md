@@ -836,7 +836,7 @@ protected JSONObject custom_content; // 自定义magic参数，键值对数组�
 `V5Message` 是所有类型消息的基类，通过“`message_type`”来区分消息类型，单个消息仅包含一种类型的消息内容，目前支持的消息类型示例如下。
 
 消息内容中不同消息类型对应的成员定义如下:
-![消息内容](./pictures/android_sdk_4.png)
+![消息内容](./pictures/android_sdk_5.png)
 
 当接收到的消息类型为 SDK 所不支持的类型时，该类型会以 `V5JSONMessage` 来表示，内含一个 JSONObject 类型成员，包含接收到的完整消息内容。
 
