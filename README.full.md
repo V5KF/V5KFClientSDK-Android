@@ -560,11 +560,12 @@ V5ClientAgent.getInstance().start(Context context, V5MessageListener listener);
 其中 `V5MessageListener` 是消息回调监听器:
 
 ```java
-public interface V5MessageListener { // 由会话 Activity 实现此接口
-	public void onConnect(); // 会话连接建立成功，此回调成功后才可以调用其他消息接口
-	public void onMessage(String json); // 接收消息为 json 字符串(兼容后期接口类型扩展)
-	public void onMessage(V5Message message); // 接收消息对象
-	public void onError(V5KFException error); // 返回异常信息 
+public interface V5MessageListener {
+	public void onConnect(int unreadSize); // 参数：连接后获取到未读消息数量
+    public void onMessage(String json); // 返回消息为json字符串(兼容后期接口类型扩展)
+    public void onMessage(V5Message message); // 返回消息对象
+	public void onError(V5KFException error); // 返回异常信息
+	public void onServingStatusChange(ClientServingStatus status); // 客户服务状态改变
 }
 ```
 
