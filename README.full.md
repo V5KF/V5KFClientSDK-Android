@@ -123,7 +123,7 @@ V5 智能客服系统客户端可集成到 web、APP 等第三方平台提供客
 
 ```
 dependencies {
-    compile 'com.v5kf.clientsdk:clientsdk:1.2.9'
+    compile 'com.v5kf.clientsdk:clientsdk:1.2.10'
 }
 ```
 
@@ -190,6 +190,21 @@ Application 类，并在 AndroidManifest.xml 中进行下面配置（若您的�
 	android:theme="@style/v5_transparent_activity"
 	android:name="com.v5kf.client.ui.ShowImageActivity" > 
 </activity>
+```
+
+为兼容Android 7.0，1.2.10版本开始需要配置provider(application内)
+
+```xml
+<provider
+    android:name="com.v5kf.client.lib.V5FileProvider"
+    android:authorities="com.v5kf.client.fileprovider"
+    android:exported="false"
+    android:grantUriPermissions="true">
+    <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/v5_file_paths">
+    </meta-data>
+</provider>
 ```
 
 ### 4.4 了解离线消息推送
@@ -962,3 +977,6 @@ SDK 存在新版本时，请尽量更新到最新版本 SDK，注意查看文档
 - 2017/07/05 文档版本 ver1.9_r170705，SDK 版本 v1.2.9_r170705
 	1. 增加手机号和电子邮件识别，优化http链接识别。
 	2. 完善识别链接可自定义点击后的操作：`setURLClickListener`。
+
+- 2017/09/12 文档版本 ver1.9_r170912，SDK 版本 v1.2.10_r170912
+	1. 增加provider配置，支持Android 7.0，修复拍照崩溃问题。

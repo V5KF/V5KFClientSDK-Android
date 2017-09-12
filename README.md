@@ -46,7 +46,7 @@
 
 ```
 dependencies {
-    compile 'com.v5kf.clientsdk:clientsdk:1.2.9'
+    compile 'com.v5kf.clientsdk:clientsdk:1.2.10'
 }
 ```
 
@@ -113,6 +113,21 @@ Application 类，并在 AndroidManifest.xml 中进行下面配置（若您的�
 	android:theme="@style/v5_transparent_activity"
 	android:name="com.v5kf.client.ui.ShowImageActivity" > 
 </activity>
+```
+
+为兼容Android 7.0，1.2.10版本开始需要配置provider(application内)
+
+```xml
+<provider
+    android:name="com.v5kf.client.lib.V5FileProvider"
+    android:authorities="com.v5kf.client.fileprovider"
+    android:exported="false"
+    android:grantUriPermissions="true">
+    <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/v5_file_paths">
+    </meta-data>
+</provider>
 ```
 
 ## 4 SDK接口快速集成

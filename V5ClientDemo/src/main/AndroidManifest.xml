@@ -36,6 +36,16 @@
         </activity>
 
         <!-- V5KF SDK Start -->
+        <provider
+            android:name="com.v5kf.client.lib.V5FileProvider"
+            android:authorities="com.v5kf.client.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/v5_file_paths">
+            </meta-data>
+        </provider>
         <activity
             android:name="com.v5kf.client.ui.ClientChatActivity"
             android:label="@string/v5_chat_title"
