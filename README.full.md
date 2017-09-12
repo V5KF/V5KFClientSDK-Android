@@ -561,11 +561,11 @@ V5ClientAgent.getInstance().start(Context context, V5MessageListener listener);
 
 ```java
 public interface V5MessageListener {
-	public void onConnect(int unreadSize); // 参数：连接后获取到未读消息数量
+    public void onConnect(int unreadSize); // 建立连接，参数：连接后获取到未读消息数量
     public void onMessage(String json); // 返回消息为json字符串(兼容后期接口类型扩展)
     public void onMessage(V5Message message); // 返回消息对象
-	public void onError(V5KFException error); // 返回异常信息
-	public void onServingStatusChange(ClientServingStatus status); // 客户服务状态改变
+    public void onError(V5KFException error); // 返回异常信息
+    public void onServingStatusChange(ClientServingStatus status); // 客户服务状态改变
 }
 ```
 
