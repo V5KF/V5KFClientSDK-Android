@@ -53,6 +53,9 @@
     <string name="v5_support_info">由V5KF提供技术支持</string>
     
     <!-- 录音 -->
+    <string name="v5_chat_voice_success">成功</string>
+    <string name="v5_chat_voice_error">出错</string>
+    <string name="v5_chat_voice_finish">结束</string>
     <string name="v5_chat_voice_title">时限</string>
     <string name="v5_chat_voice_up_tips">上滑取消</string>
     <string name="v5_chat_voice_cancel_tips">松开取消</string>
