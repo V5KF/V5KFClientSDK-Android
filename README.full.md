@@ -123,7 +123,7 @@ V5 智能客服系统客户端可集成到 web、APP 等第三方平台提供客
 
 ```
 dependencies {
-    compile 'com.v5kf.clientsdk:clientsdk:1.2.10'
+    compile 'com.v5kf.clientsdk:clientsdk:1.2.12'
 }
 ```
 
@@ -980,3 +980,6 @@ SDK 存在新版本时，请尽量更新到最新版本 SDK，注意查看文档
 
 - 2017/09/12 文档版本 ver1.9_r170912，SDK 版本 v1.2.10_r170912
 	1. 增加provider配置，支持Android 7.0，修复拍照崩溃问题。
+
+- 2017/09/26 文档版本 ver1.9_r170926，SDK 版本 v1.2.12_r170926
+	1. 纠正autolink识别链接错误。
