@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.v5kf.client.lib.Logger;
 import com.v5kf.client.lib.V5ClientAgent;
+import com.v5kf.client.lib.V5ClientConfig;
 import com.v5kf.client.lib.callback.V5InitCallback;
 
 import android.app.ActivityManager;
@@ -21,6 +22,7 @@ public class MyApplication extends Application {
 		Logger.w("MyApplication", "onCreate application[PID:" + Process.myPid() + "]");
 		if (isMainProcess()) { // 在一个主进程中初始化即可，多进程执行可能导致不可预料的后果
 			Logger.w("MyApplication", "onCreate isMainProcess V5ClientAgent.init");
+			V5ClientConfig.FILE_PROVIDER = "com.v5kf.sdkdemo.fileprovider";
 			V5ClientAgent.init(this, "10000", "27100800d9e0", new V5InitCallback() {
 				
 				@Override

@@ -197,7 +197,7 @@ Application 类，并在 AndroidManifest.xml 中进行下面配置（若您的�
 ```xml
 <provider
     android:name="com.v5kf.client.lib.V5FileProvider"
-    android:authorities="com.v5kf.client.fileprovider"
+    android:authorities="你的应用包名.fileprovider"
     android:exported="false"
     android:grantUriPermissions="true">
     <meta-data
@@ -206,6 +206,8 @@ Application 类，并在 AndroidManifest.xml 中进行下面配置（若您的�
     </meta-data>
 </provider>
 ```
+
+注意：同样`V5ClientConfig.FILE_PROVIDER`的值需要设置成`android:authorities`的值：`V5ClientConfig.FILE_PROVIDER="你的应用包名.fileprovider"`，可在`V5ClientAgent.init`初始化同时进行设置。
 
 ### 4.4 了解离线消息推送
 此项为客户接收离线消息用，非必需。客户离线后可将此时客服发送的消息推送到您指定的推送服务器或者第三方推送平台，需要在 V5 官网后台做对应配置，选择对应推送平台并配置，否则离线后接收不到消息:
@@ -248,6 +250,7 @@ public class MyApplication extends Application {
 		super.onCreate();
 		if (isMainProcess()) { // 判断为主进程，在主进程中初始化，多进程同时初始化可能导致不可预料的后果
 			Logger.w("MyApplication", "onCreate isMainProcess V5ClientAgent.init");
+			V5ClientConfig.FILE_PROVIDER = "你的应用包名.fileprovider"; // 设置fileprovider的authorities
 			V5ClientAgent.init(this, "<站点编号>", "<APP ID>",  new V5InitCallback() {
 				
 				@Override
@@ -986,3 +989,6 @@ SDK 存在新版本时，请尽量更新到最新版本 SDK，注意查看文档
 
 - 2017/09/27 文档版本 ver1.9_r170927，SDK 版本 v1.2.13_r170927
 	1. 修复之前版本输入空格导致的bug。
+
+- 2017/10/19 文档版本 ver1.9_r170927，SDK 版本 v1.2.15_r171019
+	1. 更新provider的authorities冲突解决方案。

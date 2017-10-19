@@ -1,9 +1,9 @@
 package com.v5kf.sdkdemo;
 
 import java.util.List;
-//import com.squareup.leakcanary.LeakCanary;
 import com.v5kf.client.lib.Logger;
 import com.v5kf.client.lib.V5ClientAgent;
+import com.v5kf.client.lib.V5ClientConfig;
 import com.v5kf.client.lib.callback.V5InitCallback;
 
 import android.app.ActivityManager;
@@ -23,6 +23,7 @@ public class MyApplication extends Application {
 		if (isMainProcess()) { // 判断为主进程，在主进程中初始化，多进程同时初始化可能导致不可预料的后果
 			Logger.w("MyApplication", "onCreate isMainProcess V5ClientAgent.init");
 			// 初始化V5 SDK
+			V5ClientConfig.FILE_PROVIDER = "com.v5kf.sdkdemo.fileprovider";
 			V5ClientAgent.init(this, "10000", "27100800d9e0", new V5InitCallback() {
 
 				@Override

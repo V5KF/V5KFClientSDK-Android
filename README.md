@@ -120,7 +120,7 @@ Application 类，并在 AndroidManifest.xml 中进行下面配置（若您的�
 ```xml
 <provider
     android:name="com.v5kf.client.lib.V5FileProvider"
-    android:authorities="com.v5kf.client.fileprovider"
+    android:authorities="你的应用包名.fileprovider"
     android:exported="false"
     android:grantUriPermissions="true">
     <meta-data
@@ -129,6 +129,8 @@ Application 类，并在 AndroidManifest.xml 中进行下面配置（若您的�
     </meta-data>
 </provider>
 ```
+
+注意：同样`V5ClientConfig.FILE_PROVIDER`的值需要设置成`android:authorities`的值：`V5ClientConfig.FILE_PROVIDER="你的应用包名.fileprovider"`，可在`V5ClientAgent.init`初始化同时进行设置。
 
 ## 4 SDK接口快速集成
 
@@ -144,6 +146,7 @@ public class MyApplication extends Application {
 		super.onCreate();
 		if (isMainProcess()) { // 判断为主进程，在主进程中初始化，多进程同时初始化可能导致不可预料的后果
 			Logger.w("MyApplication", "onCreate isMainProcess V5ClientAgent.init");
+			V5ClientConfig.FILE_PROVIDER = "你的应用包名.fileprovider"; // 设置fileprovider的authorities
 			V5ClientAgent.init(this, "<站点编号>", "<APP ID>",  new V5InitCallback() {
 				
 				@Override

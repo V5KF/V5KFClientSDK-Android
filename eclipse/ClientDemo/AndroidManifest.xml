@@ -80,7 +80,7 @@
         <!-- V5KF SDK Start -->
         <provider
             android:name="com.v5kf.client.lib.V5FileProvider"
-            android:authorities="com.v5kf.client.fileprovider"
+            android:authorities="com.v5kf.sdkdemo.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
