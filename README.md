@@ -130,7 +130,7 @@ Application 类，并在 AndroidManifest.xml 中进行下面配置（若您的�
 </provider>
 ```
 
-注意：同样`V5ClientConfig.FILE_PROVIDER`的值需要设置成`android:authorities`的值：`V5ClientConfig.FILE_PROVIDER="你的应用包名.fileprovider"`，可在`V5ClientAgent.init`初始化同时进行设置。
+注意：`V5ClientConfig.FILE_PROVIDER`的值需要设置成`android:authorities`的值：`V5ClientConfig.FILE_PROVIDER="你的应用包名.fileprovider"`（或其他不产生冲突的值），可在`V5ClientAgent.init`初始化同时进行设置。
 
 ## 4 SDK接口快速集成
 
@@ -223,8 +223,7 @@ try {
 config.setUserInfo(customContent);
 ```
 
-当 `nickname`、`openId`、`avatar`、`device_token` 等配置项配置完，下次需要修改(如App内切换了登录账号，修改了客户昵称或头像时)并向座席更新时需要在开启会话前调用 **`V5ClientConfig.getInstance(context).shouldUpdateUserInfo()`**，这样才会向服务端更新这几个配置项。
-同样若想更新站点信息（站点信息包含机器人信息和转人工开场白等V5后台可设置的信息，系统会隔7天自动更新，一般无需处理），需要在`onChatActivityConnect`中调用 **`V5ClientAgent.getInstance().updateSiteInfo()`**。
+当 `nickname`、`openId`、`avatar`、`device_token` 等配置项配置完，下次需要修改(如App内切换了登录账号，修改了客户昵称或头像时)并向座席更新时需要在开启会话前调用 **`V5ClientConfig.getInstance(context).shouldUpdateUserInfo()`**，这样才会向服务端更新这几个配置项。同样若想更新站点信息，需要在`onChatActivityConnect`中调用 **`V5ClientAgent.getInstance().updateSiteInfo()`**。客户信息、站点信息（包含机器人信息和转人工开场白等V5后台可设置的信息）的更新存在缓存策略，系统每隔7天更新，一般无需处理，需要即时更新时方才调用此处接口。
 
 ### 4.3 启动会话界面
 通过简单地添加一个在线咨询按钮即可使用智能客服客户端功能，在按钮点击事件处理中加入:
