@@ -46,7 +46,7 @@
 
 ```
 dependencies {
-    compile 'com.v5kf.clientsdk:clientsdk:1.2.16'
+    compile 'com.v5kf.clientsdk:clientsdk:1.2.17'
 }
 ```
 
