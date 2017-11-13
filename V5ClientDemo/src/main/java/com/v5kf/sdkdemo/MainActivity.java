@@ -24,6 +24,7 @@ import com.v5kf.client.ui.callback.OnChatActivityListener;
 import com.v5kf.client.ui.callback.OnURLClickListener;
 import com.v5kf.client.ui.callback.UserWillSendMessageListener;
 import com.v5kf.client.ui.callback.ChatActivityFuncIconClickListener;
+import com.v5kf.java.websocket.WebSocketImpl;
 
 public class MainActivity extends AppCompatActivity implements OnChatActivityListener {
 
