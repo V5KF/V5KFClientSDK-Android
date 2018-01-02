@@ -127,10 +127,9 @@ public class MainActivity extends Activity implements OnChatActivityListener {
 		        // 客户信息键值对（JSONObject）
 		        JSONObject customContent = new JSONObject();
 				try {
-					customContent.put("用户名", "V5KF");
+					customContent.put("用户名", "V5KF-Demo");
 					customContent.put("用户级别", "VIP");
-					customContent.put("用户积分", "3000");
-					customContent.put("浏览商品", "衬衣");
+					customContent.put("用户积分", "0");
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -139,7 +138,7 @@ public class MainActivity extends Activity implements OnChatActivityListener {
 		        
 		        // 取设备token作为openId
 		        String openId = XGPushConfig.getToken(getApplicationContext());
-		        config.setNickname("android_sdk_test"); // 设置用户昵称
+		        config.setNickname("android_sdk_demo"); // 设置用户昵称
 		        config.setGender(1); // 设置用户性别: 0-未知  1-男  2-女
 		        // 设置用户头像URL
 				config.setAvatar("http://debugimg-10013434.image.myqcloud.com/fe1382d100019cfb572b1934af3d2c04/thumbnail");

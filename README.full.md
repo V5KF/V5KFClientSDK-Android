@@ -123,7 +123,7 @@ V5 智能客服系统客户端可集成到 web、APP 等第三方平台提供客
 
 ```
 dependencies {
-    compile 'com.v5kf.clientsdk:clientsdk:1.2.18'
+    compile 'com.v5kf.clientsdk:clientsdk:1.2.19'
 }
 ```
 
@@ -994,3 +994,7 @@ SDK 存在新版本时，请尽量更新到最新版本 SDK，注意查看文档
 
 - 2017/10/19 文档版本 ver1.9_r171024，SDK 版本 v1.2.17_r171024
 	1. 修复部分链接匹配错误问题。
+
+- 2018/01/02 文档版本 ver1.9_r171024，SDK 版本 v1.2.19_r180102
+	1. URL识别优化，email部分手机不识别问题修复，
+	2. 收消息回调`onChatActivityReceiveMessage`中修改消息内容失败问题修复
