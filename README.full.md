@@ -693,6 +693,11 @@ protected void onDestroy() {
 
 ```java
 V5ClientConfig config = new V5ClientConfig(Context context);
+
+//当nickname、uid、avatar、device_token等配置项配置完下次需要修改并向座席更新时
+//需要在之前调用shouldUpdateUserInfo()，这样才会向服务端更新这几个配置项
+// config.shouldUpdateUserInfo();
+
 //【建议】设置昵称
 config.setNickname("昵称"); 
 //【建议】设置头像URL
@@ -709,10 +714,6 @@ config.setGender(1);
 config.setVip(0); 
 // 设置device_token:集成第三方推送(腾讯信鸽、百度云推)时设置此参数以在离开会话界面时接收推送消息
 config.setDeviceToken(String device_token);
-
-//当nickname、uid、avatar、device_token等配置项配置完下次需要修改并向座席更新时
-//需要调用shouldUpdateUserInfo()，这样才会向服务端更新这几个配置项
-config.shouldUpdateUserInfo();
 ```
 
 推送消息接受会收到后，在通知栏点击时需要打开客服会话界面。若您使用第三方推送平台将会返回一组自定义参数 `"v5_action" : "new_message"`，以此区分是否是来自 V5 智能客服系统的消息；若您使用自己的推送服务器，您可以在接收到消息后自行标记此消息并推送到客户端 APP(根据 `device_token` 识别接收客户端)，然后启动您自定义的客服会话界面。
