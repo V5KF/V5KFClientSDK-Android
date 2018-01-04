@@ -211,6 +211,19 @@ config.setVip(0);
 // 使用消息推送时需设置device_token:集成第三方推送(腾讯信鸽、百度云推)或自定义推送地址时设置此参数以在离开会话界面时接收推送消息
 //config.setDeviceToken(XGPushConfig.getToken(getApplicationContext())); 
 
+// [1.3.0新增]设置V5系统内置的客户基本信息，区别于setUserInfo，这是V5系统内置字段
+JSONObject baseInfo = new JSONObject();
+try {
+	baseInfo.put("country", "中国");
+	baseInfo.put("province", "广东");
+	baseInfo.put("city", "深圳");
+	baseInfo.put("language", "zh-cn");
+	// nickname,gender,avatar,vip也可在此设置
+} catch (JSONException e) {
+	e.printStackTrace();
+}
+config.setBaseInfo(baseInfo);
+
 // 客户信息键值对，下面为示例（JSONObject）
 JSONObject customContent = new JSONObject();
 try {
@@ -221,7 +234,7 @@ try {
 } catch (JSONException e) {
 	e.printStackTrace();
 }
-// 【新】设置客户信息（自定义JSONObjectjian键值对，开启会话前设置，替代之前通过`setUserWillSendMessageListener`在消息中携带信息的方式，此方式更加安全便捷）
+// 设置客户信息（自定义字段名称与值，自定义JSONObjectjian键值对，开启会话前设置，替代之前通过`setUserWillSendMessageListener`在消息中携带信息的方式，此方式更加安全便捷）
 config.setUserInfo(customContent);
 ```
 

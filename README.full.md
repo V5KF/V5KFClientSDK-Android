@@ -327,6 +327,19 @@ config.setVip(0);
 // 使用消息推送时需设置device_token:集成第三方推送(腾讯信鸽、百度云推)或自定义推送地址时设置此参数以在离开会话界面时接收推送消息
 config.setDeviceToken(XGPushConfig.getToken(getApplicationContext())); 
 
+// [1.3.0新增]设置V5系统内置的客户基本信息，区别于setUserInfo，这是V5系统内置字段
+JSONObject baseInfo = new JSONObject();
+try {
+	baseInfo.put("country", "中国");
+	baseInfo.put("province", "广东");
+	baseInfo.put("city", "深圳");
+	baseInfo.put("language", "zh-cn");
+	// nickname,gender,avatar,vip也可在此设置
+} catch (JSONException e) {
+	e.printStackTrace();
+}
+config.setBaseInfo(baseInfo);
+
 // 客户信息键值对，下面为示例（JSONObject）
 JSONObject customContent = new JSONObject();
 try {
@@ -999,3 +1012,6 @@ SDK 存在新版本时，请尽量更新到最新版本 SDK，注意查看文档
 - 2018/01/02 文档版本 ver1.9_r171024，SDK 版本 v1.2.19_r180102
 	1. URL识别优化，email部分手机不识别问题修复，
 	2. 收消息回调`onChatActivityReceiveMessage`中修改消息内容失败问题修复
+
+- 2018/01/04 SDK 版本 v1.3.0_r180104
+	1. 增加接口setBaseInfo, 传递JSONObject，可设置country,province,city,language(nickname,gender,avatar,vip也可在此设置)

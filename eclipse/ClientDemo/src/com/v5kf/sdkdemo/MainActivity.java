@@ -143,6 +143,19 @@ public class MainActivity extends Activity implements OnChatActivityListener {
 		        // 设置用户头像URL
 				config.setAvatar("http://debugimg-10013434.image.myqcloud.com/fe1382d100019cfb572b1934af3d2c04/thumbnail");
 		        config.setVip(0); // 设置用户VIP等级（0-5）
+		        // [1.3.0新增]设置V5系统内置的客户基本信息（有则设置，非必需），区别于setUserInfo，这是V5系统内置字段
+		        JSONObject baseInfo = new JSONObject();
+			    try {
+				    baseInfo.put("country", "中国");
+					baseInfo.put("province", "广东");
+				    baseInfo.put("city", "深圳");
+				    baseInfo.put("language", "zh-cn");
+				    // nickname,gender,avatar,vip也可在此设置
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			    config.setBaseInfo(baseInfo);
+			    
 		        if (!TextUtils.isEmpty(openId) && !openId.equals("0")) {
 		        	/**
 			         *【建议】设置用户OpenId，以识别不同登录用户，不设置则默认由SDK生成，替代v1.2.0之前的uid,
