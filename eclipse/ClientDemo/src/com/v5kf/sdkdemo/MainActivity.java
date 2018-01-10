@@ -25,6 +25,7 @@ import com.v5kf.client.lib.V5ClientAgent.ClientOpenMode;
 import com.v5kf.client.lib.V5ClientAgent.ClientServingStatus;
 import com.v5kf.client.lib.V5ClientConfig;
 import com.v5kf.client.lib.entity.V5Message;
+import com.v5kf.client.lib.entity.V5ControlMessage;
 import com.v5kf.client.ui.ClientChatActivity;
 import com.v5kf.client.ui.callback.ChatActivityFuncIconClickListener;
 import com.v5kf.client.ui.callback.OnChatActivityListener;
@@ -307,8 +308,10 @@ public class MainActivity extends Activity implements OnChatActivityListener {
 		/*
 		 * 连接建立后才可以调用消息接口发送消息，以下是发送消息示例
 		 */
-		// 找指定客服，参数: 客服组id,客服id
-		//V5ClientAgent.getInstance().transferHumanService(1, 114052);
+		// 转指定人工客服（调用时立即转），参数: 客服组id,客服id
+		//V5ClientAgent.getInstance().transferHumanService(0, 132916);
+		// 指定人工客服点击转人工按钮或者问题触发转人工时会转到指定人工，参数"0 132916"中两个数字先后对应需要转的客服组ID和客服ID
+		//V5ClientAgent.getInstance().sendMessage(new V5ControlMessage(4, 2, "0 114052"), null);
 					
 		// 发送图文消息
 //		V5ArticlesMessage articleMsg = new V5ArticlesMessage();
