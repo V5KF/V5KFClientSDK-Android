@@ -1029,5 +1029,9 @@ SDK 存在新版本时，请尽量更新到最新版本 SDK，注意查看文档
 - 2018/01/04 SDK 版本 v1.3.0_r180104
 	1. 增加接口setBaseInfo, 传递JSONObject，可设置country,province,city,language(nickname,gender,avatar,vip也可在此设置)
 
-- 2018/01/10 SDK 版本 v1.3.2_r180111
+- 2018/01/10 SDK 版本 v1.3.2_r180110
 	1. 增加siteinfo,hotques的请求参数channel=app&os=android&account=xxx
+
+- 为统一Android和iOS版本号命名,下一版本直接升级到1.3.9，无接口改动，请放心升级
+- 2018/01/11 SDK 版本 v1.3.9_r180111
+	1. 修正:account实传appId
