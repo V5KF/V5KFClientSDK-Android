@@ -1,5 +1,6 @@
 # V5KFClientSDK-Android
-> 此为V5KF智能客服Android客户端SDK快速接入文档，包含接入客服系统的基本配置和代码接口，更全面详细的文档可参考[这里](./README.full.md)
+
+> 此为V5KF智能客服Android客户端SDK快速接入文档，包含接入客服系统的基本配置和代码接口，更全面详细的文档可参考[这里](https://desk.v5kf.com/docs/sdk/android/index.html)
 
 ## 1 开发环境准备
 
@@ -23,9 +24,11 @@
 	- Android SDK 最低支持 Android API 9: Android 2.3(Gingerbread)。
 
 ## 2 SDK导入
+
 导入 SDK 可以将 SDK 文件复制到您的项目中也可作为 library (eclipse) 或 module (Android Studio) 导入，建议采用导入 `Library` 方式，便于 SDK 维护和升级，从以下三点中选择合适您项目的方式导入。
 
 ### 2.1 导入eclipse
+
 * 在`eclipse/`目录下将`V5ClientLibrary/`目录作为`library`项目导入eclipse：
 
 > 右键eclipse项目列表 Import -> Existing Android Code Into Workspace -> 选择本地`V5ClientLibrary`所在目录 -> finish
@@ -55,12 +58,14 @@ dependencies {
 > 在Android Studio选择 File -> New -> Import Module -> 选择本地`V5ClientLibrary`所在目录 -> Finish
 
 ### 2.3 以文件导入
+
 1. 将 SDK 压缩包 `V5ClientLibrary` 中的 res 文件夹复制到您项目的对应 `res` 文件夹下;
 2. 将 SDK 压缩包内的 `V5KF _1.x.x_rxxxx.jar` 复制到您的项目的 `libs` 文件夹下;
 
 > 注:上述文件名称中的“x”表示 0~9 中某一数字，表示版本代号，下同。
 
 ## 3 配置AndroidManifest
+
 可以参考 Demo 工程的 `AndroidManifest.xml` 文件来配置您的 AndroidManifest，无论是使用 SDK 的接口开发还是直接使用 Demo 工程的 UI 快速集成都需要对您的项目的 `AndroidManifest.xml` 文件进行下述配置，具体配置项目如下:
 
 - **1. 添加必需的权限**
@@ -183,6 +188,7 @@ public class MyApplication extends Application {
 ![SDK后台配置](./pictures/android_sdk_6.png)
 
 ### 4.2 用户信息和参数设置
+
 使用 SDK 提供的 UI 集成，需要在启动会话界面之前进行用户信息和参数配置。配置项如下:
 
 ```java
@@ -241,6 +247,7 @@ config.setUserInfo(customContent);
 当 `nickname`、`openId`、`avatar`、`device_token` 等配置项配置完，下次需要修改(如App内切换了登录账号，修改了客户昵称或头像时)，需要在修改信息前调用 **`V5ClientConfig.getInstance(context).shouldUpdateUserInfo()`**，这样才会向服务端更新这几个配置项。同样若想更新站点信息，需要在`onChatActivityConnect`中调用 **`V5ClientAgent.getInstance().updateSiteInfo()`**。客户信息、站点信息（包含机器人信息和转人工开场白等V5后台可设置的信息）的更新存在缓存策略，系统每隔7天更新，一般无需处理，需要即时更新时方才调用此处接口。
 
 ### 4.3 启动会话界面
+
 通过简单地添加一个在线咨询按钮即可使用智能客服客户端功能，在按钮点击事件处理中加入:
 
 ```java
