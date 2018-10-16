@@ -49,7 +49,7 @@
 
 ```
 dependencies {
-    compile 'com.v5kf.clientsdk:clientsdk:1.3.9'
+    compile 'com.v5kf.clientsdk:clientsdk:1.3.10'
 }
 ```
 
