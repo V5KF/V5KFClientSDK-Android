@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements OnChatActivityLis
         config.setNickname("android_sdk_test"); // 设置用户昵称
         config.setGender(1); // 设置用户性别: 0-未知  1-男  2-女
         // 设置用户头像URL
-        config.setAvatar("http://debugimg-10013434.image.myqcloud.com/fe1382d100019cfb572b1934af3d2c04/thumbnail");
+        //config.setAvatar("http://debugimg-10013434.image.myqcloud.com/fe1382d100019cfb572b1934af3d2c04/thumbnail");
         config.setVip(0); // 设置用户VIP等级（0-5）
         /**
          *【建议】设置用户OpenId，以识别不同登录用户，不设置则默认由SDK生成，替代v1.2.0之前的uid,

@@ -123,7 +123,7 @@ V5 智能客服系统客户端可集成到 web、APP 等第三方平台提供客
 
 ```
 dependencies {
-    compile 'com.v5kf.clientsdk:clientsdk:1.3.10'
+    compile 'com.v5kf.clientsdk:clientsdk:1.3.11'
 }
 ```
 
