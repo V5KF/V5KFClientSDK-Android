@@ -172,6 +172,12 @@ Application 类，并在 AndroidManifest.xml 中进行下面配置（若您的�
 </application>
 ```
 
+注意：如果存在选择图片报没权限的问题，并已正确配置Provider，可能为Android 10兼容问题，用最新的Android10 SDK就要在application里面加一句
+
+```xml
+android:requestLegacyExternalStorage="true"
+```
+
 - **3. 添加必需的服务和 Activity**
 
 ```xml
