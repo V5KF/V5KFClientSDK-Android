@@ -86,5 +86,9 @@
 	<string name="v5_def_content_control">【控制消息】</string>
 	<string name="v5_def_content_switch_worker">【转人工客服】</string>
 	<string name="v5_def_content_unsupport">【不支持的消息类型】</string>
-    
+    <string name="v5_def_content_canceled">撤回一条消息</string>
+
+    <string name="v5_chat_msg_readed">已读</string>
+    <string name="v5_chat_msg_unread">未读</string>
+
 </resources>
