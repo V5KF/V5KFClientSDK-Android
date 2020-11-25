@@ -10,11 +10,11 @@
     android:paddingTop="@dimen/v5_chat_list_vertical_padding"
 	android:paddingBottom="@dimen/v5_chat_list_vertical_padding"
     android:orientation="vertical" >
-    
-    <TextView
-        android:id="@+id/id_to_msg_date"
-        android:visibility="gone"
-        style="@style/v5_list_item_top_date" />
+
+	<TextView
+		android:id="@+id/id_to_msg_date"
+		style="@style/v5_list_item_top_date"
+		android:visibility="gone" />
 
     <RelativeLayout 
         android:layout_width="fill_parent"
@@ -30,25 +30,26 @@
             v5kf:v5_borderRadius="@dimen/v5_chat_list_avatar_radius"
             v5kf:v5_type="round"
             android:src="@drawable/v5_avatar_customer" />
-        
-        <com.v5kf.client.ui.emojicon.EmojiconTextView
-            android:id="@+id/id_to_msg_text"
-            emojicon:v5_emojiconAlignment="baseline"
-            emojicon:v5_emojiconSize="@dimen/v5_chat_text_emoji_iconsize"
-			android:lineSpacingExtra="@dimen/v5_chat_text_line_spacing"
-            android:gravity="center_vertical"
-            android:layout_toLeftOf="@+id/id_to_msg_avatar"
-			android:layout_toStartOf="@+id/id_to_msg_avatar"
-			android:layout_marginRight="@dimen/v5_chat_list_bubble_avatar_margin"
+
+		<com.v5kf.client.ui.emojicon.EmojiconTextView
+			android:id="@+id/id_to_msg_text"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignWithParentIfMissing="true"
+			android:layout_marginStart="50dp"
+			android:layout_marginLeft="50dp"
 			android:layout_marginEnd="@dimen/v5_chat_list_bubble_avatar_margin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/v5_chat_list_item_minH"
-            android:layout_marginLeft="50dp"
-            android:layout_marginStart="50dp"
-            android:background="@drawable/v5_list_to_textview_bg"
-            android:textColor="@color/v5_list_to_textview_color"
-            android:textSize="14sp" />
+			android:layout_marginRight="@dimen/v5_chat_list_bubble_avatar_margin"
+			android:layout_toStartOf="@+id/id_to_msg_avatar"
+			android:layout_toLeftOf="@+id/id_to_msg_avatar"
+			android:background="@drawable/v5_list_to_textview_bg"
+			android:gravity="center_vertical"
+			android:lineSpacingExtra="@dimen/v5_chat_text_line_spacing"
+			android:minHeight="@dimen/v5_chat_list_item_minH"
+			android:textColor="@color/v5_list_to_textview_color"
+			android:textSize="14sp"
+			emojicon:v5_emojiconAlignment="baseline"
+			emojicon:v5_emojiconSize="@dimen/v5_chat_text_emoji_iconsize" />
         
         <FrameLayout
             android:id="@+id/id_msg_send_progress"
@@ -77,7 +78,20 @@
                 android:visibility="gone" />
             
         </FrameLayout>
-        
-    </RelativeLayout>
+
+		<TextView
+			android:id="@+id/id_msg_unread"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignWithParentIfMissing="true"
+			android:layout_below="@id/id_to_msg_text"
+			android:layout_marginEnd="@dimen/v5_chat_list_bubble_avatar_margin"
+			android:layout_marginRight="@dimen/v5_chat_list_bubble_avatar_margin"
+			android:layout_toLeftOf="@id/id_to_msg_avatar"
+			android:paddingRight="5dp"
+			android:text="@string/v5_chat_msg_unread"
+			android:textColor="#F44336" />
+
+	</RelativeLayout>
     
 </LinearLayout>

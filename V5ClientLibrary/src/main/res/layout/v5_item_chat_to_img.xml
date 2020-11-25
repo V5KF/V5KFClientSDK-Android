@@ -10,59 +10,61 @@
     android:paddingTop="@dimen/v5_chat_list_vertical_padding"
 	android:paddingBottom="@dimen/v5_chat_list_vertical_padding"
     android:orientation="vertical" >
-    
-    <TextView
-        android:id="@+id/id_to_msg_date"
-        android:visibility="gone"
-        style="@style/v5_list_item_top_date" />
+
+	<TextView
+		android:id="@+id/id_to_msg_date"
+		style="@style/v5_list_item_top_date"
+		android:visibility="gone" />
     
     <RelativeLayout 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="end" >
-        
-        <com.v5kf.client.ui.widget.RoundImageView
-            android:id="@+id/id_to_msg_avatar"
-            android:layout_width="@dimen/v5_chat_list_avatar_wh"
-            android:layout_height="@dimen/v5_chat_list_avatar_wh"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            v5kf:v5_borderRadius="@dimen/v5_chat_list_avatar_radius"
-            v5kf:v5_type="round"
-            android:src="@drawable/v5_avatar_customer" />
+
+		<com.v5kf.client.ui.widget.RoundImageView
+			android:id="@+id/id_to_msg_avatar"
+			android:layout_width="@dimen/v5_chat_list_avatar_wh"
+			android:layout_height="@dimen/v5_chat_list_avatar_wh"
+			android:layout_alignParentEnd="true"
+			android:layout_alignParentRight="true"
+			android:src="@drawable/v5_avatar_customer"
+			android:visibility="visible"
+			v5kf:v5_borderRadius="@dimen/v5_chat_list_avatar_radius"
+			v5kf:v5_type="round" />
 
 		<RelativeLayout
 			android:id="@+id/id_right_location_layout"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-			android:layout_toLeftOf="@+id/id_to_msg_avatar"
-			android:layout_toStartOf="@+id/id_to_msg_avatar"
-			android:layout_marginRight="@dimen/v5_chat_list_bubble_avatar_margin"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignWithParentIfMissing="true"
+			android:layout_marginStart="50dp"
+			android:layout_marginLeft="50dp"
 			android:layout_marginEnd="@dimen/v5_chat_list_bubble_avatar_margin"
-		    android:layout_marginLeft="50dp"
-            android:layout_marginStart="50dp"
-		    android:padding="0dp"
-			android:orientation="vertical" >
-			
-		    <com.v5kf.client.ui.widget.BubbleImageView
-		        android:id="@+id/ic_type_img_iv"
-		    	android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:maxWidth="220dp"
-		        android:maxHeight="220dp"
-		        android:minWidth="100dp"
-		        android:minHeight="100dp"
-		        android:adjustViewBounds="true"
-		        android:scaleType="fitCenter"
-		        android:padding="0dp"
-		        android:src="@drawable/v5_img_src_loading"
-		        v5kf:v5_bubble_angle="@dimen/v5_bubble_image_radius"
-	           	v5kf:v5_bubble_arrowHeight="@dimen/v5_bubble_arrow_height"
-	           	v5kf:v5_bubble_arrowLocation="right"
-	           	v5kf:v5_bubble_arrowOffset="@dimen/v5_bubble_arrow_offset"
-	           	v5kf:v5_bubble_arrowTop="@dimen/v5_bubble_arrow_top"
-	           	v5kf:v5_bubble_arrowWidth="@dimen/v5_bubble_arrow_width" />
-		    
+			android:layout_marginRight="@dimen/v5_chat_list_bubble_avatar_margin"
+			android:layout_toStartOf="@+id/id_to_msg_avatar"
+			android:layout_toLeftOf="@+id/id_to_msg_avatar"
+			android:orientation="vertical"
+			android:padding="0dp">
+
+			<com.v5kf.client.ui.widget.BubbleImageView
+				android:id="@+id/ic_type_img_iv"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:adjustViewBounds="true"
+				android:maxWidth="220dp"
+				android:maxHeight="220dp"
+				android:minWidth="100dp"
+				android:minHeight="100dp"
+				android:padding="0dp"
+				android:scaleType="fitCenter"
+				android:src="@drawable/v5_img_src_loading"
+				v5kf:v5_bubble_angle="@dimen/v5_bubble_image_radius"
+				v5kf:v5_bubble_arrowHeight="@dimen/v5_bubble_arrow_height"
+				v5kf:v5_bubble_arrowLocation="right"
+				v5kf:v5_bubble_arrowOffset="@dimen/v5_bubble_arrow_offset"
+				v5kf:v5_bubble_arrowTop="@dimen/v5_bubble_arrow_top"
+				v5kf:v5_bubble_arrowWidth="@dimen/v5_bubble_arrow_width" />
+
 		</RelativeLayout>
 		
 		<FrameLayout
@@ -93,7 +95,20 @@
                 android:visibility="gone" />
             
         </FrameLayout>
-		
+
+		<TextView
+			android:id="@+id/id_msg_unread"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignWithParentIfMissing="true"
+			android:layout_below="@id/id_right_location_layout"
+			android:layout_marginEnd="@dimen/v5_chat_list_bubble_avatar_margin"
+			android:layout_marginRight="@dimen/v5_chat_list_bubble_avatar_margin"
+			android:layout_toLeftOf="@id/id_to_msg_avatar"
+			android:paddingRight="5dp"
+			android:text="@string/v5_chat_msg_unread"
+			android:textColor="#F44336" />
+
 	</RelativeLayout>
         
 </LinearLayout>
