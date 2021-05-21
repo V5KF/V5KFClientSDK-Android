@@ -46,7 +46,7 @@
 			android:gravity="center_vertical"
 			android:lineSpacingExtra="@dimen/v5_chat_text_line_spacing"
 			android:minHeight="@dimen/v5_chat_list_item_minH"
-			android:textColor="@color/v5_list_to_textview_color"
+			android:textColor="@color/v5_black"
 			android:textSize="14sp"
 			emojicon:v5_emojiconAlignment="baseline"
 			emojicon:v5_emojiconSize="@dimen/v5_chat_text_emoji_iconsize" />

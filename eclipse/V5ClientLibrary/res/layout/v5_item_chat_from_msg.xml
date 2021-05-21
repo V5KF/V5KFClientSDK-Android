@@ -42,7 +42,7 @@
             android:gravity="center_vertical"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/v5_chat_list_item_minH"
-            android:textColor="@color/v5_white"
+            android:textColor="@color/v5_black"
             android:background="@drawable/v5_list_from_textview_bg"
             android:textSize="14sp" />
 	    
