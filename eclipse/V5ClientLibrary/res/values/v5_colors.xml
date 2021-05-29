@@ -28,7 +28,7 @@
     <color name="v5_base_action_bar_border_bg">#B2B2B2</color><!-- 标题栏下边距颜色 -->
     <color name="v5_base_action_bar_text_color">#209de9</color><!-- 标题栏字体颜色 -->
     
-    <color name="v5_list_chat_blank_bg">#C6DADA</color><!-- 对话列表背景颜色 -->
+    <color name="v5_list_chat_blank_bg">#EEEEEE</color><!-- 对话列表背景颜色 -->
     <color name="v5_btn_send_textcolor">@color/v5_white</color><!-- 发送按钮字体颜色 -->
     
     <!-- 消息发送按钮 -->
